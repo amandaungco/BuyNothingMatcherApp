@@ -202,6 +202,23 @@
 
     </GridLayout>
 
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/preferencesButton"
+        android:layout_width="445dp"
+        android:layout_height="wrap_content"
+
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginEnd="19dp"
+        android:layout_marginRight="19dp"
+        android:layout_marginBottom="22dp"
+        android:background="@color/design_default_color_primary"
+        android:clickable="true"
+        app:srcCompat="@color/colorAccent"
+        tools:layout_editor_absoluteX="329dp"
+        tools:layout_editor_absoluteY="447dp"
+        tools:srcCompat="@android:drawable/ic_menu_preferences" />
+
 
 
 </LinearLayout>

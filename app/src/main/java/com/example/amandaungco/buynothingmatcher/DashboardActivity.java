@@ -1,5 +1,7 @@
 package com.example.amandaungco.buynothingmatcher;
 
+import android.content.Intent;
+import android.content.res.Resources;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.CardView;
@@ -16,7 +18,7 @@ public class DashboardActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dashboard);
 
-        gridLayout = (GridLayout) findViewById(R.id.mainGrid);
+        gridLayout = findViewById(R.id.mainGrid);
 
         setSingleEvent(gridLayout);
 
@@ -30,11 +32,20 @@ public class DashboardActivity extends AppCompatActivity {
             cardView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+                    if (finalI == 3){
+                        openRequestsPage();
+                    }
                     Toast.makeText(DashboardActivity.this, "Clicked at index " + finalI,
                             Toast.LENGTH_SHORT).show();
+
                 }
             });
         }
+    }
+
+    private void openRequestsPage() {
+        Intent intent = new Intent(this, RequestsActivity.class);
+        startActivity(intent);
     }
 
 
