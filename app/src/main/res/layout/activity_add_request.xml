@@ -4,39 +4,82 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@android:color/white"
+    android:backgroundTint="@android:color/background_light"
     android:orientation="vertical"
-    android:background="#D3D3D3"
     android:weightSum="10"
     tools:context="com.example.amandaungco.buynothingmatcher.DashboardActivity">
 
     <RelativeLayout
-        android:layout_weight="2"
         android:layout_width="match_parent"
-        android:layout_height="0dp">
+        android:layout_height="0dp"
+        android:layout_weight="2">
 
         <TextView
             android:id="@+id/textGrid"
-            android:text="Add a Request"
-            android:textSize="34sp"
-            android:textColor="#000"
-            android:layout_centerInParent="true"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="Add a Request"
+            android:textColor="#000"
+            android:textSize="34sp" />
 
     </RelativeLayout>
 
     <EditText
-        android:id="@+id/EditTextName"
+        android:id="@+id/EditTextRequestTitle"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:hint="What are you looking for?"
-        android:inputType="textPersonName"
-        android:layout_width="fill_parent">
-    </EditText>
-    <EditText
-        android:id="@+id/EditTextName"
+        android:inputType="textCapWords" />
+
+
+    <TextView
+        android:id="@+id/quantitySpinnerTitle"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:hint=""
-        android:inputType="textPersonName"
-        android:layout_width="fill_parent">
-    </EditText>
-   </LinearLayout>
+        android:layout_centerInParent="true"
+        android:text="Quantity:"
+        android:textColor="#000"
+        android:textSize="16sp" />
+
+    <Spinner
+        android:id="@+id/requestQuantity"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Quantity"
+        android:paddingTop="16dp"
+        android:spinnerMode="dropdown" />
+
+    <TextView
+        android:id="@+id/categorySpinnerTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:text="Category:"
+        android:textColor="#000"
+        android:textSize="16sp" />
+
+    <Spinner
+        android:id="@+id/requestCategory"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Category"
+        android:paddingTop="16dp"
+        android:spinnerMode="dropdown" />
+
+    <EditText
+        android:id="@+id/EditTextComment"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:hint="Comments"
+        android:inputType="textMultiLine"
+        android:lines="5" />
+
+    <Button
+        android:id="@+id/AddNewRequestButton"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="Add Request" />
+
+</LinearLayout>

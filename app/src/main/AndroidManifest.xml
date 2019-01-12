@@ -17,7 +17,8 @@
             </intent-filter>
         </activity>
         <activity android:name=".RequestsActivity" />
-        <activity android:name=".AddRequestActivity"></activity>
+        <activity android:name=".AddRequestActivity" />
+        <activity android:name=".ShowIndividualRequestActivity"></activity>
     </application>
 
 </manifest>
