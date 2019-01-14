@@ -9,6 +9,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.Switch;
 
 import java.util.HashMap;
 
@@ -21,6 +22,7 @@ public class AddItemActivity extends AppCompatActivity {
     EditText itemTitleField;
     EditText commentField;
     Button addItemButton;
+    Switch requestOrOffer;
 
 
     private static final String[] numbers = {"1", "2", "3", "4", "5", "6", "7", "8", "9", "10"};
@@ -35,6 +37,10 @@ public class AddItemActivity extends AppCompatActivity {
         itemTitleField = findViewById(R.id.EditTextItemTitle);
         commentField = findViewById(R.id.EditTextComment);
         commentField.setText("THis is where a placeholder is");
+        requestOrOffer =  findViewById(R.id.requestOrOffer);
+
+        requestOrOffer.setTextOn("Offer"); // displayed text of the Switch whenever it is in checked or on state
+        requestOrOffer.setTextOff("Request");
 
         categorySpinner.setAdapter(new ArrayAdapter<Category>(this,
                 android.R.layout.simple_spinner_item, Category.values()));
@@ -74,6 +80,7 @@ public class AddItemActivity extends AppCompatActivity {
         String itemCategory = categorySpinner.getSelectedItem().toString();
         int itemQuantity = Integer.parseInt(quantitySpinner.getSelectedItem().toString());
         String itemComment = commentField.getText().toString();
+        Boolean isOffer = requestOrOffer.isChecked();
 
         HashMap<String, String> newItem = new HashMap<>();
 
@@ -83,6 +90,11 @@ public class AddItemActivity extends AppCompatActivity {
 //        newItem.put("quantity", itemQuantity); // do i have to convert this to stirng or can it stay an integer
 
         newItem.put("comment", itemComment);
+        if (isOffer){
+            newItem.put("type", "Offer");
+        } else{
+            newItem.put("type", "Request");
+        }
 
         Log.i(TAG, newItem.toString());
 

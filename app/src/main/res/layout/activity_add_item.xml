@@ -30,8 +30,24 @@
         android:id="@+id/EditTextItemTitle"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:hint="What are you looking for?"
+        android:hint="Enter a title for your item"
         android:inputType="textCapWords" />
+
+    <Switch
+        android:id="@+id/requestOrOffer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:theme="@style/SwitchTheme"
+        android:backgroundTint="@color/colorPrimary"
+        android:checked="true"
+        android:gravity="start"
+        android:showText="true"
+        android:text="Item Type:"
+        android:textColorLink="@color/colorPrimary"
+        android:textOff="Request"
+        android:textOn="Offer"
+        android:textSize="20sp" />
 
 
     <TextView
@@ -80,6 +96,6 @@
         android:id="@+id/AddNewItemButton"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:text="Add Request" />
+        android:text="Add Item" />
 
 </LinearLayout>
