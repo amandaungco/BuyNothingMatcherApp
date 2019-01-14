@@ -20,14 +20,14 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:text="Add a Request"
+            android:text="Add Item"
             android:textColor="#000"
             android:textSize="34sp" />
 
     </RelativeLayout>
 
     <EditText
-        android:id="@+id/EditTextRequestTitle"
+        android:id="@+id/EditTextItemTitle"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:hint="What are you looking for?"
@@ -35,7 +35,7 @@
 
 
     <TextView
-        android:id="@+id/quantitySpinnerTitle"
+        android:id="@+id/QuantitySpinnerTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
@@ -44,7 +44,7 @@
         android:textSize="16sp" />
 
     <Spinner
-        android:id="@+id/requestQuantity"
+        android:id="@+id/ItemQuantity"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Quantity"
@@ -52,7 +52,7 @@
         android:spinnerMode="dropdown" />
 
     <TextView
-        android:id="@+id/categorySpinnerTitle"
+        android:id="@+id/CategorySpinnerTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
@@ -61,7 +61,7 @@
         android:textSize="16sp" />
 
     <Spinner
-        android:id="@+id/requestCategory"
+        android:id="@+id/ItemCategory"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Category"
@@ -77,7 +77,7 @@
         android:lines="5" />
 
     <Button
-        android:id="@+id/AddNewRequestButton"
+        android:id="@+id/AddNewItemButton"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:text="Add Request" />

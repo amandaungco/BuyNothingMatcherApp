@@ -5,7 +5,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -13,15 +12,15 @@ import android.widget.Spinner;
 
 import java.util.HashMap;
 
-public class AddRequestActivity extends AppCompatActivity {
+public class AddItemActivity extends AppCompatActivity {
 
-    private final static String TAG = AddRequestActivity.class.getSimpleName();
+    private final static String TAG = AddItemActivity.class.getSimpleName();
 
     Spinner categorySpinner;
     Spinner quantitySpinner;
-    EditText requestTitleField;
+    EditText itemTitleField;
     EditText commentField;
-    Button addRequestButton;
+    Button addItemButton;
 
 
     private static final String[] numbers = {"1", "2", "3", "4", "5", "6", "7", "8", "9", "10"};
@@ -29,12 +28,13 @@ public class AddRequestActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_add_request);
+        setContentView(R.layout.activity_add_item);
 
-        categorySpinner = findViewById(R.id.requestCategory);
-        quantitySpinner = findViewById(R.id.requestQuantity);
-        requestTitleField = findViewById(R.id.EditTextRequestTitle);
+        categorySpinner = findViewById(R.id.ItemCategory);
+        quantitySpinner = findViewById(R.id.ItemQuantity);
+        itemTitleField = findViewById(R.id.EditTextItemTitle);
         commentField = findViewById(R.id.EditTextComment);
+        commentField.setText("THis is where a placeholder is");
 
         categorySpinner.setAdapter(new ArrayAdapter<Category>(this,
                 android.R.layout.simple_spinner_item, Category.values()));
@@ -48,14 +48,14 @@ public class AddRequestActivity extends AppCompatActivity {
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         quantitySpinner.setAdapter(adapter);
 
-        addRequestButton = findViewById(R.id.AddNewRequestButton);
+        addItemButton = findViewById(R.id.AddNewItemButton);
 
-        addRequestButton.setOnClickListener(new View.OnClickListener() {
+        addItemButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                createRequest();// create hashmap with data from form, have data sent to API
+                createItem();// create hashmap with data from form, have data sent to API
                 //with post request, pull up next activtiy and have the activity make the get
                 //request from the API to show new object
-                openIndividualRequestPage();
+                openIndividualUserItemShowPage();
 
             }
 
@@ -68,29 +68,29 @@ public class AddRequestActivity extends AppCompatActivity {
 
     }
 
-    private HashMap createRequest() {
+    private HashMap createItem() {
 
-        String requestTitle = requestTitleField.getText().toString();
-        String requestCategory = categorySpinner.getSelectedItem().toString();
-        int requestQuantity = Integer.parseInt(quantitySpinner.getSelectedItem().toString());
-        String requestComment = commentField.getText().toString();
+        String itemTitle = itemTitleField.getText().toString();
+        String itemCategory = categorySpinner.getSelectedItem().toString();
+        int itemQuantity = Integer.parseInt(quantitySpinner.getSelectedItem().toString());
+        String itemComment = commentField.getText().toString();
 
-        HashMap<String, String> newRequest = new HashMap<>();
+        HashMap<String, String> newItem = new HashMap<>();
 
         // Put three keys with values.
-        newRequest.put("title", requestTitle);
-        newRequest.put("category", requestCategory);
-//        newRequest.put("quantity", requestQuantity); // do i have to convert this to stirng or can it stay an integer
+        newItem.put("title", itemTitle);
+        newItem.put("category", itemCategory);
+//        newItem.put("quantity", itemQuantity); // do i have to convert this to stirng or can it stay an integer
 
-        newRequest.put("comment", requestComment);
+        newItem.put("comment", itemComment);
 
-        Log.i(TAG, newRequest.toString());
+        Log.i(TAG, newItem.toString());
 
-        return newRequest;
+        return newItem;
 
     }
 
-    private void openIndividualRequestPage() {
+    private void openIndividualUserItemShowPage() {
         Intent intent = new Intent(this, ShowIndividualRequestActivity.class);
         startActivity(intent);
     }

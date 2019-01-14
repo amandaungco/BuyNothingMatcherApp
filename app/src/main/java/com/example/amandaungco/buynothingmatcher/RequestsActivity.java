@@ -5,8 +5,6 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
-import android.view.View.OnClickListener;
-import android.widget.Button;
 
 public class RequestsActivity extends AppCompatActivity {
 
@@ -29,7 +27,7 @@ public class RequestsActivity extends AppCompatActivity {
     }
 
     private void openAddRequestsPage() {
-        Intent intent = new Intent(this, AddRequestActivity.class);
+        Intent intent = new Intent(this, AddItemActivity.class);
         startActivity(intent);
     }
 }

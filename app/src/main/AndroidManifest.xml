@@ -17,8 +17,10 @@
             </intent-filter>
         </activity>
         <activity android:name=".RequestsActivity" />
-        <activity android:name=".AddRequestActivity" />
+        <activity android:name=".AddItemActivity" />
         <activity android:name=".ShowIndividualRequestActivity" />
+
+
         <activity android:name=".FireBaseSignInActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
