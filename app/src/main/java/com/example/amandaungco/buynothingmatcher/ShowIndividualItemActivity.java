@@ -25,9 +25,9 @@ public class ShowIndividualItemActivity extends AppCompatActivity {
         TextView itemDescriptionView;
 
         String itemHeader = type + " : " + title;
-        String itemQuantity = "Quantity:' " + quantity;
-        String itemCategory = "Category:' " + category;
-        String itemDescription = "Description:' " + description;
+        String itemQuantity = "Quantity: " + quantity;
+        String itemCategory = "Category: " + category;
+        String itemDescription = "Description: " + description;
 
         itemTitleView = findViewById(R.id.itemTitle);
         itemTitleView.setText(itemHeader);
