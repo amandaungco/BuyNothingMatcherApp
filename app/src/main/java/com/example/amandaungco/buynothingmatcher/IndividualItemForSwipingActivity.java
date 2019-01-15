@@ -1,10 +1,13 @@
 package com.example.amandaungco.buynothingmatcher;
 
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -26,6 +29,7 @@ public class IndividualItemForSwipingActivity extends AppCompatActivity {
         String type = "Item Type";
         String description = "Item Description";
         String quantity = "Item Quantity";
+        FloatingActionButton dashboardButton;
 
 
         TextView itemTitleView;
@@ -52,6 +56,20 @@ public class IndividualItemForSwipingActivity extends AppCompatActivity {
         itemDescriptionView = findViewById(R.id.itemDescription);
         itemDescriptionView.setText(itemDescription);
 
+        dashboardButton = findViewById(R.id.dashboardButton);
 
+        dashboardButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openDashboardPage();
+            }
+        });
+
+
+    }
+
+    private void openDashboardPage() {
+        Intent intent = new Intent(this, DashboardActivity.class);
+        startActivity(intent);
     }
 }

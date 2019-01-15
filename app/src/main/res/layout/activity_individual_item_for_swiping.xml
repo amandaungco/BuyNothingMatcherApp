@@ -10,16 +10,28 @@
     android:weightSum="10"
     tools:context="com.example.amandaungco.buynothingmatcher.DashboardActivity">
 
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/dashboardButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="0dp"
+        android:clickable="true"
+        app:backgroundTint="@color/colorPrimary"
+        tools:srcCompat="@mipmap/ic_launcher" />
 
     <ImageView
         android:id="@+id/imageView3"
         android:layout_width="306dp"
         android:layout_height="193dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="0dp"
         android:layout_weight="2"
         android:padding="10dp"
-        tools:src="@tools:sample/backgrounds/scenic[0]"
-        android:layout_gravity="center"
-        />
+        tools:src="@tools:sample/backgrounds/scenic[0]" />
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -42,6 +54,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
+        android:layout_marginLeft="30dp"
         android:text="Quantity: (show quantity value"
         android:textColor="#000"
         android:textSize="18sp" />
@@ -52,6 +65,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
+        android:layout_marginLeft="30dp"
         android:text="Category: (show category value)"
         android:textColor="#000"
         android:textSize="18sp" />
@@ -60,6 +74,7 @@
         android:id="@+id/itemDescription"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="30dp"
         android:inputType="textMultiLine"
         android:lines="3"
         android:text="Request Comment goes here"

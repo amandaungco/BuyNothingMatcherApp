@@ -9,7 +9,8 @@ import android.widget.Button;
 
 public class MyItemsActivity extends AppCompatActivity {
 
-    private FloatingActionButton addItemButton;
+    private Button addItemButton;
+    private FloatingActionButton dashboardButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,10 +26,24 @@ public class MyItemsActivity extends AppCompatActivity {
             }
         });
 
+        dashboardButton = findViewById(R.id.dashboardButton);
+
+        dashboardButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openDashboardPage();
+            }
+        });
+
     }
 
     private void openAddNewItemPage() {
         Intent intent = new Intent(this, AddItemActivity.class);
+        startActivity(intent);
+    }
+
+    private void openDashboardPage() {
+        Intent intent = new Intent(this, DashboardActivity.class);
         startActivity(intent);
     }
 }
