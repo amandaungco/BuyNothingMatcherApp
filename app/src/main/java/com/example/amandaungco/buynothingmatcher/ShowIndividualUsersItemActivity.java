@@ -48,28 +48,6 @@ public class ShowIndividualUsersItemActivity extends AppCompatActivity {
         matchesHeaderView = findViewById(R.id.matchesHeader);
         matchesHeaderView.setText(itemMatches);
 
-        BottomNavigationView bottomNavigationView = findViewById(R.id.navigationView);
-
-        bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
-                switch (menuItem.getItemId()) {
-                    case R.id.like:
-                        Toast.makeText(ShowIndividualUsersItemActivity.this, "Clicked" + menuItem,
-                                Toast.LENGTH_SHORT).show();
-
-                    case R.id.dislike:
-                        Toast.makeText(ShowIndividualUsersItemActivity.this, "Clicked" + menuItem,
-                                Toast.LENGTH_SHORT).show();
-                        break;
-                }
-                return true;
-            }
-
-
-        });
-
-
 
     }
 }

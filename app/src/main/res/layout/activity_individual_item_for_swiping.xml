@@ -79,13 +79,13 @@
             android:id="@+id/button"
             android:layout_width="118dp"
             android:layout_height="wrap_content"
-            android:text="Like" />
+            android:text="Dislike" />
 
         <Button
             android:id="@+id/button2"
             android:layout_width="118dp"
             android:layout_height="wrap_content"
-            android:text="Dislike" />
+            android:text="Like" />
     </LinearLayout>
 
 

@@ -1,8 +1,12 @@
 package com.example.amandaungco.buynothingmatcher;
 
+import android.support.annotation.NonNull;
+import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class IndividualItemForSwipingActivity extends AppCompatActivity {
 
@@ -11,11 +15,18 @@ public class IndividualItemForSwipingActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_individual_item_for_swiping);
 
-        String title = getIntent().getExtras().getString("ItemTitle");
-        String category = getIntent().getExtras().getString("ItemCategory");
-        String type = getIntent().getExtras().getString("ItemType");
-        String description = getIntent().getExtras().getString("ItemDescription");
-        String quantity = getIntent().getExtras().getString("ItemQuantity");
+//        String title = getIntent().getExtras().getString("ItemTitle");
+//        String category = getIntent().getExtras().getString("ItemCategory");
+//        String type = getIntent().getExtras().getString("ItemType");
+//        String description = getIntent().getExtras().getString("ItemDescription");
+//        String quantity = getIntent().getExtras().getString("ItemQuantity");
+
+        String title = "Item Title";
+        String category = "Item Category";
+        String type = "Item Type";
+        String description = "Item Description";
+        String quantity = "Item Quantity";
+
 
         TextView itemTitleView;
         TextView itemQuantityView;
@@ -41,7 +52,6 @@ public class IndividualItemForSwipingActivity extends AppCompatActivity {
         itemDescriptionView = findViewById(R.id.itemDescription);
         itemDescriptionView.setText(itemDescription);
 
-        matchesHeaderView = findViewById(R.id.matchesHeader);
-        matchesHeaderView.setText(itemMatches);
+
     }
 }

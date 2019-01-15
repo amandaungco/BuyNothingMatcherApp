@@ -43,12 +43,13 @@ public class DashboardActivity extends AppCompatActivity {
         });
 
 
-        ImageView swipeImage = findViewById(R.id.itemSwipeImage);
-        swipeImage.setOnClickListener(new onClickListener() {
-            public void onClick(View v) {
-                openIndividualItemforSwiping();
-            }
-        });
+//        ImageView swipeImage = findViewById(R.id.itemSwipeImage);
+//        swipeImage.setOnClickListener(new onClickListener(View view){
+//
+//        });{
+//                openIndividualItemforSwiping();
+//            }
+
 
 
         BottomNavigationView bottomNavigationView = findViewById(R.id.navigationView);
@@ -83,7 +84,7 @@ public class DashboardActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    private void openIndividualItemforSwiping() {
+    public void openIndividualItemforSwiping(View view) {
         Intent intent = new Intent(this, IndividualItemForSwipingActivity.class);
         startActivity(intent);
     }
