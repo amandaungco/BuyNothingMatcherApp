@@ -16,27 +16,30 @@ public class ShowIndividualItemActivity extends AppCompatActivity {
         String title = getIntent().getExtras().getString("ItemTitle");
         String category = getIntent().getExtras().getString("ItemCategory");
         String type = getIntent().getExtras().getString("ItemType");
-        String comment = getIntent().getExtras().getString("ItemComment");
+        String description = getIntent().getExtras().getString("ItemDescription");
         String quantity = getIntent().getExtras().getString("ItemQuantity");
 
-        TextView itemTitle;
-        TextView itemQuantity;
-        TextView itemCategory;
-        TextView itemComment;
+        TextView itemTitleView;
+        TextView itemQuantityView;
+        TextView itemCategoryView;
+        TextView itemDescriptionView;
 
         String itemHeader = type + " : " + title;
+        String itemQuantity = "Quantity:' " + quantity;
+        String itemCategory = "Category:' " + category;
+        String itemDescription = "Description:' " + description;
 
-        itemTitle = findViewById(R.id.itemTitle);
-        itemTitle.setText(itemHeader);
+        itemTitleView = findViewById(R.id.itemTitle);
+        itemTitleView.setText(itemHeader);
 
-        itemQuantity = findViewById(R.id.ItemQuantity);
-        itemQuantity.setText(quantity);
+        itemQuantityView = findViewById(R.id.ItemQuantity);
+        itemQuantityView.setText(itemQuantity);
 
-        itemCategory = findViewById(R.id.itemCategory);
-        itemCategory.setText(category);
+        itemCategoryView = findViewById(R.id.itemCategory);
+        itemCategoryView.setText(itemCategory);
 
-        itemComment = findViewById(R.id.itemComment);
-        itemComment.setText(comment);
+        itemDescriptionView = findViewById(R.id.itemDescription);
+        itemDescriptionView.setText(itemDescription);
 
 
     }

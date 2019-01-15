@@ -47,7 +47,7 @@
                 android:textSize="16sp" />
 
             <TextView
-                android:id="@+id/itemComment"
+                android:id="@+id/itemDescription"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:inputType="textMultiLine"

@@ -23,7 +23,7 @@ public class AddItemActivity extends AppCompatActivity {
     EditText commentField;
     Button addItemButton;
     Switch requestOrOffer;
-    HashMap newItemAttributesToValues;
+
 
 
     private static final String[] numbers = {"1", "2", "3", "4", "5", "6", "7", "8", "9", "10"};
@@ -59,10 +59,10 @@ public class AddItemActivity extends AppCompatActivity {
 
         addItemButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                createItem();// create hashmap with data from form, have data sent to API
+//                creat eItem();// create hashmap with data from form, have data sent to API
                 //with post request, pull up next activtiy and have the activity make the get
                 //request from the API to show new object
-                openIndividualUserItemShowPage(newItemAttributesToValues);
+                openIndividualUserItemShowPage(createItem());
 
             }
 
@@ -80,7 +80,7 @@ public class AddItemActivity extends AppCompatActivity {
         String itemTitle = itemTitleField.getText().toString();
         String itemCategory = categorySpinner.getSelectedItem().toString();
         String itemQuantity = quantitySpinner.getSelectedItem().toString();
-        String itemComment = commentField.getText().toString();
+        String itemDescription = commentField.getText().toString();
         Boolean isOffer = requestOrOffer.isChecked();
 
         HashMap<String, String> newItemAttributesToValues = new HashMap<>();
@@ -90,7 +90,7 @@ public class AddItemActivity extends AppCompatActivity {
         newItemAttributesToValues.put("category", itemCategory);
         newItemAttributesToValues.put("quantity", itemQuantity);
 
-        newItemAttributesToValues.put("comment", itemComment);
+        newItemAttributesToValues.put("description", itemDescription);
         if (isOffer){
             newItemAttributesToValues.put("type", "Offer");
         } else{
@@ -109,7 +109,7 @@ public class AddItemActivity extends AppCompatActivity {
         intent.putExtra("ItemTitle", newItemAttributesToValues.get("title"));
         intent.putExtra("ItemCategory", newItemAttributesToValues.get("category"));
         intent.putExtra("ItemType", newItemAttributesToValues.get("type"));
-        intent.putExtra("ItemComment", newItemAttributesToValues.get("comment"));
+        intent.putExtra("ItemDescription", newItemAttributesToValues.get("description"));
         intent.putExtra("ItemQuantity", newItemAttributesToValues.get("quantity"));
         startActivity(intent);
     }
