@@ -47,7 +47,8 @@
         android:textColorLink="@color/colorPrimary"
         android:textOff="Request"
         android:textOn="Offer"
-        android:textSize="20sp" />
+        android:textSize="20sp"
+        android:track="@drawable/track"/>
 
 
     <TextView

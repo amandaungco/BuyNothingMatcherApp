@@ -7,7 +7,7 @@
     android:orientation="vertical"
     android:background="#D3D3D3"
     android:weightSum="10"
-    tools:context="com.example.amandaungco.buynothingmatcher.RequestsActivity">
+    tools:context="com.example.amandaungco.buynothingmatcher.MyItemsActivity">
 
     <RelativeLayout
         android:layout_weight="2"
@@ -203,7 +203,7 @@
     </GridLayout>
 
     <android.support.design.widget.FloatingActionButton
-        android:id="@+id/addRequestButton"
+        android:id="@+id/AddNewItemButton"
         android:layout_width="445dp"
         android:layout_height="wrap_content"
 

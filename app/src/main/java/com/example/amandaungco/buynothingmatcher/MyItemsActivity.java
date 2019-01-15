@@ -5,28 +5,29 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 
-public class RequestsActivity extends AppCompatActivity {
+public class MyItemsActivity extends AppCompatActivity {
 
-    private FloatingActionButton addRequestButton;
+    private FloatingActionButton addItemButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_requests);
+        setContentView(R.layout.activity_my_items);
 
-        addRequestButton = findViewById(R.id.addRequestButton);
+        addItemButton = findViewById(R.id.AddNewItemButton);
 
-        addRequestButton.setOnClickListener(new View.OnClickListener() {
+        addItemButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                openAddRequestsPage();
+                openAddNewItemPage();
             }
         });
 
     }
 
-    private void openAddRequestsPage() {
+    private void openAddNewItemPage() {
         Intent intent = new Intent(this, AddItemActivity.class);
         startActivity(intent);
     }
