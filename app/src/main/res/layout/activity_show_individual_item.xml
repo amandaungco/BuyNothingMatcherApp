@@ -34,7 +34,7 @@
                 android:layout_centerInParent="true"
                 android:text="Quantity: (show quantity value"
                 android:textColor="#000"
-                android:textSize="16sp" />
+                android:textSize="18sp" />
 
 
             <TextView
@@ -44,14 +44,16 @@
                 android:layout_centerInParent="true"
                 android:text="Category: (show category value)"
                 android:textColor="#000"
-                android:textSize="16sp" />
+                android:textSize="18sp" />
 
             <TextView
                 android:id="@+id/itemDescription"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:inputType="textMultiLine"
-                android:lines="5"
+                android:lines="3"
+                android:textColor="#000"
+                android:textSize="18sp"
                 android:text="Request Comment goes here" />
 
 
@@ -61,11 +63,11 @@
                 android:layout_weight="2">
 
                 <TextView
-                    android:id="@+id/textGrid"
+                    android:id="@+id/matchesHeader"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerInParent="true"
-                    android:text="Matches for #{request_title}"
+                    android:text="Matches "
                     android:textColor="#000"
                     android:textSize="20sp" />
 
@@ -113,7 +115,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Account"
+                            android:text="Match 1"
                             android:textAlignment="center"
                             android:textColor="#000"
                             android:textSize="18sp"
@@ -152,7 +154,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Settings"
+                            android:text="Match 2"
                             android:textAlignment="center"
                             android:textColor="#000"
                             android:textSize="18sp"
@@ -193,7 +195,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Offers"
+                            android:text="Match 3"
                             android:textAlignment="center"
                             android:textColor="#000"
                             android:textSize="18sp"
@@ -232,7 +234,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Requests"
+                            android:text="Match 4"
                             android:textAlignment="center"
                             android:textColor="#000"
                             android:textSize="18sp"

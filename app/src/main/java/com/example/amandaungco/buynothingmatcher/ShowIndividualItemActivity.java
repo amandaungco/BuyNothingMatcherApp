@@ -23,11 +23,13 @@ public class ShowIndividualItemActivity extends AppCompatActivity {
         TextView itemQuantityView;
         TextView itemCategoryView;
         TextView itemDescriptionView;
+        TextView matchesHeaderView;
 
         String itemHeader = type + " : " + title;
         String itemQuantity = "Quantity: " + quantity;
         String itemCategory = "Category: " + category;
         String itemDescription = "Description: " + description;
+        String itemMatches = "Matches for " + title;
 
         itemTitleView = findViewById(R.id.itemTitle);
         itemTitleView.setText(itemHeader);
@@ -40,6 +42,9 @@ public class ShowIndividualItemActivity extends AppCompatActivity {
 
         itemDescriptionView = findViewById(R.id.itemDescription);
         itemDescriptionView.setText(itemDescription);
+
+        matchesHeaderView = findViewById(R.id.matchesHeader);
+        matchesHeaderView.setText(itemMatches);
 
 
     }

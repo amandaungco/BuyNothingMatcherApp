@@ -16,7 +16,7 @@
 
         <TextView
             android:id="@+id/textGrid"
-            android:text="My Requests"
+            android:text="My Items"
             android:textSize="34sp"
             android:textColor="#000"
             android:layout_centerInParent="true"
@@ -24,6 +24,28 @@
             android:layout_height="wrap_content" />
 
     </RelativeLayout>
+    <Switch
+        android:id="@+id/requestOrOffer"
+        android:layout_width="270dp"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_marginLeft="40dp"
+        android:layout_marginTop="70dp"
+        android:backgroundTint="@color/colorPrimary"
+        android:checked="true"
+        android:gravity="start"
+        android:paddingTop="20dp"
+        android:showText="true"
+        android:textColorLink="@color/colorPrimary"
+        android:textOff="Requests"
+        android:textOn="Offers"
+        android:textSize="20sp"
+        android:theme="@style/SwitchTheme"
+        android:track="@drawable/track"
+        android:trackTint="@color/browser_actions_title_color"
+        android:trackTintMode="screen"
+        android:visibility="visible"
+        tools:trackTintMode="src_over" />
 
     <GridLayout
         android:id="@+id/mainGrid"
