@@ -18,9 +18,7 @@
         </activity>
         <activity android:name=".MyItemsActivity" />
         <activity android:name=".AddItemActivity" />
-        <activity android:name=".ShowIndividualRequestActivity" />
-
-
+        <activity android:name=".ShowIndividualItemActivity" />
         <activity android:name=".FireBaseSignInActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -28,6 +26,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".SearchResultsActivity"></activity>
     </application>
 
 </manifest>

@@ -17,7 +17,7 @@
                 android:layout_weight="2">
 
                 <TextView
-                    android:id="@+id/requestTitle"
+                    android:id="@+id/itemTitle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerInParent="true"
@@ -28,7 +28,7 @@
             </RelativeLayout>
 
             <TextView
-                android:id="@+id/quantitySpinnerTitle"
+                android:id="@+id/ItemQuantity"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
@@ -38,7 +38,7 @@
 
 
             <TextView
-                android:id="@+id/categorySpinnerTitle"
+                android:id="@+id/itemCategory"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
@@ -47,7 +47,7 @@
                 android:textSize="16sp" />
 
             <TextView
-                android:id="@+id/EditTextComment"
+                android:id="@+id/itemComment"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:inputType="textMultiLine"

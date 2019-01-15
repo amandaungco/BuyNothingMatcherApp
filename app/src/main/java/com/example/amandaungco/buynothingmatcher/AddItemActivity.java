@@ -23,6 +23,7 @@ public class AddItemActivity extends AppCompatActivity {
     EditText commentField;
     Button addItemButton;
     Switch requestOrOffer;
+    HashMap newItemAttributesToValues;
 
 
     private static final String[] numbers = {"1", "2", "3", "4", "5", "6", "7", "8", "9", "10"};
@@ -61,7 +62,7 @@ public class AddItemActivity extends AppCompatActivity {
                 createItem();// create hashmap with data from form, have data sent to API
                 //with post request, pull up next activtiy and have the activity make the get
                 //request from the API to show new object
-                openIndividualUserItemShowPage();
+                openIndividualUserItemShowPage(newItemAttributesToValues);
 
             }
 
@@ -74,36 +75,42 @@ public class AddItemActivity extends AppCompatActivity {
 
     }
 
-    private HashMap createItem() {
+    private HashMap<String, String> createItem() {
 
         String itemTitle = itemTitleField.getText().toString();
         String itemCategory = categorySpinner.getSelectedItem().toString();
-        int itemQuantity = Integer.parseInt(quantitySpinner.getSelectedItem().toString());
+        String itemQuantity = quantitySpinner.getSelectedItem().toString();
         String itemComment = commentField.getText().toString();
         Boolean isOffer = requestOrOffer.isChecked();
 
-        HashMap<String, String> newItem = new HashMap<>();
+        HashMap<String, String> newItemAttributesToValues = new HashMap<>();
 
-        // Put three keys with values.
-        newItem.put("title", itemTitle);
-        newItem.put("category", itemCategory);
-//        newItem.put("quantity", itemQuantity); // do i have to convert this to stirng or can it stay an integer
 
-        newItem.put("comment", itemComment);
+        newItemAttributesToValues.put("title", itemTitle);
+        newItemAttributesToValues.put("category", itemCategory);
+        newItemAttributesToValues.put("quantity", itemQuantity);
+
+        newItemAttributesToValues.put("comment", itemComment);
         if (isOffer){
-            newItem.put("type", "Offer");
+            newItemAttributesToValues.put("type", "Offer");
         } else{
-            newItem.put("type", "Request");
+            newItemAttributesToValues.put("type", "Request");
         }
 
-        Log.i(TAG, newItem.toString());
+        Log.i(TAG, newItemAttributesToValues.toString());
 
-        return newItem;
+        return newItemAttributesToValues;
+
 
     }
 
-    private void openIndividualUserItemShowPage() {
-        Intent intent = new Intent(this, ShowIndividualRequestActivity.class);
+    private void openIndividualUserItemShowPage(HashMap<String, String> newItemAttributesToValues) {
+        Intent intent = new Intent(this, ShowIndividualItemActivity.class);
+        intent.putExtra("ItemTitle", newItemAttributesToValues.get("title"));
+        intent.putExtra("ItemCategory", newItemAttributesToValues.get("category"));
+        intent.putExtra("ItemType", newItemAttributesToValues.get("type"));
+        intent.putExtra("ItemComment", newItemAttributesToValues.get("comment"));
+        intent.putExtra("ItemQuantity", newItemAttributesToValues.get("quantity"));
         startActivity(intent);
     }
 
