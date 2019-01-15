@@ -1,20 +1,16 @@
 package com.example.amandaungco.buynothingmatcher;
 
-import android.support.annotation.NonNull;
-import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.MenuItem;
 import android.widget.TextView;
-import android.widget.Toast;
 
-public class ShowIndividualUsersItemActivity extends AppCompatActivity {
+public class IndividualItemForSwipingActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_individual_item_for_swiping);
 
-        setContentView(R.layout.activity_show_individual_users_item);
         String title = getIntent().getExtras().getString("ItemTitle");
         String category = getIntent().getExtras().getString("ItemCategory");
         String type = getIntent().getExtras().getString("ItemType");
@@ -47,29 +43,5 @@ public class ShowIndividualUsersItemActivity extends AppCompatActivity {
 
         matchesHeaderView = findViewById(R.id.matchesHeader);
         matchesHeaderView.setText(itemMatches);
-
-        BottomNavigationView bottomNavigationView = findViewById(R.id.navigationView);
-
-        bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
-                switch (menuItem.getItemId()) {
-                    case R.id.like:
-                        Toast.makeText(ShowIndividualUsersItemActivity.this, "Clicked" + menuItem,
-                                Toast.LENGTH_SHORT).show();
-
-                    case R.id.dislike:
-                        Toast.makeText(ShowIndividualUsersItemActivity.this, "Clicked" + menuItem,
-                                Toast.LENGTH_SHORT).show();
-                        break;
-                }
-                return true;
-            }
-
-
-        });
-
-
-
     }
 }

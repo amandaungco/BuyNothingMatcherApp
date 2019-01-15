@@ -72,7 +72,7 @@
             tools:trackTintMode="src_over" />
 
         <ImageView
-            android:id="@+id/imageView2"
+            android:id="@+id/itemSwipeImage"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:padding="20dp"

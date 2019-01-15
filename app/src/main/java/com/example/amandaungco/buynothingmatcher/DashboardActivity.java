@@ -7,8 +7,10 @@ import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
 import android.view.KeyEvent;
 import android.view.MenuItem;
+import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -37,6 +39,14 @@ public class DashboardActivity extends AppCompatActivity {
 //                    submitButton.performClick();
                 }
                 return false;
+            }
+        });
+
+
+        ImageView swipeImage = findViewById(R.id.itemSwipeImage);
+        swipeImage.setOnClickListener(new onClickListener() {
+            public void onClick(View v) {
+                openIndividualItemforSwiping();
             }
         });
 
@@ -70,6 +80,11 @@ public class DashboardActivity extends AppCompatActivity {
 
     private void openMyItemsPage() {
         Intent intent = new Intent(this, MyItemsActivity.class);
+        startActivity(intent);
+    }
+
+    private void openIndividualItemforSwiping() {
+        Intent intent = new Intent(this, IndividualItemForSwipingActivity.class);
         startActivity(intent);
     }
     private void openSearchResultsActivity() {
