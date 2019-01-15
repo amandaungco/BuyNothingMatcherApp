@@ -4,15 +4,13 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.TextView;
 
-import java.util.HashMap;
-
-public class ShowIndividualItemActivity extends AppCompatActivity {
+public class ShowIndividualUsersItemActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setContentView(R.layout.activity_show_individual_item);
+        setContentView(R.layout.activity_show_individual_users_item);
         String title = getIntent().getExtras().getString("ItemTitle");
         String category = getIntent().getExtras().getString("ItemCategory");
         String type = getIntent().getExtras().getString("ItemType");

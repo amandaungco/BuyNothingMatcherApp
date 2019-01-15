@@ -6,19 +6,36 @@
     android:layout_height="match_parent"
     tools:context=".SearchResultsActivity">
 
+    <EditText
+        android:id="@+id/searchBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:hint="What're you looking for?"
+        android:imeOptions="actionDone"
+        android:inputType="text"
+        android:padding="20dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <TextView
         android:id="@+id/searchResultsHeader"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="15dp"
+        android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:text="TextView"
         android:textColor="@color/colorPrimaryDark"
         android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/searchBar" />
 
     <Switch
         android:id="@+id/requestOrOffer"
@@ -26,7 +43,7 @@
         android:layout_height="45dp"
         android:layout_centerInParent="true"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="44dp"
         android:layout_marginEnd="8dp"
         android:backgroundTint="@color/colorPrimary"
         android:checked="true"

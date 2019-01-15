@@ -1,25 +1,21 @@
 package com.example.amandaungco.buynothingmatcher;
 
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
-import android.support.v7.widget.CardView;
 import android.view.KeyEvent;
 import android.view.MenuItem;
-import android.view.View;
 import android.view.inputmethod.EditorInfo;
-import android.widget.Button;
 import android.widget.EditText;
-import android.widget.GridLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 public class DashboardActivity extends AppCompatActivity {
 
     EditText searchEditText;
-    Button submitButton;
+
     String query;
 
     @Override

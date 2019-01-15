@@ -18,7 +18,7 @@
         </activity>
         <activity android:name=".MyItemsActivity" />
         <activity android:name=".AddItemActivity" />
-        <activity android:name=".ShowIndividualItemActivity" />
+        <activity android:name=".ShowIndividualUsersItemActivity" />
         <activity android:name=".FireBaseSignInActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

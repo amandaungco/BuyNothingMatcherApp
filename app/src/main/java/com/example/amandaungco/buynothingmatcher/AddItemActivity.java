@@ -37,7 +37,7 @@ public class AddItemActivity extends AppCompatActivity {
         quantitySpinner = findViewById(R.id.ItemQuantity);
         itemTitleField = findViewById(R.id.EditTextItemTitle);
         commentField = findViewById(R.id.EditTextComment);
-        commentField.setText("THis is where a placeholder is");
+        commentField.setText("Enter a comment or item description");
         requestOrOffer =  findViewById(R.id.requestOrOffer);
 
         requestOrOffer.setTextOn("Offer"); // displayed text of the Switch whenever it is in checked or on state
@@ -105,7 +105,7 @@ public class AddItemActivity extends AppCompatActivity {
     }
 
     private void openIndividualUserItemShowPage(HashMap<String, String> newItemAttributesToValues) {
-        Intent intent = new Intent(this, ShowIndividualItemActivity.class);
+        Intent intent = new Intent(this, ShowIndividualUsersItemActivity.class);
         intent.putExtra("ItemTitle", newItemAttributesToValues.get("title"));
         intent.putExtra("ItemCategory", newItemAttributesToValues.get("category"));
         intent.putExtra("ItemType", newItemAttributesToValues.get("type"));
