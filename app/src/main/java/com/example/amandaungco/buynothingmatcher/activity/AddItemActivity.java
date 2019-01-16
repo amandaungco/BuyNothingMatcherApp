@@ -1,4 +1,4 @@
-package com.example.amandaungco.buynothingmatcher;
+package com.example.amandaungco.buynothingmatcher.activity;
 
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
@@ -10,6 +10,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Switch;
+
+import com.example.amandaungco.buynothingmatcher.Category;
+import com.example.amandaungco.buynothingmatcher.R;
 
 import java.util.HashMap;
 

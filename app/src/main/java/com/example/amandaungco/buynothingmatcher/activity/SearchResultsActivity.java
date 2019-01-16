@@ -1,4 +1,4 @@
-package com.example.amandaungco.buynothingmatcher;
+package com.example.amandaungco.buynothingmatcher.activity;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -6,6 +6,8 @@ import android.view.KeyEvent;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.TextView;
+
+import com.example.amandaungco.buynothingmatcher.R;
 
 public class SearchResultsActivity extends AppCompatActivity {
 

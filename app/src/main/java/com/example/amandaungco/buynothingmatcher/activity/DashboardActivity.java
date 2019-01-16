@@ -1,4 +1,4 @@
-package com.example.amandaungco.buynothingmatcher;
+package com.example.amandaungco.buynothingmatcher.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -10,9 +10,10 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.example.amandaungco.buynothingmatcher.R;
 
 public class DashboardActivity extends AppCompatActivity {
 

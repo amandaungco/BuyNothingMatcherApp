@@ -8,7 +8,7 @@
     android:backgroundTint="@android:color/background_light"
     android:orientation="vertical"
     android:weightSum="10"
-    tools:context="com.example.amandaungco.buynothingmatcher.DashboardActivity">
+    tools:context="com.example.amandaungco.buynothingmatcher.activity.DashboardActivity">
 
     <RelativeLayout
         android:layout_width="match_parent"

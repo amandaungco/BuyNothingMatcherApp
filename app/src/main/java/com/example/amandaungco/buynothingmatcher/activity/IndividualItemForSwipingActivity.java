@@ -1,35 +1,40 @@
-package com.example.amandaungco.buynothingmatcher;
+package com.example.amandaungco.buynothingmatcher.activity;
 
 import android.content.Intent;
-import android.support.annotation.NonNull;
-import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
-import android.widget.Toast;
 
-public class ShowIndividualUsersItemActivity extends AppCompatActivity {
+import com.example.amandaungco.buynothingmatcher.R;
+
+public class IndividualItemForSwipingActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_individual_item_for_swiping);
 
-        setContentView(R.layout.activity_show_individual_users_item);
-        String title = getIntent().getExtras().getString("ItemTitle");
-        String category = getIntent().getExtras().getString("ItemCategory");
-        String type = getIntent().getExtras().getString("ItemType");
-        String description = getIntent().getExtras().getString("ItemDescription");
-        String quantity = getIntent().getExtras().getString("ItemQuantity");
+//        String title = getIntent().getExtras().getString("ItemTitle");
+//        String category = getIntent().getExtras().getString("ItemCategory");
+//        String type = getIntent().getExtras().getString("ItemType");
+//        String description = getIntent().getExtras().getString("ItemDescription");
+//        String quantity = getIntent().getExtras().getString("ItemQuantity");
+
+        String title = "Item Title";
+        String category = "Item Category";
+        String type = "Item Type";
+        String description = "Item Description";
+        String quantity = "Item Quantity";
+        FloatingActionButton dashboardButton;
+
 
         TextView itemTitleView;
         TextView itemQuantityView;
         TextView itemCategoryView;
         TextView itemDescriptionView;
         TextView matchesHeaderView;
-        FloatingActionButton dashboardButton;
 
         String itemHeader = type + " : " + title;
         String itemQuantity = "Quantity: " + quantity;
@@ -49,9 +54,6 @@ public class ShowIndividualUsersItemActivity extends AppCompatActivity {
         itemDescriptionView = findViewById(R.id.itemDescription);
         itemDescriptionView.setText(itemDescription);
 
-        matchesHeaderView = findViewById(R.id.matchesHeader);
-        matchesHeaderView.setText(itemMatches);
-
         dashboardButton = findViewById(R.id.dashboardButton);
 
         dashboardButton.setOnClickListener(new View.OnClickListener() {
@@ -60,6 +62,7 @@ public class ShowIndividualUsersItemActivity extends AppCompatActivity {
                 openDashboardPage();
             }
         });
+
 
     }
 
