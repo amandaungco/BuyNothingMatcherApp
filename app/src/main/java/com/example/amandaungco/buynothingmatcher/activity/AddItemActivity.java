@@ -11,7 +11,7 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Switch;
 
-import com.example.amandaungco.buynothingmatcher.Category;
+import com.example.amandaungco.buynothingmatcher.model.Category;
 import com.example.amandaungco.buynothingmatcher.R;
 
 import java.util.HashMap;

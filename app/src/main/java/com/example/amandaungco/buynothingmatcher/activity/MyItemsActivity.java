@@ -16,7 +16,10 @@ import android.widget.Button;
 import android.widget.GridLayout;
 import android.widget.TextView;
 
+import com.android.volley.RequestQueue;
+import com.android.volley.toolbox.Volley;
 import com.example.amandaungco.buynothingmatcher.R;
+import com.example.amandaungco.buynothingmatcher.model.AppState;
 
 
 public class MyItemsActivity extends AppCompatActivity {
@@ -52,6 +55,10 @@ public class MyItemsActivity extends AppCompatActivity {
             }
         });
 
+
+//        getRequestMyItems();
+
+
         myItemsGridLayout = findViewById(R.id.gridItemsLayout);
 
         // Layout inflater
@@ -71,6 +78,29 @@ public class MyItemsActivity extends AppCompatActivity {
 
 
     }
+
+//    private void getRequestMyItems() {
+//        RequestQueue queue = Volley.newRequestQueue(this);
+//        String url = "localhost:8080/";
+            int userId = AppState.INSTANCE.getCurrentUser().getUserId();
+//
+//        // https://developer.android.com/training/volley/requestqueue#singleton
+//        StringRequest strReq = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
+//            @Override
+//            public void onResponse(String response) {
+//                textView.setText("Response is: " + response.substring(0, 500));
+//            }
+//        }, new Response.ErrorListener() {
+//            @Override
+//            public void onErrorResponse(VolleyError error) {
+//                textView.setText(error.getMessage());
+//            }
+//        });
+//        queue.add(strReq);
+//
+//        gridView.setAdapter(new FooAdapter(this, new ArrayList<String>() {{ add("Hello!"); add("World!"); }}));
+//    }
+
 
     private void openAddNewItemPage() {
         Intent intent = new Intent(this, AddItemActivity.class);
@@ -123,6 +153,8 @@ public class MyItemsActivity extends AppCompatActivity {
         myItemsGridLayout.addView(itemCardView);
 
     }
+
+
 
 
 

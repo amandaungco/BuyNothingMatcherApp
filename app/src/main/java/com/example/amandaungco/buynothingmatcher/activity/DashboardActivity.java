@@ -14,6 +14,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.amandaungco.buynothingmatcher.R;
+import com.firebase.ui.auth.AuthUI;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 public class DashboardActivity extends AppCompatActivity {
 
@@ -60,8 +65,8 @@ public class DashboardActivity extends AppCompatActivity {
             public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
                 switch (menuItem.getItemId()) {
                     case R.id.navigation_account:
-                        Toast.makeText(DashboardActivity.this, "Clicked" + menuItem,
-                                Toast.LENGTH_SHORT).show();
+                        FirebaseAuth.getInstance().signOut();
+                        openSignInPage();
                         break;
                     case R.id.navigation_myitems:
                         openMyItemsPage();
@@ -95,6 +100,10 @@ public class DashboardActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
+    private void openSignInPage() {
+        Intent intent = new Intent(this, FireBaseSignInActivity.class);
+        startActivity(intent);
+    }
 
 
 }

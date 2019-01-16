@@ -1,4 +1,4 @@
-package com.example.amandaungco.buynothingmatcher;
+package com.example.amandaungco.buynothingmatcher.model;
 
 public enum Category {
     FURNITURE("Furniture"),
@@ -16,7 +16,8 @@ public enum Category {
     HEALTH("Health"),
     ARTSCRAFTS("Arts And Crafts"),
     TICKETS("Tickets and Entertainment"),
-    MISC("Miscellaneous");
+    MISC("Miscellaneous"),
+    FOOD("Food");
 
     private String label;
 
