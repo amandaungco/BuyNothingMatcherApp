@@ -41,6 +41,13 @@ public class FireBaseSignInActivity extends AppCompatActivity {
 
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
+        User appUser = new User();
+
+        appUser.setUserId(Integer.parseInt(user.getUid()));
+        appUser.setName(user.getDisplayName());
+        appUser.setEmail(user.getEmail());
+        AppState.INSTANCE.setCurrentUser(appUser);
+
         //check if user is already in database
 //        if (user != null) {
 //

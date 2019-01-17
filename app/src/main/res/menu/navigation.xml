@@ -4,7 +4,7 @@
     <item
         android:id="@+id/navigation_account"
 
-        android:title="Sign Out"/>
+        android:title="My Account"/>
 
     <item
         android:id="@+id/navigation_myitems"

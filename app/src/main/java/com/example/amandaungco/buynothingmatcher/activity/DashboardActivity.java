@@ -14,6 +14,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.amandaungco.buynothingmatcher.R;
+import com.example.amandaungco.buynothingmatcher.model.AppState;
+import com.example.amandaungco.buynothingmatcher.model.User;
 import com.firebase.ui.auth.AuthUI;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -31,6 +33,13 @@ public class DashboardActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dashboard);
 
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        User currentUser = new User();
+
+        currentUser.setName(user.getDisplayName());
+
+
+        AppState.INSTANCE.setCurrentUser(currentUser);
 
         searchEditText = findViewById(R.id.searchBar);
 //        submitButton = findViewById(R.id.submitSearchButton);
@@ -65,8 +74,8 @@ public class DashboardActivity extends AppCompatActivity {
             public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
                 switch (menuItem.getItemId()) {
                     case R.id.navigation_account:
-                        FirebaseAuth.getInstance().signOut();
-                        openSignInPage();
+                        openMyAccountPage();
+
                         break;
                     case R.id.navigation_myitems:
                         openMyItemsPage();
@@ -90,6 +99,11 @@ public class DashboardActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
+    private void openMyAccountPage() {
+        Intent intent = new Intent(this, MyAccountActivity.class);
+        startActivity(intent);
+    }
+
     public void openIndividualItemforSwiping(View view) {
         Intent intent = new Intent(this, IndividualItemForSwipingActivity.class);
         startActivity(intent);
@@ -100,10 +114,7 @@ public class DashboardActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    private void openSignInPage() {
-        Intent intent = new Intent(this, FireBaseSignInActivity.class);
-        startActivity(intent);
-    }
+
 
 
 }

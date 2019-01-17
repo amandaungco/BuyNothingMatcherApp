@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/white"
+    android:orientation="vertical"
+    android:weightSum="10"
+    android:padding="10dp"
+    tools:context="com.example.amandaungco.buynothingmatcher.activity.MyItemsActivity">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="2"
+        android:padding="15dp">
+
+        <Button
+            android:id="@+id/signout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginStart="0dp"
+            android:layout_marginEnd="0dp"
+            android:layout_marginBottom="33dp"
+            android:background="@color/design_default_color_primary"
+            android:clickable="true"
+            android:text="Sign Out" />
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="303dp"
+            android:layout_height="98dp"
+            android:layout_above="@+id/myAccountTitle"
+            android:layout_alignParentTop="false"
+            android:layout_alignParentEnd="false"
+            android:layout_marginTop="80dp"
+            android:layout_marginEnd="30dp"
+            android:layout_marginBottom="-42dp"
+            android:text="My Account"
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="36sp" />
+
+        <com.google.android.gms.maps.MapView
+            android:id="@+id/mapView"
+            android:layout_width="match_parent"
+            android:layout_height="284dp"
+            android:layout_above="@+id/signout"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginStart="0dp"
+            android:layout_marginEnd="0dp"
+            android:layout_marginBottom="16dp" />
+
+        <TextView
+            android:id="@+id/myAccountTitle"
+            android:layout_width="206dp"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/myAccountEmail"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginStart="14dp"
+            android:layout_marginTop="50dp"
+            android:layout_marginEnd="168dp"
+            android:layout_marginBottom="14dp"
+            android:text="User Name"
+            android:textColor="#000"
+            android:textSize="34sp" />
+
+        <TextView
+            android:id="@+id/myAccountEmail"
+            android:layout_width="352dp"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/myLocation"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginStart="13dp"
+            android:layout_marginEnd="27dp"
+            android:layout_marginBottom="7dp"
+            android:text="User Email"
+            android:textColor="#000"
+            android:textSize="34sp" />
+
+        <TextView
+            android:id="@+id/myLocation"
+            android:layout_width="234dp"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/mapView"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginStart="9dp"
+            android:layout_marginEnd="149dp"
+            android:layout_marginBottom="6dp"
+            android:text="Set Location:"
+            android:textColor="#000"
+            android:textSize="34sp" />
+
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/dashboardButton"
+            android:layout_width="80dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginStart="0dp"
+            android:layout_marginTop="0dp"
+            android:clickable="true"
+            app:backgroundTint="@color/colorPrimary"
+            tools:srcCompat="@mipmap/ic_launcher" />
+
+        <!--<android.support.design.widget.FloatingActionButton-->
+        <!--app:srcCompat="@color/colorAccent"-->
+        <!--tools:srcCompat="@android:drawable/ic_menu_add" -->
+        <!--android:id="@+id/dashboardButton"-->
+        <!--android:text="Home"-->
+        <!--android:background="@color/colorPrimaryDark"/>-->
+
+    </RelativeLayout>
+
+
+</LinearLayout>
