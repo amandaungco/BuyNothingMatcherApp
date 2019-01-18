@@ -1,6 +1,8 @@
 package com.example.amandaungco.buynothingmatcher.activity;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -10,9 +12,23 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Switch;
+import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
+import com.example.amandaungco.buynothingmatcher.model.AppState;
 import com.example.amandaungco.buynothingmatcher.model.Category;
 import com.example.amandaungco.buynothingmatcher.R;
+import com.example.amandaungco.buynothingmatcher.model.Item;
+import com.example.amandaungco.buynothingmatcher.model.User;
+import com.google.firebase.auth.FirebaseUser;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.HashMap;
 
@@ -73,12 +89,12 @@ public class AddItemActivity extends AppCompatActivity {
         });
     }
 
-    @Override
-    public void onPointerCaptureChanged(boolean hasCapture) {
+//    @Override
+//    public void onPointerCaptureChanged(boolean hasCapture) {
+//
+//    }
 
-    }
-
-    private HashMap<String, String> createItem() {
+    private Item createItem() {
 
         String itemTitle = itemTitleField.getText().toString();
         String itemCategory = categorySpinner.getSelectedItem().toString();
@@ -86,34 +102,86 @@ public class AddItemActivity extends AppCompatActivity {
         String itemDescription = commentField.getText().toString();
         Boolean isOffer = requestOrOffer.isChecked();
 
-        HashMap<String, String> newItemAttributesToValues = new HashMap<>();
+        Item newItem = new Item();
+        newItem.setCategory(itemCategory);
+//        newItem.setDistance();
+        newItem.setQuantity(Integer.parseInt(itemQuantity));
+        newItem.setStatus("ACTIVE");// create slider for this
+        newItem.setTitle(itemTitle);
+        newItem.setDescription(itemDescription);
 
 
-        newItemAttributesToValues.put("title", itemTitle);
-        newItemAttributesToValues.put("category", itemCategory);
-        newItemAttributesToValues.put("quantity", itemQuantity);
 
-        newItemAttributesToValues.put("description", itemDescription);
         if (isOffer){
-            newItemAttributesToValues.put("type", "Offer");
+           newItem.setType("Offer");
         } else{
-            newItemAttributesToValues.put("type", "Request");
+            newItem.setType("Request");
         }
 
-        Log.i(TAG, newItemAttributesToValues.toString());
 
-        return newItemAttributesToValues;
+        AppState.INSTANCE.setNewItem(newItem);
+        return newItem;
 
 
     }
 
-    private void openIndividualUserItemShowPage(HashMap<String, String> newItemAttributesToValues) {
+    private void postNewItemRequest(Item item) {
+
+        SharedPreferences userIdPrefs = this.getSharedPreferences(getString(R.string.app_name), Context.MODE_PRIVATE);
+
+        RequestQueue itemPostQueue = Volley.newRequestQueue(this);
+//break this into two methods, one to create json from firebase user -- firebasetoJSON
+        try {
+            String baseUrl = "http://10.0.2.2:8080/users/";
+            Long userID;
+            String type;
+            userID =  userIdPrefs.getLong("userId", 0);
+            type = item.getType();
+            String requestURL = baseUrl + userID + "/" + type + "s";
+
+            JSONObject itemRequestDataBody;
+
+            itemRequestDataBody = Item.convertItemToJson(item);
+
+            JsonObjectRequest itemDataPostRequest = new JsonObjectRequest(Request.Method.POST, requestURL, itemRequestDataBody, new Response.Listener<JSONObject>() {
+                @Override
+                public void onResponse(JSONObject response) {
+                    Toast.makeText(getApplicationContext(), "Response:  " + response.toString(), Toast.LENGTH_SHORT).show();
+
+                    try {
+                        addUserDatatoSharedPreferences(User.fromJson(response));
+                        openDashboardPage();
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                        Toast.makeText(getApplicationContext(), "Error:  " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                        Log.e(TAG, e.getMessage());
+                    }
+
+
+                }
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    Toast.makeText(getApplicationContext(), "Error:  " + error.getMessage(), Toast.LENGTH_SHORT).show();
+                    Log.e(TAG, error.getMessage());
+                }
+            });
+            userPostQueue.add(userDataPostRequest);
+        } catch (
+                JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    //Maybe save to app state instead?
+    private void openIndividualUserItemShowPage(Item newItem) {
         Intent intent = new Intent(this, ShowIndividualUsersItemActivity.class);
-        intent.putExtra("ItemTitle", newItemAttributesToValues.get("title"));
-        intent.putExtra("ItemCategory", newItemAttributesToValues.get("category"));
-        intent.putExtra("ItemType", newItemAttributesToValues.get("type"));
-        intent.putExtra("ItemDescription", newItemAttributesToValues.get("description"));
-        intent.putExtra("ItemQuantity", newItemAttributesToValues.get("quantity"));
+        intent.putExtra("ItemTitle", newItem.getTitle());
+        intent.putExtra("ItemCategory", newItem.getCategory());
+        intent.putExtra("ItemType", newItem.getType());
+        intent.putExtra("ItemDescription", newItem.getDescription());
+        intent.putExtra("ItemQuantity", newItem.getQuantity());
         startActivity(intent);
     }
 

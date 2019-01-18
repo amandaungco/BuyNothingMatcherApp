@@ -82,7 +82,7 @@ public class MyItemsActivity extends AppCompatActivity {
 //    private void getRequestMyItems() {
 //        RequestQueue queue = Volley.newRequestQueue(this);
 //        String url = "localhost:8080/";
-            int userId = AppState.INSTANCE.getCurrentUser().getUserId();
+            Long userId = AppState.INSTANCE.getCurrentUser().getUserId();
 //
 //        // https://developer.android.com/training/volley/requestqueue#singleton
 //        StringRequest strReq = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {

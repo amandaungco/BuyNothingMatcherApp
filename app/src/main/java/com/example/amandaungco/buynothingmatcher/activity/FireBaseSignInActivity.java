@@ -1,7 +1,10 @@
 package com.example.amandaungco.buynothingmatcher.activity;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.Toast;
@@ -28,6 +31,8 @@ import java.nio.file.FileVisitResult;
 import java.util.Arrays;
 import java.util.List;
 
+// need to figure out where the already signed in user is checked so i can get that user's info from the API and save it to the sharedpreferences or app state
+
 public class FireBaseSignInActivity extends AppCompatActivity {
 
     private final static String TAG = FireBaseSignInActivity.class.getSimpleName();
@@ -41,18 +46,8 @@ public class FireBaseSignInActivity extends AppCompatActivity {
 
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
-        User appUser = new User();
+        //find user in the API/DB, check emails to see if it exists, if it exists, get request for that users information
 
-        appUser.setUserId(Integer.parseInt(user.getUid()));
-        appUser.setName(user.getDisplayName());
-        appUser.setEmail(user.getEmail());
-        AppState.INSTANCE.setCurrentUser(appUser);
-
-        //check if user is already in database
-//        if (user != null) {
-//
-//            return;
-//        }
 
         List<AuthUI.IdpConfig> providers = Arrays.asList(
                 new AuthUI.IdpConfig.EmailBuilder().build());
@@ -78,7 +73,7 @@ public class FireBaseSignInActivity extends AppCompatActivity {
 
             JSONObject userDataBody = new JSONObject();
 
-//            userDataBody.put("email", user.getEmail()  );
+            userDataBody.put("email", user.getEmail());
             userDataBody.put("name", user.getDisplayName());
 
             JsonObjectRequest userDataPostRequest = new JsonObjectRequest(Request.Method.POST, url, userDataBody, new Response.Listener<JSONObject>() {
@@ -87,10 +82,9 @@ public class FireBaseSignInActivity extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(), "Response:  " + response.toString(), Toast.LENGTH_SHORT).show();
 
                     try {
-                       AppState.INSTANCE.setCurrentUser(User.fromJson(response));
+                        addUserDatatoSharedPreferences(User.fromJson(response));
                         openDashboardPage();
-                    } catch (
-                            JSONException e) {
+                    } catch (JSONException e) {
                         e.printStackTrace();
                         Toast.makeText(getApplicationContext(), "Error:  " + e.getMessage(), Toast.LENGTH_SHORT).show();
                         Log.e(TAG, e.getMessage());
@@ -106,8 +100,7 @@ public class FireBaseSignInActivity extends AppCompatActivity {
                 }
             });
             userPostQueue.add(userDataPostRequest);
-        }
-        catch (
+        } catch (
                 JSONException e) {
             e.printStackTrace();
         }
@@ -123,10 +116,22 @@ public class FireBaseSignInActivity extends AppCompatActivity {
 
     // https://developer.android.com/training/volley/requestqueue#singleton
 
+    public void addUserDatatoSharedPreferences(User currentUserData){
+
+        SharedPreferences userDataPreferences = this.getSharedPreferences(getString(R.string.app_file), Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = userDataPreferences.edit();
+        editor.putLong("userId", currentUserData.getUserId());
+        editor.putString("userName", currentUserData.getName());
+        editor.putString("userEmail", currentUserData.getEmail());
+        editor.putString("userLocation", currentUserData.getLocation());
+        editor.apply();
+
+    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+
 
         if (requestCode == RC_SIGN_IN) {
             IdpResponse response = IdpResponse.fromResultIntent(data);
@@ -135,6 +140,8 @@ public class FireBaseSignInActivity extends AppCompatActivity {
             if (resultCode == RESULT_OK) {
                 // Successfully signed in
                 FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+
+//                addUserDatatoSharedPreferences();
                 postNewUserRequest(user);
 //                openDashboardPage();
                 //make api post request to add new user
@@ -166,7 +173,7 @@ public class FireBaseSignInActivity extends AppCompatActivity {
     }
 }
 
-//
+
 
 
 

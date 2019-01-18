@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Buy Nothing Matcher</string>
+    <string name="app_file">SHARED_DATA</string>
 </resources>

@@ -34,12 +34,20 @@ public class DashboardActivity extends AppCompatActivity {
         setContentView(R.layout.activity_dashboard);
 
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        User currentUser = new User();
+        System.out.println(user);
+        Toast.makeText(DashboardActivity.this, "USER" + user, Toast.LENGTH_SHORT).show();
 
-        currentUser.setName(user.getDisplayName());
+//        User currentUser = new User();
+//
+//
+//        if (user!= null)   {
+//        Toast.makeText(DashboardActivity.this, "USER IS NOT NULL!", Toast.LENGTH_SHORT).show();}
+//          currentUser.setName(user.getDisplayName());
+//          currentUser.setEmail(user.getEmail());
+//
+//          AppState.INSTANCE.setCurrentUser(currentUser);
 
 
-        AppState.INSTANCE.setCurrentUser(currentUser);
 
         searchEditText = findViewById(R.id.searchBar);
 //        submitButton = findViewById(R.id.submitSearchButton);

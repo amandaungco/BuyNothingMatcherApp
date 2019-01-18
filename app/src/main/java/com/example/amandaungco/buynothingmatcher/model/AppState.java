@@ -7,7 +7,16 @@ public class AppState {
 
     final public static AppState INSTANCE = new AppState();
     private User currentUser;
-//
+    private Item newItem;
+
+    public Item getNewItem() {
+        return newItem;
+    }
+
+    public void setNewItem(Item newItem) {
+        this.newItem = newItem;
+    }
+
 //
 //    public FirebaseUser getCurrentUser() {
 //        return currentUser;
