@@ -44,7 +44,6 @@ public class AddItemActivity extends AppCompatActivity {
     Switch requestOrOffer;
 
 
-
     private static final String[] numbers = {"1", "2", "3", "4", "5", "6", "7", "8", "9", "10"};
 
     @Override
@@ -57,7 +56,7 @@ public class AddItemActivity extends AppCompatActivity {
         itemTitleField = findViewById(R.id.EditTextItemTitle);
         commentField = findViewById(R.id.EditTextComment);
         commentField.setText("Enter a comment or item description");
-        requestOrOffer =  findViewById(R.id.requestOrOffer);
+        requestOrOffer = findViewById(R.id.requestOrOffer);
 
         requestOrOffer.setTextOn("Offer"); // displayed text of the Switch whenever it is in checked or on state
         requestOrOffer.setTextOff("Request");
@@ -78,10 +77,11 @@ public class AddItemActivity extends AppCompatActivity {
 
         addItemButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
+                postNewItemRequest(createItem());
 //                creat eItem();// create hashmap with data from form, have data sent to API
                 //with post request, pull up next activtiy and have the activity make the get
                 //request from the API to show new object
-                openIndividualUserItemShowPage(createItem());
+//                openIndividualUserItemShowPage(type);
 
             }
 
@@ -111,10 +111,9 @@ public class AddItemActivity extends AppCompatActivity {
         newItem.setDescription(itemDescription);
 
 
-
-        if (isOffer){
-           newItem.setType("Offer");
-        } else{
+        if (isOffer) {
+            newItem.setType("Offer");
+        } else {
             newItem.setType("Request");
         }
 
@@ -125,63 +124,65 @@ public class AddItemActivity extends AppCompatActivity {
 
     }
 
-//    private void postNewItemRequest(Item item) {
+    private void postNewItemRequest(Item item) {
+
+
+        RequestQueue itemPostQueue = Volley.newRequestQueue(this);
+//break this into two methods, one to create json from firebase user -- firebasetoJSON
+        try {
+            String baseUrl = "http://10.0.2.2:8080/users/";
+            Long userID;
+            final String type;
+            userID = AppState.INSTANCE.getCurrentUser().getUserId();
+            type = item.getType().toLowerCase();
+            AppState.INSTANCE.getNewItem().setType(type);
+            String requestURL = baseUrl + userID + "/" + type + "s";
+
+            JSONObject itemRequestDataBody;
+
+            itemRequestDataBody = Item.convertItemToJson(item);
+//            itemRequestDataBody.put("type", type);
+
+            JsonObjectRequest itemDataPostRequest = new JsonObjectRequest(Request.Method.POST, requestURL, itemRequestDataBody, new Response.Listener<JSONObject>() {
+                @Override
+                public void onResponse(JSONObject response) {
+
+                    try {
+                        AppState.INSTANCE.setNewItem(Item.convertJSONtoItem(response));
+                        openIndividualUserItemShowPage(type);
 //
-//        SharedPreferences userIdPrefs = this.getSharedPreferences(getString(R.string.app_name), Context.MODE_PRIVATE);
-//
-//        RequestQueue itemPostQueue = Volley.newRequestQueue(this);
-////break this into two methods, one to create json from firebase user -- firebasetoJSON
-//        try {
-//            String baseUrl = "http://10.0.2.2:8080/users/";
-//            Long userID;
-//            String type;
-//            userID =  userIdPrefs.getLong("userId", 0);
-//            type = item.getType();
-//            String requestURL = baseUrl + userID + "/" + type + "s";
-//
-//            JSONObject itemRequestDataBody;
-//
-//            itemRequestDataBody = Item.convertItemToJson(item);
-//
-//            JsonObjectRequest itemDataPostRequest = new JsonObjectRequest(Request.Method.POST, requestURL, itemRequestDataBody, new Response.Listener<JSONObject>() {
-//                @Override
-//                public void onResponse(JSONObject response) {
-//                    Toast.makeText(getApplicationContext(), "Response:  " + response.toString(), Toast.LENGTH_SHORT).show();
-//
-//                    try {
-////                        addUserDatatoSharedPreferences(User.fromJson(response));
-////                        openDashboardPage();
-//                    } catch (JSONException e) {
-//                        e.printStackTrace();
-//                        Toast.makeText(getApplicationContext(), "Error:  " + e.getMessage(), Toast.LENGTH_SHORT).show();
-//                        Log.e(TAG, e.getMessage());
-//                    }
-//
-//
-//                }
-//            }, new Response.ErrorListener() {
-//                @Override
-//                public void onErrorResponse(VolleyError error) {
-//                    Toast.makeText(getApplicationContext(), "Error:  " + error.getMessage(), Toast.LENGTH_SHORT).show();
-//                    Log.e(TAG, error.getMessage());
-//                }
-//            });
-//            userPostQueue.add(userDataPostRequest);
-//        } catch (
-//                JSONException e) {
-//            e.printStackTrace();
-//        }
-//    }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                        Toast.makeText(getApplicationContext(), "Error:  " + e.getMessage(), Toast.LENGTH_SHORT).show();
+
+                    }
+
+
+                }
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    if (error !=null) {
+                        Toast.makeText(getApplicationContext(), "Error:  " + error.getMessage(), Toast.LENGTH_SHORT).show();
+                        error.printStackTrace();
+                    }
+                }
+            });
+            itemPostQueue.add(itemDataPostRequest);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
 
 
     //Maybe save to app state instead?
-    private void openIndividualUserItemShowPage(Item newItem) {
+    private void openIndividualUserItemShowPage(String type) {
         Intent intent = new Intent(this, ShowIndividualUsersItemActivity.class);
-        intent.putExtra("ItemTitle", newItem.getTitle());
-        intent.putExtra("ItemCategory", newItem.getCategory());
-        intent.putExtra("ItemType", newItem.getType());
-        intent.putExtra("ItemDescription", newItem.getDescription());
-        intent.putExtra("ItemQuantity", newItem.getQuantity());
+        intent.putExtra("type", type);
+//        intent.putExtra("ItemCategory", newItem.getCategory());
+//        intent.putExtra("ItemType", newItem.getType());
+//        intent.putExtra("ItemDescription", newItem.getDescription());
+//        intent.putExtra("ItemQuantity", newItem.getQuantity());
         startActivity(intent);
     }
 

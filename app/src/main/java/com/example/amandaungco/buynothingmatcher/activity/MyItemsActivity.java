@@ -15,11 +15,20 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.GridLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.android.volley.Request;
 import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.amandaungco.buynothingmatcher.R;
 import com.example.amandaungco.buynothingmatcher.model.AppState;
+import com.example.amandaungco.buynothingmatcher.model.Item;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 
 public class MyItemsActivity extends AppCompatActivity {
@@ -79,27 +88,57 @@ public class MyItemsActivity extends AppCompatActivity {
 
     }
 
-//    private void getRequestMyItems() {
-//        RequestQueue queue = Volley.newRequestQueue(this);
-//        String url = "localhost:8080/";
-            Long userId = AppState.INSTANCE.getCurrentUser().getUserId();
+    private void getUserItemsRequest() {
+
+
+        RequestQueue getItemsRequestQueue = Volley.newRequestQueue(this);
+
+
+        try {
+            String baseUrl = "http://10.0.2.2:8080/users/";
+            Long userID;
+            final String type;
+            userID = AppState.INSTANCE.getCurrentUser().getUserId();
+            type = item.getType().toLowerCase();
+            AppState.INSTANCE.getNewItem().setType(type);
+            String requestURL = baseUrl + userID + "/" + type + "s";
+
+            JSONObject itemRequestDataBody;
+
+            itemRequestDataBody = Item.convertItemToJson(item);
+//            itemRequestDataBody.put("type", type);
+
+            JsonObjectRequest itemDataPostRequest = new JsonObjectRequest(Request.Method.POST, requestURL, itemRequestDataBody, new Response.Listener<JSONObject>() {
+                @Override
+                public void onResponse(JSONObject response) {
+
+                    try {
+                        AppState.INSTANCE.setNewItem(Item.convertJSONtoItem(response));
+                        openIndividualUserItemShowPage(type);
 //
-//        // https://developer.android.com/training/volley/requestqueue#singleton
-//        StringRequest strReq = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
-//            @Override
-//            public void onResponse(String response) {
-//                textView.setText("Response is: " + response.substring(0, 500));
-//            }
-//        }, new Response.ErrorListener() {
-//            @Override
-//            public void onErrorResponse(VolleyError error) {
-//                textView.setText(error.getMessage());
-//            }
-//        });
-//        queue.add(strReq);
-//
-//        gridView.setAdapter(new FooAdapter(this, new ArrayList<String>() {{ add("Hello!"); add("World!"); }}));
-//    }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                        Toast.makeText(getApplicationContext(), "Error:  " + e.getMessage(), Toast.LENGTH_SHORT).show();
+
+                    }
+
+
+                }
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    if (error !=null) {
+                        Toast.makeText(getApplicationContext(), "Error:  " + error.getMessage(), Toast.LENGTH_SHORT).show();
+                        error.printStackTrace();
+                    }
+                }
+            });
+            itemPostQueue.add(itemDataPostRequest);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
 
 
     private void openAddNewItemPage() {

@@ -122,19 +122,19 @@ public class Item {
 //        }
     }
 
-//    public static Item convertJSONtoItem(JSONObject itemJSONData) throws JSONException { //throws json
-//        Item newItem = new Item();
-//
-//        newItem.setDescription(itemJSONData.getString("description"));
-////        newItem.setType(itemJSONData.getString("location"));
-//        newItem.setItemId(itemJSONData.getInt("id"));
-//        newItem.setCategory(itemJSONData.getString("category"));
-//        newItem.setTitle(itemJSONData.getString("title"));
-//        newItem.setQuantity(itemJSONData.getInt("quantity"));
-//        newItem.setMatches(Match.makeMatchesFromJSON(itemJSONData.getJSONArray("matches")));
-//
-//        return newItem;
-//
-//
-//    }
+    public static Item convertJSONtoItem(JSONObject itemJSONData) throws JSONException { //throws json
+        Item newItem = new Item();
+
+        newItem.setDescription(itemJSONData.getString("description"));
+//        newItem.setType(itemJSONData.getString("type"));
+        newItem.setItemId(itemJSONData.getInt("id"));
+        newItem.setCategory(itemJSONData.getString("category"));
+        newItem.setTitle(itemJSONData.getString("title"));
+        newItem.setQuantity(itemJSONData.getInt("quantity"));
+        newItem.setMatches(Match.makeItemMatchesFromJSON(itemJSONData.getJSONArray("matches")));
+
+        return newItem;
+
+
+    }
 }

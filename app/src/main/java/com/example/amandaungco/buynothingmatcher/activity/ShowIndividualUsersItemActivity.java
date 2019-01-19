@@ -10,6 +10,13 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.amandaungco.buynothingmatcher.R;
+import com.example.amandaungco.buynothingmatcher.model.AppState;
+import com.example.amandaungco.buynothingmatcher.model.Item;
+import com.example.amandaungco.buynothingmatcher.model.Match;
+
+import org.json.JSONObject;
+
+import java.util.ArrayList;
 
 public class ShowIndividualUsersItemActivity extends AppCompatActivity {
 
@@ -17,12 +24,17 @@ public class ShowIndividualUsersItemActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        Intent intent = getIntent();
+
+
         setContentView(R.layout.activity_show_individual_users_item);
-        String title = getIntent().getExtras().getString("ItemTitle");
-        String category = getIntent().getExtras().getString("ItemCategory");
-        String type = getIntent().getExtras().getString("ItemType");
-        String description = getIntent().getExtras().getString("ItemDescription");
-        String quantity = getIntent().getExtras().getString("ItemQuantity");
+        Item newUserItem = AppState.INSTANCE.getNewItem();
+        String title = newUserItem.getTitle();
+        String category = newUserItem.getCategory();
+        String type = intent.getStringExtra("type");
+        String description = newUserItem.getDescription();
+        ArrayList<Match> userItemMatches = AppState.INSTANCE.getNewItem().getMatches();
+        int quantity = newUserItem.getQuantity();
 
         TextView itemTitleView;
         TextView itemQuantityView;
@@ -31,7 +43,7 @@ public class ShowIndividualUsersItemActivity extends AppCompatActivity {
         TextView matchesHeaderView;
         FloatingActionButton dashboardButton;
 
-        String itemHeader = type + " : " + title;
+        String itemHeader = type.toUpperCase() + " : " + title;
         String itemQuantity = "Quantity: " + quantity;
         String itemCategory = "Category: " + category;
         String itemDescription = "Description: " + description;
@@ -48,6 +60,9 @@ public class ShowIndividualUsersItemActivity extends AppCompatActivity {
         itemTitleView = findViewById(R.id.itemTitle);
         itemTitleView.setText(itemHeader);
 
+        matchesHeaderView = findViewById(R.id.matchesHeader);
+        matchesHeaderView.setText(null);
+
         itemQuantityView = findViewById(R.id.ItemQuantity);
         itemQuantityView.setText(itemQuantity);
 
@@ -57,25 +72,28 @@ public class ShowIndividualUsersItemActivity extends AppCompatActivity {
         itemDescriptionView = findViewById(R.id.itemDescription);
         itemDescriptionView.setText(itemDescription);
 
-        matchesHeaderView = findViewById(R.id.matchesHeader);
-        matchesHeaderView.setText(itemMatches);
-
-
         LinearLayout matchesLayout = findViewById(R.id.matchesLayout);
 
         // Layout inflater
         LayoutInflater layoutInflater = getLayoutInflater();
         View matchview;
 
-        for (int i = 1; i < 10; i++){
-            matchview = layoutInflater.inflate(R.layout.text_layout, matchesLayout, false);
 
-            // In order to get the view we have to use the new view with text_layout in it
-            TextView matchInfo = new TextView(this);
-            matchInfo.setText("Match " + i);
+        if (userItemMatches.size() > 0 ) {
+            matchesHeaderView.setText(itemMatches);
 
-            // Add the text view to the parent layout
-            matchesLayout.addView(matchInfo);
+            for (int i = 0; i < userItemMatches.size(); i++) {
+
+                Match singleUserItemMatch = userItemMatches.get(i);
+                matchview = layoutInflater.inflate(R.layout.text_layout, matchesLayout, false);
+
+                // In order to get the view we have to use the new view with text_layout in it
+                TextView matchInfo = new TextView(this);
+                matchInfo.setText("Match " + singleUserItemMatch.getMatchId() + " : " + newUserItem.getTitle());
+
+                // Add the text view to the parent layout
+                matchesLayout.addView(matchInfo);
+            }
         }
 
 

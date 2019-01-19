@@ -70,15 +70,15 @@ public class Match {
 
         itemMatch.setDistance(dataForMatchFromJSON.getString("distance"));
         itemMatch.setMatchId(dataForMatchFromJSON.getInt("id"));
-        itemMatch.setRequestId(dataForMatchFromJSON.getInt("request_id"));
-        itemMatch.setOfferId(dataForMatchFromJSON.getInt("offer_id"));
+//        itemMatch.setRequestId(dataForMatchFromJSON.getInt("request_id"));
+//        itemMatch.setOfferId(dataForMatchFromJSON.getInt("offer_id"));
         itemMatch.setStatus(dataForMatchFromJSON.getString("status"));
-        itemMatch.setRequestId(dataForMatchFromJSON.getInt("request_id"));
+
 
         return itemMatch;
     };
 
-    public static ArrayList<Match> itemMatches(JSONArray jsonMatches) throws JSONException {
+    public static ArrayList<Match> makeItemMatchesFromJSON(JSONArray jsonMatches) throws JSONException {
         ArrayList <Match> matches = new ArrayList<>();
 
         for (int i = 0 ; i < jsonMatches.length(); i++) {
