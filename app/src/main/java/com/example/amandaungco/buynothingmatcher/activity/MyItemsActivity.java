@@ -34,6 +34,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 
@@ -54,6 +55,8 @@ public class MyItemsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_items);
+
+        getUserItemsRequest();
 
         addItemButton = findViewById(R.id.AddNewItemButton);
         addItemButton.setOnClickListener(new View.OnClickListener() {
@@ -79,27 +82,25 @@ public class MyItemsActivity extends AppCompatActivity {
 
         requestOrOffer.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             public void onCheckedChanged(CompoundButton buttonView, boolean isOffer) {
-                String type;
-                if (isOffer) {
-                    type = "offers";
-                } else {
-                    type = "requests";
-                }
-                getUserItemsRequest(type);
-                populateMyItemsGrid();
+
+                populateMyItemsGrid(isOffer);
                 // do something, the isChecked will be
                 // true if the switch is in the On position
             }
         });
 
-        getUserItemsRequest("offer");
-        populateMyItemsGrid();
+        populateMyItemsGrid(isOffer);
 
     }
 
 
-    private void populateMyItemsGrid() {
-        userItems = AppState.INSTANCE.getUserItems();
+    private void populateMyItemsGrid(Boolean isOffer) {
+        String type;
+        if (isOffer) {
+            userItems = AppState.INSTANCE.getUserOfferItems();
+        } else {
+            userItems = AppState.INSTANCE.getUserRequestItems();
+        }
 
         myItemsGridLayout = findViewById(R.id.gridItemsLayout);
 
@@ -120,17 +121,26 @@ public class MyItemsActivity extends AppCompatActivity {
 
         }
     }
-        private void getUserItemsRequest (String type){
+
+    private void getUserItemsRequest() {
 
 
-            RequestQueue getItemsRequestQueue = Volley.newRequestQueue(this);
+        RequestQueue getItemsRequestQueue = Volley.newRequestQueue(this);
 
 
-            String baseUrl = "http://10.0.2.2:8080/users/";
-            Long userID;
+        String baseUrl = "http://10.0.2.2:8080/users/";
+        Long userID;
 
-            userID = AppState.INSTANCE.getCurrentUser().getUserId();
+        userID = AppState.INSTANCE.getCurrentUser().getUserId();
 //        AppState.INSTANCE.getNewItem().setType(type);
+
+        ArrayList<String> itemTypes = new ArrayList<>();
+        itemTypes.add("offers");
+        itemTypes.add("requests");
+
+
+        for (int i = 0; i < itemTypes.size(); i++) {
+            final String type = itemTypes.get(i);
             String requestURL = baseUrl + userID + "/" + type;
 
             JsonArrayRequest itemDataGetRequest = new JsonArrayRequest(Request.Method.GET, requestURL, null, new Response.Listener<JSONArray>() {
@@ -144,7 +154,11 @@ public class MyItemsActivity extends AppCompatActivity {
                             JSONObject singleJSONItem = response.getJSONObject(i);
                             items.add(Item.convertJSONtoItem(singleJSONItem));
                         }
-                        AppState.INSTANCE.setUserItems(items);
+                        if (type == "offers"){
+                        AppState.INSTANCE.setUserOfferItems(items);
+                        } else{
+                            AppState.INSTANCE.setUserRequestItems(items);
+                        }
 //
                     } catch (JSONException e) {
                         e.printStackTrace();
@@ -162,60 +176,61 @@ public class MyItemsActivity extends AppCompatActivity {
             });
             getItemsRequestQueue.add(itemDataGetRequest);
         }
+    }
 
 
-        private void openAddNewItemPage () {
-            Intent intent = new Intent(this, AddItemActivity.class);
-            startActivity(intent);
-        }
+    private void openAddNewItemPage() {
+        Intent intent = new Intent(this, AddItemActivity.class);
+        startActivity(intent);
+    }
 
-        private void openDashboardPage () {
-            Intent intent = new Intent(this, DashboardActivity.class);
-            startActivity(intent);
-        }
+    private void openDashboardPage() {
+        Intent intent = new Intent(this, DashboardActivity.class);
+        startActivity(intent);
+    }
 
-        private void createCardItem (Item item){
-
-
-            itemCardView = new CardView(context);
-
-            layoutparams = new GridLayout.LayoutParams();
-            layoutparams.height = 200;
-            layoutparams.width = 450;
-            layoutparams.setMargins(25, 25, 25, 25);
-
-            itemCardView.setLayoutParams(layoutparams);
-
-            itemCardView.setRadius(15);
-
-            itemCardView.setPadding(100, 100, 100, 100);
-
-            itemCardView.setCardElevation(8);
-            itemCardView.setCardBackgroundColor(Color.argb(255, 0, 133, 119));
-
-            itemCardTextView = new TextView(context);
-
-            itemCardTextView.setLayoutParams(new ViewGroup.LayoutParams(
-                    ViewGroup.LayoutParams.MATCH_PARENT,
-                    ViewGroup.LayoutParams.MATCH_PARENT));
+    private void createCardItem(Item item) {
 
 
-            itemCardTextView.setText("item" + item.getItemId() + " : " + item.getTitle());
-            itemCardTextView.setGravity(Gravity.CENTER);
-            itemCardTextView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
+        itemCardView = new CardView(context);
 
-            itemCardTextView.setTextColor(Color.WHITE);
+        layoutparams = new GridLayout.LayoutParams();
+        layoutparams.height = 200;
+        layoutparams.width = 450;
+        layoutparams.setMargins(25, 25, 25, 25);
+
+        itemCardView.setLayoutParams(layoutparams);
+
+        itemCardView.setRadius(15);
+
+        itemCardView.setPadding(100, 100, 100, 100);
+
+        itemCardView.setCardElevation(8);
+        itemCardView.setCardBackgroundColor(Color.argb(255, 0, 133, 119));
+
+        itemCardTextView = new TextView(context);
+
+        itemCardTextView.setLayoutParams(new ViewGroup.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.MATCH_PARENT));
+
+
+        itemCardTextView.setText("item" + item.getItemId() + " : " + item.getTitle());
+        itemCardTextView.setGravity(Gravity.CENTER);
+        itemCardTextView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
+
+        itemCardTextView.setTextColor(Color.WHITE);
 
 //        itemCardTextView.setPadding(25,25,25,25);
 
-            itemCardTextView.setGravity(Gravity.CENTER);
+        itemCardTextView.setGravity(Gravity.CENTER);
 
-            itemCardView.addView(itemCardTextView);
+        itemCardView.addView(itemCardTextView);
 
-            myItemsGridLayout.addView(itemCardView);
-
-        }
-
+        myItemsGridLayout.addView(itemCardView);
 
     }
+
+
+}
 

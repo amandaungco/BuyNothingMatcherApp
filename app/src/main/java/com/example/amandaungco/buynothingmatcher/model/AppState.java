@@ -10,15 +10,24 @@ public class AppState {
     final public static AppState INSTANCE = new AppState();
     private User currentUser;
     private Item newItem;
-    private ArrayList <Item> userItems;
+    private ArrayList <Item> userOfferItems;
+    private ArrayList <Item> userRequestItems;
 
 
-    public ArrayList<Item> getUserItems() {
-        return userItems;
+    public ArrayList<Item> getUserOfferItems() {
+        return userOfferItems;
     }
 
-    public void setUserItems(ArrayList<Item> userItems) {
-        this.userItems = userItems;
+    public void setUserOfferItems(ArrayList<Item> userOfferItems) {
+        this.userOfferItems = userOfferItems;
+    }
+
+    public ArrayList<Item> getUserRequestItems() {
+        return userRequestItems;
+    }
+
+    public void setUserRequestItems(ArrayList<Item> userRequestItems) {
+        this.userRequestItems = userRequestItems;
     }
 
     public Item getNewItem() {
