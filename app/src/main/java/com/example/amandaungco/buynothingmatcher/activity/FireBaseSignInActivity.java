@@ -1,5 +1,6 @@
 package com.example.amandaungco.buynothingmatcher.activity;
 
+import android.arch.core.util.Function;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -19,6 +20,7 @@ import com.android.volley.toolbox.Volley;
 import com.example.amandaungco.buynothingmatcher.R;
 import com.example.amandaungco.buynothingmatcher.model.AppState;
 import com.example.amandaungco.buynothingmatcher.model.User;
+import com.example.amandaungco.buynothingmatcher.service.UserService;
 import com.firebase.ui.auth.AuthUI;
 import com.firebase.ui.auth.IdpResponse;
 import com.google.firebase.auth.FirebaseAuth;
@@ -46,14 +48,9 @@ public class FireBaseSignInActivity extends AppCompatActivity {
 
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
-        //find user in the API/DB, check emails to see if it exists, if it exists, get request for that users information
-
-
         List<AuthUI.IdpConfig> providers = Arrays.asList(
                 new AuthUI.IdpConfig.EmailBuilder().build());
-//                new AuthUI.IdpConfig.GoogleBuilder().build());
 //
-
 // Create and launch sign-in intent
         startActivityForResult(
                 AuthUI.getInstance()
@@ -82,7 +79,7 @@ public class FireBaseSignInActivity extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(), "Response:  " + response.toString(), Toast.LENGTH_SHORT).show();
 
                     try {
-                        addUserDatatoSharedPreferences(User.fromJson(response));
+                        AppState.INSTANCE.setCurrentUser(User.fromJson(response));
                         openDashboardPage();
                     } catch (JSONException e) {
                         e.printStackTrace();
@@ -105,27 +102,32 @@ public class FireBaseSignInActivity extends AppCompatActivity {
             e.printStackTrace();
         }
     }
-//            @Override
-//            public Map<String, String> getHeaders() throws AuthFailureError {
-//                final Map<String, String> headers = new HashMap<>();
-//                headers.put("Authorization", "Basic " + "c2FnYXJAa2FydHBheS5jb206cnMwM2UxQUp5RnQzNkQ5NDBxbjNmUDgzNVE3STAyNzI=");//put your token here
-//                return headers;
-//            }
-//        };
 
+//    public void addUserDatatoSharedPreferences(User currentUserData){
+//
+//        SharedPreferences userDataPreferences = this.getSharedPreferences(getString(R.string.app_file), Context.MODE_PRIVATE);
+//        SharedPreferences.Editor editor = userDataPreferences.edit();
+//        editor.putLong("userId", currentUserData.getUserId());
+//        editor.putString("userName", currentUserData.getName());
+//        editor.putString("userEmail", currentUserData.getEmail());
+//        editor.putString("userLocation", currentUserData.getLocation());
+//        editor.apply();
+//
+//    }
+//
+     class OnSuccess implements Function<User, Object>{
 
-    // https://developer.android.com/training/volley/requestqueue#singleton
-
-    public void addUserDatatoSharedPreferences(User currentUserData){
-
-        SharedPreferences userDataPreferences = this.getSharedPreferences(getString(R.string.app_file), Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = userDataPreferences.edit();
-        editor.putLong("userId", currentUserData.getUserId());
-        editor.putString("userName", currentUserData.getName());
-        editor.putString("userEmail", currentUserData.getEmail());
-        editor.putString("userLocation", currentUserData.getLocation());
-        editor.apply();
-
+        @Override
+        public Object apply(User input) {
+            if (input == null){
+                FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+                postNewUserRequest(user);
+            } else {
+                AppState.INSTANCE.setCurrentUser(input);
+                openDashboardPage();
+            }
+            return null;
+        }
     }
 
     @Override
@@ -140,6 +142,10 @@ public class FireBaseSignInActivity extends AppCompatActivity {
             if (resultCode == RESULT_OK) {
                 // Successfully signed in
                 FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+                UserService.getUser(user, this, new OnSuccess());
+                //get request based on currentfirebase user
+                    //if user gets returned, save JSONresponse info to app state
+                //if no user is found call post new user request
 
 //                addUserDatatoSharedPreferences();
                 postNewUserRequest(user);
@@ -165,6 +171,7 @@ public class FireBaseSignInActivity extends AppCompatActivity {
 //                    }
 //                });
 //    }
+
 
 
     private void openDashboardPage() {

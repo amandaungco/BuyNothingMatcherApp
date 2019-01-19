@@ -16,6 +16,7 @@ import android.widget.TextView;
 
 import com.example.amandaungco.buynothingmatcher.R;
 import com.example.amandaungco.buynothingmatcher.model.AppState;
+import com.example.amandaungco.buynothingmatcher.model.User;
 import com.google.firebase.auth.FirebaseAuth;
 
 public class MyAccountActivity extends AppCompatActivity {
@@ -68,14 +69,17 @@ public class MyAccountActivity extends AppCompatActivity {
         String userName;
         String accountIdString;
         Long userId;
+        User currentUser;
+
+        currentUser = AppState.INSTANCE.getCurrentUser();
 
 
-        SharedPreferences userIdPrefs = this.getSharedPreferences(getString(R.string.app_name), Context.MODE_PRIVATE);
-        userId = userIdPrefs.getLong("userId", 0);
 
-        userName = userIdPrefs.getString("userName", "default name");
+        userId = currentUser.getUserId();
+
+        userName = currentUser.getName();
         accountTitleString = "Username: " + userName;
-        userEmail = userIdPrefs.getString("userEmail", "this didn't work");
+        userEmail =currentUser.getEmail();
         accountEmailString = "Email: " + userEmail;
         accountIdString = "Account Number: " + userId;
 

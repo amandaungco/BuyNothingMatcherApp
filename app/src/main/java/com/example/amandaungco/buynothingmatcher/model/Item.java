@@ -8,6 +8,8 @@ import com.example.amandaungco.buynothingmatcher.activity.FireBaseSignInActivity
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
+
 import static com.firebase.ui.auth.AuthUI.getApplicationContext;
 
 public class Item {
@@ -21,6 +23,17 @@ public class Item {
     private String status;
     private String type;
     private String description;
+    private ArrayList matches;
+
+    public ArrayList getMatches() {
+        return matches;
+    }
+
+    public void setMatches(ArrayList matches) {
+        this.matches = matches;
+    }
+
+
 
     public String getDescription() {
         return description;
@@ -89,7 +102,7 @@ public class Item {
 
 
 
-    public static JSONObject convertItemToJson(Item itemForJson)  {
+    public static JSONObject convertItemToJson(Item itemForJson) throws JSONException {
 
 //        try {
             JSONObject itemDataBody = new JSONObject();
@@ -109,17 +122,19 @@ public class Item {
 //        }
     }
 
-    public static Item fromJson(JSONObject itemJSONData) throws JSONException { //throws json
-        Item newItem = new Item();
-
-        newItem.setDescription(itemJSONData.getString("description"));
-//        newItem.setType(itemJSONData.getString("location"));
-        newItem.setItemId(itemJSONData.getLong("id"));
-        newItem.setCategory(itemJSONData.getString("category"));
-        newItem.setCategory(itemJSONData.getString("category"));
-
-        return newUser;
-
-
-    }
+//    public static Item convertJSONtoItem(JSONObject itemJSONData) throws JSONException { //throws json
+//        Item newItem = new Item();
+//
+//        newItem.setDescription(itemJSONData.getString("description"));
+////        newItem.setType(itemJSONData.getString("location"));
+//        newItem.setItemId(itemJSONData.getInt("id"));
+//        newItem.setCategory(itemJSONData.getString("category"));
+//        newItem.setTitle(itemJSONData.getString("title"));
+//        newItem.setQuantity(itemJSONData.getInt("quantity"));
+//        newItem.setMatches(Match.makeMatchesFromJSON(itemJSONData.getJSONArray("matches")));
+//
+//        return newItem;
+//
+//
+//    }
 }

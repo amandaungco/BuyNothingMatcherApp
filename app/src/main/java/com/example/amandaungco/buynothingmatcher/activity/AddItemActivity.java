@@ -125,53 +125,53 @@ public class AddItemActivity extends AppCompatActivity {
 
     }
 
-    private void postNewItemRequest(Item item) {
-
-        SharedPreferences userIdPrefs = this.getSharedPreferences(getString(R.string.app_name), Context.MODE_PRIVATE);
-
-        RequestQueue itemPostQueue = Volley.newRequestQueue(this);
-//break this into two methods, one to create json from firebase user -- firebasetoJSON
-        try {
-            String baseUrl = "http://10.0.2.2:8080/users/";
-            Long userID;
-            String type;
-            userID =  userIdPrefs.getLong("userId", 0);
-            type = item.getType();
-            String requestURL = baseUrl + userID + "/" + type + "s";
-
-            JSONObject itemRequestDataBody;
-
-            itemRequestDataBody = Item.convertItemToJson(item);
-
-            JsonObjectRequest itemDataPostRequest = new JsonObjectRequest(Request.Method.POST, requestURL, itemRequestDataBody, new Response.Listener<JSONObject>() {
-                @Override
-                public void onResponse(JSONObject response) {
-                    Toast.makeText(getApplicationContext(), "Response:  " + response.toString(), Toast.LENGTH_SHORT).show();
-
-                    try {
-                        addUserDatatoSharedPreferences(User.fromJson(response));
-                        openDashboardPage();
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                        Toast.makeText(getApplicationContext(), "Error:  " + e.getMessage(), Toast.LENGTH_SHORT).show();
-                        Log.e(TAG, e.getMessage());
-                    }
-
-
-                }
-            }, new Response.ErrorListener() {
-                @Override
-                public void onErrorResponse(VolleyError error) {
-                    Toast.makeText(getApplicationContext(), "Error:  " + error.getMessage(), Toast.LENGTH_SHORT).show();
-                    Log.e(TAG, error.getMessage());
-                }
-            });
-            userPostQueue.add(userDataPostRequest);
-        } catch (
-                JSONException e) {
-            e.printStackTrace();
-        }
-    }
+//    private void postNewItemRequest(Item item) {
+//
+//        SharedPreferences userIdPrefs = this.getSharedPreferences(getString(R.string.app_name), Context.MODE_PRIVATE);
+//
+//        RequestQueue itemPostQueue = Volley.newRequestQueue(this);
+////break this into two methods, one to create json from firebase user -- firebasetoJSON
+//        try {
+//            String baseUrl = "http://10.0.2.2:8080/users/";
+//            Long userID;
+//            String type;
+//            userID =  userIdPrefs.getLong("userId", 0);
+//            type = item.getType();
+//            String requestURL = baseUrl + userID + "/" + type + "s";
+//
+//            JSONObject itemRequestDataBody;
+//
+//            itemRequestDataBody = Item.convertItemToJson(item);
+//
+//            JsonObjectRequest itemDataPostRequest = new JsonObjectRequest(Request.Method.POST, requestURL, itemRequestDataBody, new Response.Listener<JSONObject>() {
+//                @Override
+//                public void onResponse(JSONObject response) {
+//                    Toast.makeText(getApplicationContext(), "Response:  " + response.toString(), Toast.LENGTH_SHORT).show();
+//
+//                    try {
+////                        addUserDatatoSharedPreferences(User.fromJson(response));
+////                        openDashboardPage();
+//                    } catch (JSONException e) {
+//                        e.printStackTrace();
+//                        Toast.makeText(getApplicationContext(), "Error:  " + e.getMessage(), Toast.LENGTH_SHORT).show();
+//                        Log.e(TAG, e.getMessage());
+//                    }
+//
+//
+//                }
+//            }, new Response.ErrorListener() {
+//                @Override
+//                public void onErrorResponse(VolleyError error) {
+//                    Toast.makeText(getApplicationContext(), "Error:  " + error.getMessage(), Toast.LENGTH_SHORT).show();
+//                    Log.e(TAG, error.getMessage());
+//                }
+//            });
+//            userPostQueue.add(userDataPostRequest);
+//        } catch (
+//                JSONException e) {
+//            e.printStackTrace();
+//        }
+//    }
 
 
     //Maybe save to app state instead?

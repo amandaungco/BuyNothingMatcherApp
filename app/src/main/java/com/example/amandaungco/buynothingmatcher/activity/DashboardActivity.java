@@ -16,6 +16,7 @@ import android.widget.Toast;
 import com.example.amandaungco.buynothingmatcher.R;
 import com.example.amandaungco.buynothingmatcher.model.AppState;
 import com.example.amandaungco.buynothingmatcher.model.User;
+import com.example.amandaungco.buynothingmatcher.service.UserService;
 import com.firebase.ui.auth.AuthUI;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -34,6 +35,10 @@ public class DashboardActivity extends AppCompatActivity {
         setContentView(R.layout.activity_dashboard);
 
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+//        UserService.getUser(user, this, new FireBaseSignInActivity.OnSuccess());
+
+
+
         System.out.println(user);
         Toast.makeText(DashboardActivity.this, "USER" + user, Toast.LENGTH_SHORT).show();
 
