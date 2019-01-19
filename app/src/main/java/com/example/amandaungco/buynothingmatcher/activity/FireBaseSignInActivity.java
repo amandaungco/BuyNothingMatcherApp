@@ -103,7 +103,7 @@ public class FireBaseSignInActivity extends AppCompatActivity {
         }
     }
 
-//    public void addUserDatatoSharedPreferences(User currentUserData){
+    //    public void addUserDatatoSharedPreferences(User currentUserData){
 //
 //        SharedPreferences userDataPreferences = this.getSharedPreferences(getString(R.string.app_file), Context.MODE_PRIVATE);
 //        SharedPreferences.Editor editor = userDataPreferences.edit();
@@ -115,20 +115,20 @@ public class FireBaseSignInActivity extends AppCompatActivity {
 //
 //    }
 //
-     class OnSuccess implements Function<User, Object>{
-
-        @Override
-        public Object apply(User input) {
-            if (input == null){
-                FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-                postNewUserRequest(user);
-            } else {
-                AppState.INSTANCE.setCurrentUser(input);
-                openDashboardPage();
-            }
-            return null;
-        }
-    }
+//    class OnSuccess implements Function<User, Object> {
+//
+//        @Override
+//        public Object apply(User input) {
+//            if (input == null) {
+//                FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+//                postNewUserRequest(user);
+//            } else {
+//                AppState.INSTANCE.setCurrentUser(input);
+//                openDashboardPage();
+//            }
+//            return null;
+//        }
+//    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -141,25 +141,29 @@ public class FireBaseSignInActivity extends AppCompatActivity {
 
             if (resultCode == RESULT_OK) {
                 // Successfully signed in
-                FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-                UserService.getUser(user, this, new OnSuccess());
-                //get request based on currentfirebase user
-                    //if user gets returned, save JSONresponse info to app state
-                //if no user is found call post new user request
+                IdpResponse idpResponse = IdpResponse.fromResultIntent(data);
+                final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+                if (idpResponse.isNewUser()) {
+                    postNewUserRequest(user);
+                } else {
+                    UserService.getUser(user, this, new UserService.ApiGetUserCallback() {
+                        @Override
+                        public void onCallback (User user){
+                            AppState.INSTANCE.setCurrentUser(user);
+                        }
+                    });
+                }
 
-//                addUserDatatoSharedPreferences();
-                postNewUserRequest(user);
-//                openDashboardPage();
-                //make api post request to add new user
-                // ...
-            } else {
-                // Sign in failed. If response is null the user canceled the
-                // sign-in flow using the back button. Otherwise check
-                // response.getError().getErrorCode() and handle the error.
-                // ...
             }
+        } else {
+            // Sign in failed. If response is null the user canceled the
+            // sign-in flow using the back button. Otherwise check
+            // response.getError().getErrorCode() and handle the error.
+            // ...
         }
     }
+
+
 //
 //    public void signOut() {
 //        // [START auth_fui_signout]
@@ -171,7 +175,6 @@ public class FireBaseSignInActivity extends AppCompatActivity {
 //                    }
 //                });
 //    }
-
 
 
     private void openDashboardPage() {

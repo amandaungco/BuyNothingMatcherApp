@@ -35,7 +35,12 @@ public class DashboardActivity extends AppCompatActivity {
         setContentView(R.layout.activity_dashboard);
 
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-//        UserService.getUser(user, this, new FireBaseSignInActivity.OnSuccess());
+         UserService.getUser(user, this, new UserService.ApiGetUserCallback() {
+             @Override
+             public void onCallback (User user){
+                 AppState.INSTANCE.setCurrentUser(user);
+             }
+         });
 
 
 

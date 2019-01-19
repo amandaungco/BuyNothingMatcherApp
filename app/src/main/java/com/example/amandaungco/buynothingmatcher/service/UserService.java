@@ -22,10 +22,14 @@ import org.json.JSONObject;
 
 public class UserService {
 
+    public interface ApiGetUserCallback{
+        void onCallback(User user);
+    }
+
 
     private final static String TAG = UserService.class.getSimpleName();
 
-    public static void getUser(FirebaseUser user, Context activityContext, final Function<User, ?> onSuccess) {
+    public static void getUser(FirebaseUser user, Context activityContext, final ApiGetUserCallback callback) {
 
         RequestQueue userGetQueue = Volley.newRequestQueue(activityContext);
         String userEmail;
@@ -40,7 +44,7 @@ public class UserService {
             public void onResponse(JSONArray response) {
                 try {
                     User foundUser = User.fromJson(response.getJSONObject(0));
-                    onSuccess.apply(foundUser);
+                    callback.onCallback(foundUser);
 
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -56,7 +60,10 @@ public class UserService {
         });
 
         userGetQueue.add(findUserGetRequest);
+
+
     }
+
 
 
 }

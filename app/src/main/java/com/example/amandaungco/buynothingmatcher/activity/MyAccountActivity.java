@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.TypedValue;
@@ -27,6 +28,7 @@ public class MyAccountActivity extends AppCompatActivity {
     TextView accountId;
     LinearLayout myAccountLayout;
     Context context;
+    FloatingActionButton dashboardButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,6 +57,17 @@ public class MyAccountActivity extends AppCompatActivity {
 
             }
         });
+
+        dashboardButton = findViewById(R.id.dashboardButton);
+        dashboardButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openDashboardPage();
+
+
+            }
+        });
+
     }
 
     private void createUserInformationView(){
@@ -105,6 +118,11 @@ public class MyAccountActivity extends AppCompatActivity {
 
     private void openSignInPage() {
         Intent intent = new Intent(this, FireBaseSignInActivity.class);
+        startActivity(intent);
+    }
+
+    private void openDashboardPage() {
+        Intent intent = new Intent(this, DashboardActivity.class);
         startActivity(intent);
     }
 }
