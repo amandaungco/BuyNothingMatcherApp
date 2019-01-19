@@ -122,6 +122,7 @@ public class Item {
 //        }
     }
 
+
     public static Item convertJSONtoItem(JSONObject itemJSONData) throws JSONException { //throws json
         Item newItem = new Item();
 

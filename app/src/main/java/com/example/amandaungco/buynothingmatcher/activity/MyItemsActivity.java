@@ -14,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.GridLayout;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -21,14 +22,18 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.amandaungco.buynothingmatcher.R;
 import com.example.amandaungco.buynothingmatcher.model.AppState;
 import com.example.amandaungco.buynothingmatcher.model.Item;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.ArrayList;
 
 
 public class MyItemsActivity extends AppCompatActivity {
@@ -40,6 +45,9 @@ public class MyItemsActivity extends AppCompatActivity {
     GridLayout.LayoutParams layoutparams;
     TextView itemCardTextView;
     GridLayout myItemsGridLayout;
+    Switch requestOrOffer;
+    ArrayList<Item> userItems;
+    Item singleItem;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,81 +72,83 @@ public class MyItemsActivity extends AppCompatActivity {
             }
         });
 
+        requestOrOffer = findViewById(R.id.requestOrOffer);
+        Boolean isOffer = requestOrOffer.isChecked();
+        final String type;
 
-//        getRequestMyItems();
+        if (isOffer) {
+            type = "offers";
+        } else {
+            type = "requests";
+        }
+
+        getUserItemsRequest(type);
+        userItems = AppState.INSTANCE.getUserItems();
 
 
         myItemsGridLayout = findViewById(R.id.gridItemsLayout);
 
-        // Layout inflater
         LayoutInflater layoutInflater = getLayoutInflater();
         View myItemsView;
+        if (userItems != null) {
+            for (int i = 0; i < userItems.size(); i++) {
+                singleItem = userItems.get(i);
 
-        for (int i = 1; i < 10; i++){
-            myItemsView = layoutInflater.inflate(R.layout.text_layout, myItemsGridLayout, false);
+                myItemsView = layoutInflater.inflate(R.layout.text_layout, myItemsGridLayout, false);
 
-            // In order to get the view we have to use the new view with text_layout in it
-            createCardItem(i);
+                // In order to get the view we have to use the new view with text_layout in it
+                createCardItem(singleItem);
 
-            // Add the text view to the parent layout
+                // Add the text view to the parent layout
 //            myItemsGridLayout.addView();
+            }
         }
-
 
 
     }
 
-    private void getUserItemsRequest() {
+    private void getUserItemsRequest(String type) {
 
 
         RequestQueue getItemsRequestQueue = Volley.newRequestQueue(this);
 
 
-        try {
-            String baseUrl = "http://10.0.2.2:8080/users/";
-            Long userID;
-            final String type;
-            userID = AppState.INSTANCE.getCurrentUser().getUserId();
-            type = item.getType().toLowerCase();
-            AppState.INSTANCE.getNewItem().setType(type);
-            String requestURL = baseUrl + userID + "/" + type + "s";
+        String baseUrl = "http://10.0.2.2:8080/users/";
+        Long userID;
 
-            JSONObject itemRequestDataBody;
+        userID = AppState.INSTANCE.getCurrentUser().getUserId();
+//        AppState.INSTANCE.getNewItem().setType(type);
+        String requestURL = baseUrl + userID + "/" + type;
 
-            itemRequestDataBody = Item.convertItemToJson(item);
-//            itemRequestDataBody.put("type", type);
+        JsonArrayRequest itemDataGetRequest = new JsonArrayRequest(Request.Method.GET, requestURL, null, new Response.Listener<JSONArray>() {
+            @Override
+            public void onResponse(JSONArray response) {
 
-            JsonObjectRequest itemDataPostRequest = new JsonObjectRequest(Request.Method.POST, requestURL, itemRequestDataBody, new Response.Listener<JSONObject>() {
-                @Override
-                public void onResponse(JSONObject response) {
+                try {
+                    ArrayList<Item> items = new ArrayList<>();
 
-                    try {
-                        AppState.INSTANCE.setNewItem(Item.convertJSONtoItem(response));
-                        openIndividualUserItemShowPage(type);
+                    for (int i = 0; i < response.length(); i++) {
+                        JSONObject singleJSONItem = response.getJSONObject(i);
+                        items.add(Item.convertJSONtoItem(singleJSONItem));
+                    }
+                    AppState.INSTANCE.setUserItems(items);
 //
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                        Toast.makeText(getApplicationContext(), "Error:  " + e.getMessage(), Toast.LENGTH_SHORT).show();
-
-                    }
-
-
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                    Toast.makeText(getApplicationContext(), "Error:  " + e.getMessage(), Toast.LENGTH_SHORT).show();
                 }
-            }, new Response.ErrorListener() {
-                @Override
-                public void onErrorResponse(VolleyError error) {
-                    if (error !=null) {
-                        Toast.makeText(getApplicationContext(), "Error:  " + error.getMessage(), Toast.LENGTH_SHORT).show();
-                        error.printStackTrace();
-                    }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                if (error != null) {
+                    Toast.makeText(getApplicationContext(), "Error:  " + error.getMessage(), Toast.LENGTH_SHORT).show();
+                    error.printStackTrace();
                 }
-            });
-            itemPostQueue.add(itemDataPostRequest);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+            }
+        });
+        getItemsRequestQueue.add(itemDataGetRequest);
     }
-
 
 
     private void openAddNewItemPage() {
@@ -151,7 +161,7 @@ public class MyItemsActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    private void createCardItem(int i) {
+    private void createCardItem(Item item) {
 
 
         itemCardView = new CardView(context);
@@ -159,7 +169,7 @@ public class MyItemsActivity extends AppCompatActivity {
         layoutparams = new GridLayout.LayoutParams();
         layoutparams.height = 200;
         layoutparams.width = 450;
-        layoutparams.setMargins(25,25,25,25);
+        layoutparams.setMargins(25, 25, 25, 25);
 
         itemCardView.setLayoutParams(layoutparams);
 
@@ -168,7 +178,7 @@ public class MyItemsActivity extends AppCompatActivity {
         itemCardView.setPadding(100, 100, 100, 100);
 
         itemCardView.setCardElevation(8);
-        itemCardView.setCardBackgroundColor(Color.argb(255, 0, 133,119 ));
+        itemCardView.setCardBackgroundColor(Color.argb(255, 0, 133, 119));
 
         itemCardTextView = new TextView(context);
 
@@ -177,9 +187,9 @@ public class MyItemsActivity extends AppCompatActivity {
                 ViewGroup.LayoutParams.MATCH_PARENT));
 
 
-        itemCardTextView.setText("item:" + i);
+        itemCardTextView.setText("item" + item.getItemId() + " : " + item.getTitle());
         itemCardTextView.setGravity(Gravity.CENTER);
-        itemCardTextView.setTextSize(TypedValue.COMPLEX_UNIT_SP,18);
+        itemCardTextView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
 
         itemCardTextView.setTextColor(Color.WHITE);
 
@@ -192,9 +202,6 @@ public class MyItemsActivity extends AppCompatActivity {
         myItemsGridLayout.addView(itemCardView);
 
     }
-
-
-
 
 
 }
