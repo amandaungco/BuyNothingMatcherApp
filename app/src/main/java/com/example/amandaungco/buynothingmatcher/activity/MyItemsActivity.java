@@ -3,9 +3,9 @@ package com.example.amandaungco.buynothingmatcher.activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.CardView;
 import android.util.TypedValue;
 import android.view.Gravity;
@@ -17,24 +17,11 @@ import android.widget.CompoundButton;
 import android.widget.GridLayout;
 import android.widget.Switch;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonArrayRequest;
-import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.Volley;
 import com.example.amandaungco.buynothingmatcher.R;
 import com.example.amandaungco.buynothingmatcher.model.AppState;
 import com.example.amandaungco.buynothingmatcher.model.Item;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 
@@ -47,16 +34,18 @@ public class MyItemsActivity extends AppCompatActivity {
     GridLayout.LayoutParams layoutparams;
     TextView itemCardTextView;
     GridLayout myItemsGridLayout;
+    GridLayout requestItemsGridLayout;
+    GridLayout offerItemsGridlayout;
     Switch requestOrOffer;
     ArrayList<Item> userItems;
     Item singleItem;
+    String type;
+    GridLayout populateGridLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_items);
-
-        getUserItemsRequest();
 
         addItemButton = findViewById(R.id.AddNewItemButton);
         addItemButton.setOnClickListener(new View.OnClickListener() {
@@ -78,105 +67,64 @@ public class MyItemsActivity extends AppCompatActivity {
 
         requestOrOffer = findViewById(R.id.requestOrOffer);
         Boolean isOffer = requestOrOffer.isChecked();
+        offerItemsGridlayout = findViewById(R.id.gridOfferItemsLayout);
+        requestItemsGridLayout = findViewById(R.id.gridRequestItemsLayout);
 
 
         requestOrOffer.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             public void onCheckedChanged(CompoundButton buttonView, boolean isOffer) {
 
-                populateMyItemsGrid(isOffer);
-                // do something, the isChecked will be
-                // true if the switch is in the On position
+                if (isOffer) {
+
+                    requestItemsGridLayout.setVisibility(View.INVISIBLE);
+                    offerItemsGridlayout.setVisibility(View.VISIBLE);
+
+                } else {
+                    offerItemsGridlayout.setVisibility(View.INVISIBLE);
+                    requestItemsGridLayout.setVisibility(View.VISIBLE);
+
+                }
             }
         });
 
-        populateMyItemsGrid(isOffer);
+        populateMyItemsGrid();
 
     }
 
 
-    private void populateMyItemsGrid(Boolean isOffer) {
-        String type;
-        if (isOffer) {
-            userItems = AppState.INSTANCE.getUserOfferItems();
-        } else {
-            userItems = AppState.INSTANCE.getUserRequestItems();
-        }
+    private void populateMyItemsGrid() {
 
-        myItemsGridLayout = findViewById(R.id.gridItemsLayout);
 
-        LayoutInflater layoutInflater = getLayoutInflater();
-        View myItemsView;
-        if (userItems != null) {
-            for (int i = 0; i < userItems.size(); i++) {
-                singleItem = userItems.get(i);
-
-                myItemsView = layoutInflater.inflate(R.layout.text_layout, myItemsGridLayout, false);
-
-                // In order to get the view we have to use the new view with text_layout in it
-                createCardItem(singleItem);
-
-                // Add the text view to the parent layout
-//            myItemsGridLayout.addView();
+        for (int j = 0; j < 2; j++) {
+            if (j == 0) {
+                userItems = AppState.INSTANCE.getUserOfferItems();
+                myItemsGridLayout = findViewById(R.id.gridOfferItemsLayout);
+                type = "Offer";
+            } else {
+                userItems = AppState.INSTANCE.getUserRequestItems();
+                myItemsGridLayout = findViewById(R.id.gridRequestItemsLayout);
+                type = "Request";
             }
 
+            LayoutInflater layoutInflater = getLayoutInflater();
+            View myItemsView;
+            if (userItems != null) {
+                for (int i = 0; i < userItems.size(); i++) {
+                    singleItem = userItems.get(i);
+
+                    myItemsView = layoutInflater.inflate(R.layout.text_layout, myItemsGridLayout, false);
+
+                    // In order to get the view we have to use the new view with text_layout in it
+                    createCardItem(singleItem, type, myItemsGridLayout);
+
+                    // Add the text view to the parent layout
+//            myItemsGridLayout.addView();
+                }
+
+            }
         }
     }
 
-    private void getUserItemsRequest() {
-
-
-        RequestQueue getItemsRequestQueue = Volley.newRequestQueue(this);
-
-
-        String baseUrl = "http://10.0.2.2:8080/users/";
-        Long userID;
-
-        userID = AppState.INSTANCE.getCurrentUser().getUserId();
-//        AppState.INSTANCE.getNewItem().setType(type);
-
-        ArrayList<String> itemTypes = new ArrayList<>();
-        itemTypes.add("offers");
-        itemTypes.add("requests");
-
-
-        for (int i = 0; i < itemTypes.size(); i++) {
-            final String type = itemTypes.get(i);
-            String requestURL = baseUrl + userID + "/" + type;
-
-            JsonArrayRequest itemDataGetRequest = new JsonArrayRequest(Request.Method.GET, requestURL, null, new Response.Listener<JSONArray>() {
-                @Override
-                public void onResponse(JSONArray response) {
-
-                    try {
-                        ArrayList<Item> items = new ArrayList<>();
-
-                        for (int i = 0; i < response.length(); i++) {
-                            JSONObject singleJSONItem = response.getJSONObject(i);
-                            items.add(Item.convertJSONtoItem(singleJSONItem));
-                        }
-                        if (type == "offers"){
-                        AppState.INSTANCE.setUserOfferItems(items);
-                        } else{
-                            AppState.INSTANCE.setUserRequestItems(items);
-                        }
-//
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                        Toast.makeText(getApplicationContext(), "Error:  " + e.getMessage(), Toast.LENGTH_SHORT).show();
-                    }
-                }
-            }, new Response.ErrorListener() {
-                @Override
-                public void onErrorResponse(VolleyError error) {
-                    if (error != null) {
-                        Toast.makeText(getApplicationContext(), "Error:  " + error.getMessage(), Toast.LENGTH_SHORT).show();
-                        error.printStackTrace();
-                    }
-                }
-            });
-            getItemsRequestQueue.add(itemDataGetRequest);
-        }
-    }
 
 
     private void openAddNewItemPage() {
@@ -189,7 +137,7 @@ public class MyItemsActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    private void createCardItem(Item item) {
+    private void createCardItem(Item item, String type, GridLayout populateGridLayout) {
 
 
         itemCardView = new CardView(context);
@@ -215,7 +163,7 @@ public class MyItemsActivity extends AppCompatActivity {
                 ViewGroup.LayoutParams.MATCH_PARENT));
 
 
-        itemCardTextView.setText("item" + item.getItemId() + " : " + item.getTitle());
+        itemCardTextView.setText(type + item.getItemId() + " : " + item.getTitle());
         itemCardTextView.setGravity(Gravity.CENTER);
         itemCardTextView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
 
@@ -227,7 +175,7 @@ public class MyItemsActivity extends AppCompatActivity {
 
         itemCardView.addView(itemCardTextView);
 
-        myItemsGridLayout.addView(itemCardView);
+        populateGridLayout.addView(itemCardView);
 
     }
 

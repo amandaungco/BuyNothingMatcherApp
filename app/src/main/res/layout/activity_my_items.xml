@@ -68,7 +68,7 @@
         tools:trackTintMode="src_over" />
 
     <GridLayout
-        android:id="@+id/gridItemsLayout"
+        android:id="@+id/gridOfferItemsLayout"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="8"
@@ -78,170 +78,18 @@
         android:padding="14dp"
         android:rowCount="3">
 
-        <!-- ROW 1  -->
-        <!-- COLUMN 1  -->
+    </GridLayout>
 
-
-        <!--<android.support.v7.widget.CardView-->
-            <!--android:layout_width="0dp"-->
-            <!--android:layout_height="0dp"-->
-            <!--android:layout_rowWeight="1"-->
-            <!--android:layout_columnWeight="1"-->
-            <!--android:layout_marginLeft="16dp"-->
-            <!--android:layout_marginRight="16dp"-->
-            <!--android:layout_marginBottom="16dp"-->
-            <!--app:cardBackgroundColor="@color/colorPrimaryDark"-->
-            <!--app:cardCornerRadius="8dp"-->
-            <!--app:cardElevation="8dp">-->
-
-            <!--<LinearLayout-->
-                <!--android:layout_width="wrap_content"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:layout_gravity="center_horizontal|center_vertical"-->
-                <!--android:layout_margin="16dp"-->
-                <!--android:orientation="vertical">-->
-
-                <!--&lt;!&ndash;<ImageView&ndash;&gt;-->
-                <!--&lt;!&ndash;android:src=""&ndash;&gt;-->
-                <!--&lt;!&ndash;android:layout_gravity="center_horizontal"&ndash;&gt;-->
-                <!--&lt;!&ndash;android:layout_width="wrap_content"&ndash;&gt;-->
-                <!--&lt;!&ndash;android:layout_height="wrap_content" />&ndash;&gt;-->
-
-                <!--<TextView-->
-                    <!--android:layout_width="wrap_content"-->
-                    <!--android:layout_height="wrap_content"-->
-                    <!--android:text="Item 1"-->
-                    <!--android:textAlignment="center"-->
-                    <!--android:textColor="@android:color/white"-->
-                    <!--android:textSize="18sp"-->
-                    <!--android:textStyle="bold" />-->
-
-            <!--</LinearLayout>-->
-
-        <!--</android.support.v7.widget.CardView>-->
-
-        <!--&lt;!&ndash; COLUMN 2  &ndash;&gt;-->
-
-        <!--<android.support.v7.widget.CardView-->
-            <!--android:layout_width="0dp"-->
-            <!--android:layout_height="0dp"-->
-            <!--android:layout_rowWeight="1"-->
-            <!--android:layout_columnWeight="1"-->
-            <!--android:layout_marginLeft="16dp"-->
-            <!--android:layout_marginRight="16dp"-->
-            <!--android:layout_marginBottom="16dp"-->
-            <!--app:cardBackgroundColor="@color/colorPrimaryDark"-->
-            <!--app:cardCornerRadius="8dp"-->
-            <!--app:cardElevation="8dp">-->
-
-            <!--<LinearLayout-->
-                <!--android:layout_width="wrap_content"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:layout_gravity="center_horizontal|center_vertical"-->
-                <!--android:layout_margin="16dp"-->
-                <!--android:orientation="vertical">-->
-
-                <!--&lt;!&ndash;<ImageView&ndash;&gt;-->
-                <!--&lt;!&ndash;android:src=""&ndash;&gt;-->
-                <!--&lt;!&ndash;android:layout_gravity="center_horizontal"&ndash;&gt;-->
-                <!--&lt;!&ndash;android:layout_width="wrap_content"&ndash;&gt;-->
-                <!--&lt;!&ndash;android:layout_height="wrap_content" />&ndash;&gt;-->
-
-                <!--<TextView-->
-                    <!--android:layout_width="wrap_content"-->
-                    <!--android:layout_height="wrap_content"-->
-                    <!--android:text="Item 2"-->
-                    <!--android:textAlignment="center"-->
-                    <!--android:textColor="@android:color/white"-->
-                    <!--android:textSize="18sp"-->
-                    <!--android:textStyle="bold" />-->
-
-            <!--</LinearLayout>-->
-
-        <!--</android.support.v7.widget.CardView>-->
-
-
-        <!--&lt;!&ndash; ROW 2  &ndash;&gt;-->
-        <!--&lt;!&ndash; COLUMN 1  &ndash;&gt;-->
-
-        <!--<android.support.v7.widget.CardView-->
-            <!--android:layout_width="0dp"-->
-            <!--android:layout_height="0dp"-->
-            <!--android:layout_rowWeight="1"-->
-            <!--android:layout_columnWeight="1"-->
-            <!--android:layout_marginLeft="16dp"-->
-            <!--android:layout_marginRight="16dp"-->
-            <!--android:layout_marginBottom="16dp"-->
-            <!--app:cardBackgroundColor="@color/colorPrimaryDark"-->
-            <!--app:cardCornerRadius="8dp"-->
-            <!--app:cardElevation="8dp">-->
-
-            <!--<LinearLayout-->
-                <!--android:layout_width="wrap_content"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:layout_gravity="center_horizontal|center_vertical"-->
-                <!--android:layout_margin="16dp"-->
-                <!--android:orientation="vertical">-->
-
-                <!--&lt;!&ndash;<ImageView&ndash;&gt;-->
-                <!--&lt;!&ndash;android:src=""&ndash;&gt;-->
-                <!--&lt;!&ndash;android:layout_gravity="center_horizontal"&ndash;&gt;-->
-                <!--&lt;!&ndash;android:layout_width="wrap_content"&ndash;&gt;-->
-                <!--&lt;!&ndash;android:layout_height="wrap_content" />&ndash;&gt;-->
-
-                <!--<TextView-->
-                    <!--android:layout_width="wrap_content"-->
-                    <!--android:layout_height="wrap_content"-->
-                    <!--android:text="Item 3"-->
-                    <!--android:textAlignment="center"-->
-                    <!--android:textColor="@android:color/white"-->
-                    <!--android:textSize="18sp"-->
-                    <!--android:textStyle="bold" />-->
-
-            <!--</LinearLayout>-->
-
-        <!--</android.support.v7.widget.CardView>-->
-
-        <!--&lt;!&ndash; COLUMN 2  &ndash;&gt;-->
-
-        <!--<android.support.v7.widget.CardView-->
-            <!--android:layout_width="0dp"-->
-            <!--android:layout_height="0dp"-->
-            <!--android:layout_rowWeight="1"-->
-            <!--android:layout_columnWeight="1"-->
-            <!--android:layout_marginLeft="16dp"-->
-            <!--android:layout_marginRight="16dp"-->
-            <!--android:layout_marginBottom="16dp"-->
-            <!--app:cardBackgroundColor="@color/colorPrimaryDark"-->
-            <!--app:cardCornerRadius="8dp"-->
-            <!--app:cardElevation="8dp">-->
-
-            <!--<LinearLayout-->
-                <!--android:layout_width="wrap_content"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:layout_gravity="center_horizontal|center_vertical"-->
-                <!--android:layout_margin="16dp"-->
-                <!--android:orientation="vertical">-->
-
-                <!--&lt;!&ndash;<ImageView&ndash;&gt;-->
-                <!--&lt;!&ndash;android:src=""&ndash;&gt;-->
-                <!--&lt;!&ndash;android:layout_gravity="center_horizontal"&ndash;&gt;-->
-                <!--&lt;!&ndash;android:layout_width="wrap_content"&ndash;&gt;-->
-                <!--&lt;!&ndash;android:layout_height="wrap_content" />&ndash;&gt;-->
-
-                <!--<TextView-->
-                    <!--android:layout_width="wrap_content"-->
-                    <!--android:layout_height="wrap_content"-->
-                    <!--android:text="Item 4"-->
-                    <!--android:textAlignment="center"-->
-                    <!--android:textColor="@android:color/white"-->
-                    <!--android:textSize="18sp"-->
-                    <!--android:textStyle="bold" />-->
-
-            <!--</LinearLayout>-->
-
-        <!--</android.support.v7.widget.CardView>-->
-
+    <GridLayout
+        android:id="@+id/gridRequestItemsLayout"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="8"
+        android:alignmentMode="alignMargins"
+        android:columnCount="2"
+        android:columnOrderPreserved="false"
+        android:padding="14dp"
+        android:rowCount="3">
 
     </GridLayout>
     <Button

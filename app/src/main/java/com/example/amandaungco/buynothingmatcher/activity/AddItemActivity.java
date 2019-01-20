@@ -30,6 +30,7 @@ import com.google.firebase.auth.FirebaseUser;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 public class AddItemActivity extends AppCompatActivity {
@@ -149,6 +150,16 @@ public class AddItemActivity extends AppCompatActivity {
 
                     try {
                         AppState.INSTANCE.setNewItem(Item.convertJSONtoItem(response));
+                        if (type == "offer"){
+                            ArrayList<Item> offers = AppState.INSTANCE.getUserOfferItems();
+                            offers.add(AppState.INSTANCE.getNewItem());
+                            AppState.INSTANCE.setUserOfferItems(offers);
+
+                        } else {
+                            ArrayList<Item> requests = AppState.INSTANCE.getUserRequestItems();
+                            requests.add(AppState.INSTANCE.getNewItem());
+                            AppState.INSTANCE.setUserRequestItems(requests);
+                        }
                         openIndividualUserItemShowPage(type);
 //
                     } catch (JSONException e) {
