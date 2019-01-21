@@ -15,6 +15,15 @@ public class AppState {
     private ArrayList <Item> userOfferItems;
     private ArrayList <Item> userRequestItems;
     private Match currentMatch;
+    private ArrayList <Item> allDbItems;
+
+    public ArrayList<Item> getAllDbItems() {
+        return allDbItems;
+    }
+
+    public void setAllDbItems(ArrayList<Item> allDbItems) {
+        this.allDbItems = allDbItems;
+    }
 
     public Match getCurrentMatch() {
         return currentMatch;

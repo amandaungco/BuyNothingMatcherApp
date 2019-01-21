@@ -5,11 +5,14 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -29,6 +32,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.lorentzos.flingswipe.SwipeFlingAdapterView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -56,46 +60,79 @@ public class DashboardActivity extends AppCompatActivity {
              }
          });
 
+         getAlltemsRequest();
 
 
         System.out.println(user);
         Toast.makeText(DashboardActivity.this, "USER" + user, Toast.LENGTH_SHORT).show();
 
-//        User currentUser = new User();
-//
-//
-//        if (user!= null)   {
-//        Toast.makeText(DashboardActivity.this, "USER IS NOT NULL!", Toast.LENGTH_SHORT).show();}
-//          currentUser.setName(user.getDisplayName());
-//          currentUser.setEmail(user.getEmail());
-//
-//          AppState.INSTANCE.setCurrentUser(currentUser);
-
-
-
         searchEditText = findViewById(R.id.searchBar);
-//        submitButton = findViewById(R.id.submitSearchButton);
-
         searchEditText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if ((event != null && (event.getKeyCode() == KeyEvent.KEYCODE_ENTER)) || (actionId == EditorInfo.IME_ACTION_DONE)) {
-
                     query = searchEditText.getText().toString();
                     openSearchResultsActivity();
-
-//                    submitButton.performClick();
                 }
                 return false;
             }
         });
 
 
-//        ImageView swipeImage = findViewById(R.id.itemSwipeImage);
-//        swipeImage.setOnClickListener(new onClickListener(View view){
-//
-//        });{
-//                openIndividualItemforSwiping();
-//            }
+
+        final ArrayList al = new ArrayList<String>();
+        al.add("php");
+        al.add("c");
+        al.add("python");
+        al.add("java");
+
+        final ArrayAdapter arrayAdapter = new ArrayAdapter(this, R.layout.item, R.id.name, al );
+
+        SwipeFlingAdapterView flingContainer = (SwipeFlingAdapterView) findViewById(R.id.swipeFrame);
+
+        flingContainer.setAdapter(arrayAdapter);
+        flingContainer.setFlingListener(new SwipeFlingAdapterView.onFlingListener() {
+            @Override
+            public void removeFirstObjectInAdapter() {
+                Log.d("LIST", "removed object!");
+                al.remove(0);
+                arrayAdapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onLeftCardExit(Object dataObject) {
+
+//                cards obj = (cards) dataObject;
+//                String userId = obj.getUserId();
+//                usersDb.child(userId).child("connections").child("nope").child(currentUId).setValue(true);
+                Toast.makeText(DashboardActivity.this, "Left", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onRightCardExit(Object dataObject) {
+//                cards obj = (cards) dataObject;
+//                String userId = obj.getUserId();
+//                usersDb.child(userId).child("connections").child("yeps").child(currentUId).setValue(true);
+//                isConnectionMatch(userId);
+                Toast.makeText(DashboardActivity.this, "Right", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onAdapterAboutToEmpty(int itemsInAdapter) {
+            }
+
+            @Override
+            public void onScroll(float scrollProgressPercent) {
+            }
+        });
+
+
+        // Optionally add an OnItemClickListener
+        flingContainer.setOnItemClickListener(new SwipeFlingAdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClicked(int itemPosition, Object dataObject) {
+                openIndividualItemforSwiping();
+            }
+        });
 
 
 
@@ -140,7 +177,7 @@ public class DashboardActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    public void openIndividualItemforSwiping(View view) {
+    public void openIndividualItemforSwiping() {
         Intent intent = new Intent(this, IndividualItemForSwipingActivity.class);
         startActivity(intent);
     }
@@ -203,6 +240,55 @@ public class DashboardActivity extends AppCompatActivity {
             });
             getItemsRequestQueue.add(itemDataGetRequest);
         }
+    }
+
+    private void getAlltemsRequest() {
+
+
+        RequestQueue getItemsRequestQueue = Volley.newRequestQueue(this);
+
+
+        String baseUrl = "http://10.0.2.2:8080/";
+
+        ArrayList<String> itemTypes = new ArrayList<>();
+        itemTypes.add("offers");
+        itemTypes.add("requests");
+
+       final ArrayList<Item> items = new ArrayList<>();
+
+        for (int i = 0; i < itemTypes.size(); i++) {
+            final String itemType = itemTypes.get(i);
+            String requestURL = baseUrl + itemType;
+
+            JsonArrayRequest itemDataGetRequest = new JsonArrayRequest(Request.Method.GET, requestURL, null, new Response.Listener<JSONArray>() {
+                @Override
+                public void onResponse(JSONArray response) {
+
+                    try {
+
+
+                        for (int i = 0; i < response.length(); i++) {
+                            JSONObject singleJSONItem = response.getJSONObject(i);
+                            items.add(Item.convertJSONtoItem(singleJSONItem));
+                        }
+//
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                        Toast.makeText(getApplicationContext(), "Error:  " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                }
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    if (error != null) {
+                        Toast.makeText(getApplicationContext(), "Error:  " + error.getMessage(), Toast.LENGTH_SHORT).show();
+                        error.printStackTrace();
+                    }
+                }
+            });
+            getItemsRequestQueue.add(itemDataGetRequest);
+        }
+        AppState.INSTANCE.setAllDbItems(items);
     }
 
 
