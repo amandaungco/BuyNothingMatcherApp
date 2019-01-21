@@ -41,6 +41,7 @@ public class MyItemsActivity extends AppCompatActivity {
     Item singleItem;
     String type;
     GridLayout populateGridLayout;
+    Boolean isOffer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,7 +67,7 @@ public class MyItemsActivity extends AppCompatActivity {
         });
 
         requestOrOffer = findViewById(R.id.requestOrOffer);
-        Boolean isOffer = requestOrOffer.isChecked();
+        isOffer = requestOrOffer.isChecked();
         offerItemsGridlayout = findViewById(R.id.gridOfferItemsLayout);
         requestItemsGridLayout = findViewById(R.id.gridRequestItemsLayout);
 
@@ -137,7 +138,7 @@ public class MyItemsActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    private void createCardItem(Item item, String type, GridLayout populateGridLayout) {
+    private void createCardItem(Item singleItem, String type, GridLayout populateGridLayout) {
 
 
         itemCardView = new CardView(context);
@@ -150,11 +151,16 @@ public class MyItemsActivity extends AppCompatActivity {
         itemCardView.setLayoutParams(layoutparams);
 
         itemCardView.setRadius(15);
+        itemCardView.setId(singleItem.getItemId());
 
         itemCardView.setPadding(100, 100, 100, 100);
 
         itemCardView.setCardElevation(8);
         itemCardView.setCardBackgroundColor(Color.argb(255, 0, 133, 119));
+        itemCardView.setClickable(true);
+
+        setOnClick(itemCardView, singleItem, type);
+
 
         itemCardTextView = new TextView(context);
 
@@ -163,7 +169,7 @@ public class MyItemsActivity extends AppCompatActivity {
                 ViewGroup.LayoutParams.MATCH_PARENT));
 
 
-        itemCardTextView.setText(type + item.getItemId() + " : " + item.getTitle());
+        itemCardTextView.setText(type + singleItem.getItemId() + " : " + singleItem.getTitle());
         itemCardTextView.setGravity(Gravity.CENTER);
         itemCardTextView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
 
@@ -178,6 +184,29 @@ public class MyItemsActivity extends AppCompatActivity {
         populateGridLayout.addView(itemCardView);
 
     }
+
+
+    private void openIndiviudalUserItemspage() {
+
+        Intent intent = new Intent(this, ShowIndividualUsersItemActivity.class);
+        intent.putExtra("type", type);
+        startActivity(intent);
+    }
+
+    private void setOnClick( final CardView itemCardView, final Item singleItem, final String type) {
+        itemCardView.setOnClickListener(new CardView.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AppState.INSTANCE.setCurrentItem(AppState.INSTANCE
+                        .findCurrentItem(singleItem.getItemId(), type));
+                openIndiviudalUserItemspage();
+
+
+            }
+        });
+
+    }
+
 
 
 }

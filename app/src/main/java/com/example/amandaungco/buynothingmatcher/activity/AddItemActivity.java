@@ -119,7 +119,7 @@ public class AddItemActivity extends AppCompatActivity {
         }
 
 
-        AppState.INSTANCE.setNewItem(newItem);
+        AppState.INSTANCE.setCurrentItem(newItem);
         return newItem;
 
 
@@ -136,7 +136,7 @@ public class AddItemActivity extends AppCompatActivity {
             final String type;
             userID = AppState.INSTANCE.getCurrentUser().getUserId();
             type = item.getType().toLowerCase();
-            AppState.INSTANCE.getNewItem().setType(type);
+            AppState.INSTANCE.getCurrentItem().setType(type);
             String requestURL = baseUrl + userID + "/" + type + "s";
 
             JSONObject itemRequestDataBody;
@@ -149,15 +149,15 @@ public class AddItemActivity extends AppCompatActivity {
                 public void onResponse(JSONObject response) {
 
                     try {
-                        AppState.INSTANCE.setNewItem(Item.convertJSONtoItem(response));
+                        AppState.INSTANCE.setCurrentItem(Item.convertJSONtoItem(response));
                         if (type == "offer"){
                             ArrayList<Item> offers = AppState.INSTANCE.getUserOfferItems();
-                            offers.add(AppState.INSTANCE.getNewItem());
+                            offers.add(AppState.INSTANCE.getCurrentItem());
                             AppState.INSTANCE.setUserOfferItems(offers);
 
                         } else {
                             ArrayList<Item> requests = AppState.INSTANCE.getUserRequestItems();
-                            requests.add(AppState.INSTANCE.getNewItem());
+                            requests.add(AppState.INSTANCE.getCurrentItem());
                             AppState.INSTANCE.setUserRequestItems(requests);
                         }
                         openIndividualUserItemShowPage(type);

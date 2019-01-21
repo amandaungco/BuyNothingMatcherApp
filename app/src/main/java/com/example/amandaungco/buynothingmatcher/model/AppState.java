@@ -9,6 +9,7 @@ public class AppState {
 
     final public static AppState INSTANCE = new AppState();
     private User currentUser;
+    private Item currentItem;
     private Item newItem;
     private ArrayList <Item> userOfferItems;
     private ArrayList <Item> userRequestItems;
@@ -38,6 +39,13 @@ public class AppState {
         this.newItem = newItem;
     }
 
+    public Item getCurrentItem() {
+        return currentItem;
+    }
+
+    public void setCurrentItem(Item currentItem) {
+        this.currentItem = currentItem;
+    }
 //
 //    public FirebaseUser getCurrentUser() {
 //        return currentUser;
@@ -56,6 +64,24 @@ public class AppState {
 
     private AppState() {
 
+    }
 
+    public Item findCurrentItem( int itemID, String itemType){
+        ArrayList<Item> searchItems;
+        Item singleItem;
+        if (itemType == "Offer"){
+            searchItems = userOfferItems;
+        }else {
+            searchItems = userRequestItems;
+        }
+
+        for (int i = 0; i < searchItems.size(); i++){
+            singleItem = searchItems.get(i);
+            if (singleItem.getItemId() == itemID){
+                return singleItem;
+            }
+        }
+
+        return currentItem;
     }
 }

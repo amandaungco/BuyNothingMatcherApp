@@ -28,13 +28,13 @@ public class ShowIndividualUsersItemActivity extends AppCompatActivity {
 
 
         setContentView(R.layout.activity_show_individual_users_item);
-        Item newUserItem = AppState.INSTANCE.getNewItem();
-        String title = newUserItem.getTitle();
-        String category = newUserItem.getCategory();
+        Item currentItem = AppState.INSTANCE.getCurrentItem();
+        String title = currentItem.getTitle();
+        String category = currentItem.getCategory();
         String type = intent.getStringExtra("type");
-        String description = newUserItem.getDescription();
-        ArrayList<Match> userItemMatches = AppState.INSTANCE.getNewItem().getMatches();
-        int quantity = newUserItem.getQuantity();
+        String description = currentItem.getDescription();
+        ArrayList<Match> userItemMatches = AppState.INSTANCE.getCurrentItem().getMatches();
+        int quantity = currentItem.getQuantity();
 
         TextView itemTitleView;
         TextView itemQuantityView;
@@ -89,7 +89,7 @@ public class ShowIndividualUsersItemActivity extends AppCompatActivity {
 
                 // In order to get the view we have to use the new view with text_layout in it
                 TextView matchInfo = new TextView(this);
-                matchInfo.setText("Match " + singleUserItemMatch.getMatchId() + " : " + newUserItem.getTitle());
+                matchInfo.setText("Match " + singleUserItemMatch.getMatchId() + " : " + currentItem.getTitle());
 
                 // Add the text view to the parent layout
                 matchesLayout.addView(matchInfo);
