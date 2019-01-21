@@ -6,14 +6,16 @@
     android:layout_height="match_parent"
     android:background="@android:color/white"
     android:orientation="vertical"
+    android:padding="0dp"
     android:weightSum="10"
-    android:padding="10dp"
     tools:context="com.example.amandaungco.buynothingmatcher.activity.MyItemsActivity">
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="2">
+        android:layout_height="50dp"
+        android:layout_weight="2"
+        android:layout_marginTop="20dp">
+        <!--android:layout_margin="10dp">-->
 
         <TextView
             android:id="@+id/textGrid"
@@ -26,7 +28,7 @@
 
         <android.support.design.widget.FloatingActionButton
             android:id="@+id/dashboardButton"
-            android:layout_width="wrap_content"
+            android:layout_width="80dp"
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
             android:layout_alignParentBottom="true"
@@ -37,11 +39,11 @@
             tools:srcCompat="@mipmap/ic_launcher" />
 
         <!--<android.support.design.widget.FloatingActionButton-->
-            <!--app:srcCompat="@color/colorAccent"-->
-            <!--tools:srcCompat="@android:drawable/ic_menu_add" -->
-            <!--android:id="@+id/dashboardButton"-->
-            <!--android:text="Home"-->
-            <!--android:background="@color/colorPrimaryDark"/>-->
+        <!--app:srcCompat="@color/colorAccent"-->
+        <!--tools:srcCompat="@android:drawable/ic_menu_add" -->
+        <!--android:id="@+id/dashboardButton"-->
+        <!--android:text="Home"-->
+        <!--android:background="@color/colorPrimaryDark"/>-->
 
     </RelativeLayout>
 
@@ -66,47 +68,49 @@
         android:trackTintMode="screen"
         android:visibility="visible"
         tools:trackTintMode="src_over" />
+<ScrollView
+    android:layout_width="match_parent"
+    android:layout_height="400dp">
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="400dp">
 
+        <GridLayout
+            android:id="@+id/gridOfferItemsLayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="8"
+            android:alignmentMode="alignMargins"
+            android:columnCount="2"
+            android:columnOrderPreserved="false"
+            android:padding="14dp"
+            android:rowCount="3">
 
-    <GridLayout
-        android:id="@+id/gridOfferItemsLayout"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="8"
-        android:alignmentMode="alignMargins"
-        android:columnCount="2"
-        android:columnOrderPreserved="false"
-        android:padding="14dp"
-        android:rowCount="3">
+        </GridLayout>
 
-    </GridLayout>
-    <GridLayout
-        android:id="@+id/gridRequestItemsLayout"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="8"
-        android:alignmentMode="alignMargins"
-        android:columnCount="2"
-        android:columnOrderPreserved="false"
-        android:padding="14dp"
-        android:rowCount="3">
+        <GridLayout
+            android:id="@+id/gridRequestItemsLayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="8"
+            android:alignmentMode="alignMargins"
+            android:columnCount="2"
+            android:columnOrderPreserved="false"
+            android:padding="14dp"
+            android:rowCount="3">
 
-    </GridLayout>
-
-
-
-
-
+        </GridLayout>
+    </RelativeLayout>
+</ScrollView>
 
 
     <Button
+        android:id="@+id/AddNewItemButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/AddNewItemButton"
         android:background="@color/design_default_color_primary"
         android:clickable="true"
-        android:text="Add an Item"
-        />
+        android:text="Add an Item" />
 
 
 </LinearLayout>

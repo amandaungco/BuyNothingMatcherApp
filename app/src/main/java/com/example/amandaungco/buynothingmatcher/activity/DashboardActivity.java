@@ -62,7 +62,6 @@ public class DashboardActivity extends AppCompatActivity {
 
          getAlltemsRequest();
 
-
         System.out.println(user);
         Toast.makeText(DashboardActivity.this, "USER" + user, Toast.LENGTH_SHORT).show();
 
@@ -215,10 +214,14 @@ public class DashboardActivity extends AppCompatActivity {
                         ArrayList<Item> items = new ArrayList<>();
 
                         for (int i = 0; i < response.length(); i++) {
-                            JSONObject singleJSONItem = response.getJSONObject(i);
+                            Object singleItem = response.get(i);
+                            if (singleItem instanceof Integer){
+                               continue;
+                            }
+                            JSONObject singleJSONItem = (JSONObject) singleItem;
                             items.add(Item.convertJSONtoItem(singleJSONItem));
                         }
-                        if ("offers" == itemType){
+                        if ("offers".equals(itemType)){
                             AppState.INSTANCE.setUserOfferItems(items);
                         } else{
                             AppState.INSTANCE.setUserRequestItems(items);
@@ -245,16 +248,20 @@ public class DashboardActivity extends AppCompatActivity {
     private void getAlltemsRequest() {
 
 
-        RequestQueue getItemsRequestQueue = Volley.newRequestQueue(this);
+        RequestQueue getAllDbItemsRequestQueue = Volley.newRequestQueue(this);
 
 
         String baseUrl = "http://10.0.2.2:8080/";
+//        Long userID;
+//
+//        userID = AppState.INSTANCE.getCurrentUser().getUserId();
+////        AppState.INSTANCE.getNewItem().setType(type);
 
         ArrayList<String> itemTypes = new ArrayList<>();
         itemTypes.add("offers");
         itemTypes.add("requests");
 
-       final ArrayList<Item> items = new ArrayList<>();
+        final ArrayList<Item> items = new ArrayList<>();
 
         for (int i = 0; i < itemTypes.size(); i++) {
             final String itemType = itemTypes.get(i);
@@ -266,10 +273,14 @@ public class DashboardActivity extends AppCompatActivity {
 
                     try {
 
-
                         for (int i = 0; i < response.length(); i++) {
-                            JSONObject singleJSONItem = response.getJSONObject(i);
+                            Object singleItem = response.get(i);
+                            if (singleItem instanceof Integer){
+                                continue;
+                            }
+                            JSONObject singleJSONItem = (JSONObject) singleItem;
                             items.add(Item.convertJSONtoItem(singleJSONItem));
+
                         }
 //
                     } catch (JSONException e) {
@@ -286,9 +297,11 @@ public class DashboardActivity extends AppCompatActivity {
                     }
                 }
             });
-            getItemsRequestQueue.add(itemDataGetRequest);
+            getAllDbItemsRequestQueue.add(itemDataGetRequest);
         }
         AppState.INSTANCE.setAllDbItems(items);
+
+
     }
 
 

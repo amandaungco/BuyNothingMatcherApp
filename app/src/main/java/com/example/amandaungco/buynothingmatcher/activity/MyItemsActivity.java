@@ -113,7 +113,7 @@ public class MyItemsActivity extends AppCompatActivity {
                 for (int i = 0; i < userItems.size(); i++) {
                     singleItem = userItems.get(i);
 
-                    myItemsView = layoutInflater.inflate(R.layout.text_layout, myItemsGridLayout, false);
+//                    myItemsView = layoutInflater.inflate(R.layout.text_layout, myItemsGridLayout, false);
 
                     // In order to get the view we have to use the new view with text_layout in it
                     createCardItem(singleItem, type, myItemsGridLayout);

@@ -103,7 +103,11 @@ public class Match {
         ArrayList <Match> matches = new ArrayList<>();
 
         for (int i = 0 ; i < jsonMatches.length(); i++) {
-            JSONObject singleJSONMatch = jsonMatches.getJSONObject(i);
+            Object singleMatch = jsonMatches.get(i);
+            if (singleMatch instanceof Integer){
+                continue;
+            }
+            JSONObject singleJSONMatch = (JSONObject) singleMatch;
             matches.add(makeSingleMatchFromJSON(singleJSONMatch));
 
         }

@@ -12,10 +12,14 @@ public class AppState {
     private User currentUser;
     private Item currentItem;
     private Item newItem;
-    private ArrayList <Item> userOfferItems;
-    private ArrayList <Item> userRequestItems;
+    private ArrayList<Item> userOfferItems;
+    private ArrayList<Item> userRequestItems;
     private Match currentMatch;
-    private ArrayList <Item> allDbItems;
+    private ArrayList<Item> allDbItems;
+
+    public static AppState getInstance() {
+        return INSTANCE;
+    }
 
     public ArrayList<Item> getAllDbItems() {
         return allDbItems;
@@ -32,8 +36,6 @@ public class AppState {
     public void setCurrentMatch(Match currentMatch) {
         this.currentMatch = currentMatch;
     }
-
-
 
 
     public ArrayList<Item> getUserOfferItems() {
@@ -67,7 +69,8 @@ public class AppState {
     public void setCurrentItem(Item currentItem) {
         this.currentItem = currentItem;
     }
-//
+
+    //
 //    public FirebaseUser getCurrentUser() {
 //        return currentUser;
 //    }
@@ -87,18 +90,18 @@ public class AppState {
 
     }
 
-    public Item findCurrentItem( int itemID, String itemType){
+    public Item findCurrentItem(int itemID, String itemType) {
         ArrayList<Item> searchItems;
         Item singleItem;
-        if (itemType == "Offer"){
+        if (itemType == "Offer") {
             searchItems = userOfferItems;
-        }else {
+        } else {
             searchItems = userRequestItems;
         }
 
-        for (int i = 0; i < searchItems.size(); i++){
+        for (int i = 0; i < searchItems.size(); i++) {
             singleItem = searchItems.get(i);
-            if (singleItem.getItemId() == itemID){
+            if (singleItem.getItemId() == itemID) {
                 return singleItem;
             }
         }
@@ -106,13 +109,13 @@ public class AppState {
         return null;
     }
 
-    public Match findCurrentMatch(int matchId, Item currentItem){
+    public Match findCurrentMatch(int matchId, Item currentItem) {
         ArrayList<Match> searchMatches = currentItem.getMatches();
         Match singleMatch;
 
-        for (int i = 0; i < searchMatches.size(); i++){
+        for (int i = 0; i < searchMatches.size(); i++) {
             singleMatch = searchMatches.get(i);
-            if (singleMatch.getMatchId() == matchId){
+            if (singleMatch.getMatchId() == matchId) {
                 return singleMatch;
             }
         }
