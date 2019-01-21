@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.CardView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -90,6 +91,7 @@ public class ShowIndividualUsersItemActivity extends AppCompatActivity {
                 // In order to get the view we have to use the new view with text_layout in it
                 TextView matchInfo = new TextView(this);
                 matchInfo.setText("Match " + singleUserItemMatch.getMatchId() + " : " + currentItem.getTitle());
+                setOnClick(matchInfo, singleUserItemMatch.getMatchId(), currentItem);
 
                 // Add the text view to the parent layout
                 matchesLayout.addView(matchInfo);
@@ -98,6 +100,28 @@ public class ShowIndividualUsersItemActivity extends AppCompatActivity {
 
 
     }
+
+    private void openIndividualMatchPage() {
+
+        Intent intent = new Intent(this, IndividualMatchActivity.class);
+//        intent.putExtra("title", AppState.INSTANCE.getCurrentItem().getTitle());
+        startActivity(intent);
+    }
+
+    private void setOnClick( final TextView matchInfo, final int matchId, final Item currentItem) {
+        matchInfo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AppState.INSTANCE.setCurrentMatch(AppState.INSTANCE
+                        .findCurrentMatch(matchId, currentItem));
+                ShowIndividualUsersItemActivity.this.openIndividualMatchPage();
+
+
+            }
+        });
+        }
+
+
 
     private void openDashboardPage() {
         Intent intent = new Intent(this, DashboardActivity.class);

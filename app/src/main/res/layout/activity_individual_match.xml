@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/white"
+    android:backgroundTint="@android:color/background_light"
+    android:orientation="vertical"
+    android:weightSum="10"
+    android:padding="20dp"
+    tools:context="com.example.amandaungco.buynothingmatcher.activity.DashboardActivity">
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="2">
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/dashboardButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginStart="16dp"
+            android:layout_marginBottom="26dp"
+            android:clickable="true"
+            app:backgroundTint="@color/colorPrimary"
+            tools:srcCompat="@mipmap/ic_launcher" />
+
+        <TextView
+            android:id="@+id/matchTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="Request Title"
+            android:textColor="#000"
+            android:textSize="34sp" />
+
+
+
+    </RelativeLayout>
+
+
+    <TextView
+        android:id="@+id/matchCategory"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:padding="10dp"
+        android:text="Category: (show category value)"
+        android:textColor="#000"
+        android:textSize="18sp" />
+
+    <TextView
+
+        android:id="@+id/matchRequesterName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:padding="10dp"
+        android:text="Name of Requester"
+        android:textColor="#000"
+        android:textSize="18sp" />
+
+    <TextView
+
+        android:id="@+id/matchOffererName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:padding="10dp"
+        android:text="Name of Offerer"
+        android:textColor="#000"
+        android:textSize="18sp" />
+
+    <TextView
+
+        android:id="@+id/matchDistance"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:padding="10dp"
+        android:text="Match Distance"
+        android:textColor="#000"
+        android:textSize="18sp" />
+
+    <Button
+        android:id="@+id/createExchange"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:background="@color/design_default_color_primary"
+        android:clickable="true"
+        android:padding="20dp"
+        android:text="Plan to Exchange" />
+
+
+
+
+</LinearLayout>

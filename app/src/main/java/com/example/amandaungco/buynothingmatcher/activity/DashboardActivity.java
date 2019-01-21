@@ -126,6 +126,10 @@ public class DashboardActivity extends AppCompatActivity {
 
     }
 
+    //create method for the gallery, load all items from database except items with user id figure out how to split by offer and request
+    //set image from first index in the arraylist from app state for specific type, use on swipe listener
+    //swipe right, create match and call the next one
+    //swipe left, call the next one
     private void openMyItemsPage() {
         Intent intent = new Intent(this, MyItemsActivity.class);
         startActivity(intent);

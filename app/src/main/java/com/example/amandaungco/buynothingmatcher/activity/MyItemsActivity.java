@@ -186,7 +186,7 @@ public class MyItemsActivity extends AppCompatActivity {
     }
 
 
-    private void openIndiviudalUserItemspage() {
+    private void openIndividualUserItemPage() {
 
         Intent intent = new Intent(this, ShowIndividualUsersItemActivity.class);
         intent.putExtra("type", type);
@@ -199,7 +199,7 @@ public class MyItemsActivity extends AppCompatActivity {
             public void onClick(View v) {
                 AppState.INSTANCE.setCurrentItem(AppState.INSTANCE
                         .findCurrentItem(singleItem.getItemId(), type));
-                openIndiviudalUserItemspage();
+                openIndividualUserItemPage();
 
 
             }

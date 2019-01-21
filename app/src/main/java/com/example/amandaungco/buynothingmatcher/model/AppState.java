@@ -2,6 +2,7 @@ package com.example.amandaungco.buynothingmatcher.model;
 
 import com.google.firebase.auth.FirebaseUser;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class AppState {
@@ -13,6 +14,17 @@ public class AppState {
     private Item newItem;
     private ArrayList <Item> userOfferItems;
     private ArrayList <Item> userRequestItems;
+    private Match currentMatch;
+
+    public Match getCurrentMatch() {
+        return currentMatch;
+    }
+
+    public void setCurrentMatch(Match currentMatch) {
+        this.currentMatch = currentMatch;
+    }
+
+
 
 
     public ArrayList<Item> getUserOfferItems() {
@@ -82,6 +94,20 @@ public class AppState {
             }
         }
 
-        return currentItem;
+        return null;
+    }
+
+    public Match findCurrentMatch(int matchId, Item currentItem){
+        ArrayList<Match> searchMatches = currentItem.getMatches();
+        Match singleMatch;
+
+        for (int i = 0; i < searchMatches.size(); i++){
+            singleMatch = searchMatches.get(i);
+            if (singleMatch.getMatchId() == matchId){
+                return singleMatch;
+            }
+        }
+
+        return null;
     }
 }

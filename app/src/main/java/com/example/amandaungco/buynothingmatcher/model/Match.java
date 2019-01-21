@@ -1,5 +1,7 @@
 package com.example.amandaungco.buynothingmatcher.model;
 
+import com.google.gson.JsonObject;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -70,8 +72,27 @@ public class Match {
 
         itemMatch.setDistance(dataForMatchFromJSON.getString("distance"));
         itemMatch.setMatchId(dataForMatchFromJSON.getInt("id"));
-//        itemMatch.setRequestId(dataForMatchFromJSON.getInt("request_id"));
-//        itemMatch.setOfferId(dataForMatchFromJSON.getInt("offer_id"));
+
+        Object jsonOffer = dataForMatchFromJSON.get("offer");
+        if (jsonOffer instanceof Integer){
+            itemMatch.setOfferId((int)jsonOffer);
+        }else{
+           JSONObject jsonOfferObject = (JSONObject)jsonOffer;
+           int id;
+           id = jsonOfferObject.getInt("id");
+           itemMatch.setOfferId(id);
+        }
+
+        Object jsonRequest = dataForMatchFromJSON.get("request");
+        if (jsonRequest instanceof Integer){
+            itemMatch.setRequestId((int)jsonRequest);
+        }else{
+            JSONObject jsonRequestObject = (JSONObject)jsonRequest;
+            int id;
+            id = jsonRequestObject.getInt("id");
+            itemMatch.setRequestId(id);
+        }
+
         itemMatch.setStatus(dataForMatchFromJSON.getString("status"));
 
 
