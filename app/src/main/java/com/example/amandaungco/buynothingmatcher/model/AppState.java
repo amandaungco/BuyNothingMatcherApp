@@ -15,8 +15,24 @@ public class AppState {
     private ArrayList<Item> userOfferItems;
     private ArrayList<Item> userRequestItems;
     private Match currentMatch;
-    private ArrayList<Item> allDbItems;
+    private ArrayList<Item> allRequestDBItems;
+    private ArrayList<Item> allOfferDBItems;
 
+    public ArrayList<Item> getAllRequestDBItems() {
+        return allRequestDBItems;
+    }
+
+    public void setAllRequestDBItems(ArrayList<Item> allRequestDBItems) {
+        this.allRequestDBItems = allRequestDBItems;
+    }
+
+    public ArrayList<Item> getAllOfferDBItems() {
+        return allOfferDBItems;
+    }
+
+    public void setAllOfferDBItems(ArrayList<Item> allOfferDBItems) {
+        this.allOfferDBItems = allOfferDBItems;
+    }
 
     private static final String emulatorUrl = "http://10.0.2.2:8080/";
     private static final String computerIPUrl = "http://192.168.5.85:8080/";
@@ -29,17 +45,6 @@ public class AppState {
         return computerIPUrl;
     }
 
-    public static AppState getInstance() {
-        return INSTANCE;
-    }
-
-    public ArrayList<Item> getAllDbItems() {
-        return allDbItems;
-    }
-
-    public void setAllDbItems(ArrayList<Item> allDbItems) {
-        this.allDbItems = allDbItems;
-    }
 
     public Match getCurrentMatch() {
         return currentMatch;

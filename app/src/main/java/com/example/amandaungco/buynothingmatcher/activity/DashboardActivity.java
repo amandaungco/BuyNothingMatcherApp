@@ -248,20 +248,20 @@ public class DashboardActivity extends AppCompatActivity {
     private void getAlltemsRequest() {
 
 
-        RequestQueue getAllDbItemsRequestQueue = Volley.newRequestQueue(this);
+
+        RequestQueue getItemsRequestQueue = Volley.newRequestQueue(this);
 
 
         String baseUrl = AppState.getComputerIPUrl();
 //        Long userID;
 //
 //        userID = AppState.INSTANCE.getCurrentUser().getUserId();
-////        AppState.INSTANCE.getNewItem().setType(type);
+//        AppState.INSTANCE.getNewItem().setType(type);
 
         ArrayList<String> itemTypes = new ArrayList<>();
         itemTypes.add("offers");
         itemTypes.add("requests");
 
-        final ArrayList<Item> items = new ArrayList<>();
 
         for (int i = 0; i < itemTypes.size(); i++) {
             final String itemType = itemTypes.get(i);
@@ -272,6 +272,7 @@ public class DashboardActivity extends AppCompatActivity {
                 public void onResponse(JSONArray response) {
 
                     try {
+                        ArrayList<Item> items = new ArrayList<>();
 
                         for (int i = 0; i < response.length(); i++) {
                             Object singleItem = response.get(i);
@@ -280,7 +281,11 @@ public class DashboardActivity extends AppCompatActivity {
                             }
                             JSONObject singleJSONItem = (JSONObject) singleItem;
                             items.add(Item.convertJSONtoItem(singleJSONItem));
-
+                        }
+                        if ("offers".equals(itemType)){
+                            AppState.INSTANCE.setAllOfferDBItems(items);
+                        } else{
+                            AppState.INSTANCE.setAllRequestDBItems(items);
                         }
 //
                     } catch (JSONException e) {
@@ -297,10 +302,8 @@ public class DashboardActivity extends AppCompatActivity {
                     }
                 }
             });
-            getAllDbItemsRequestQueue.add(itemDataGetRequest);
+            getItemsRequestQueue.add(itemDataGetRequest);
         }
-        AppState.INSTANCE.setAllDbItems(items);
-
 
     }
 

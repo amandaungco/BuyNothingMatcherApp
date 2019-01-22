@@ -67,10 +67,12 @@
         android:trackTint="@color/browser_actions_title_color"
         android:trackTintMode="screen"
         android:visibility="visible"
+        android:layout_weight="2"
         tools:trackTintMode="src_over" />
 <ScrollView
     android:layout_width="match_parent"
-    android:layout_height="400dp">
+    android:layout_height="400dp"
+    android:layout_weight="4">
     <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="400dp">
@@ -111,7 +113,8 @@
         android:layout_height="wrap_content"
         android:background="@color/design_default_color_primary"
         android:clickable="true"
-        android:text="Add an Item" />
+        android:text="Add an Item"
+        android:layout_weight="2"/>
 
 
 </LinearLayout>
