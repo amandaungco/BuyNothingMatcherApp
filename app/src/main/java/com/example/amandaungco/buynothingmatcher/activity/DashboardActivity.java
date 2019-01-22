@@ -191,7 +191,7 @@ public class DashboardActivity extends AppCompatActivity {
         RequestQueue getItemsRequestQueue = Volley.newRequestQueue(this);
 
 
-        String baseUrl = "http://10.0.2.2:8080/users/";
+        String baseUrl = AppState.getComputerIPUrl();
         Long userID;
 
         userID = AppState.INSTANCE.getCurrentUser().getUserId();
@@ -204,7 +204,7 @@ public class DashboardActivity extends AppCompatActivity {
 
         for (int i = 0; i < itemTypes.size(); i++) {
             final String itemType = itemTypes.get(i);
-            String requestURL = baseUrl + userID + "/" + itemType;
+            String requestURL = baseUrl + "users/" + userID + "/" + itemType;
 
             JsonArrayRequest itemDataGetRequest = new JsonArrayRequest(Request.Method.GET, requestURL, null, new Response.Listener<JSONArray>() {
                 @Override
@@ -251,7 +251,7 @@ public class DashboardActivity extends AppCompatActivity {
         RequestQueue getAllDbItemsRequestQueue = Volley.newRequestQueue(this);
 
 
-        String baseUrl = "http://10.0.2.2:8080/";
+        String baseUrl = AppState.getComputerIPUrl();
 //        Long userID;
 //
 //        userID = AppState.INSTANCE.getCurrentUser().getUserId();

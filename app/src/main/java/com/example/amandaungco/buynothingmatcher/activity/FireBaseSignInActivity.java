@@ -46,9 +46,8 @@ public class FireBaseSignInActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_fire_base_sign_in);
 
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-
         List<AuthUI.IdpConfig> providers = Arrays.asList(
+                new AuthUI.IdpConfig.GoogleBuilder().build(),
                 new AuthUI.IdpConfig.EmailBuilder().build());
 //
 // Create and launch sign-in intent
@@ -136,9 +135,6 @@ public class FireBaseSignInActivity extends AppCompatActivity {
 
 
         if (requestCode == RC_SIGN_IN) {
-            IdpResponse response = IdpResponse.fromResultIntent(data);
-
-
             if (resultCode == RESULT_OK) {
                 // Successfully signed in
                 IdpResponse idpResponse = IdpResponse.fromResultIntent(data);
@@ -148,12 +144,12 @@ public class FireBaseSignInActivity extends AppCompatActivity {
                 } else {
                     UserService.getUser(user, this, new UserService.ApiGetUserCallback() {
                         @Override
-                        public void onCallback (User user){
+                        public void onCallback(User user) {
                             AppState.INSTANCE.setCurrentUser(user);
+                            openDashboardPage();
                         }
                     });
                 }
-
             }
         } else {
             // Sign in failed. If response is null the user canceled the

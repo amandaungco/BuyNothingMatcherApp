@@ -13,6 +13,7 @@ import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.amandaungco.buynothingmatcher.activity.FireBaseSignInActivity;
+import com.example.amandaungco.buynothingmatcher.model.AppState;
 import com.example.amandaungco.buynothingmatcher.model.User;
 import com.google.firebase.auth.FirebaseUser;
 
@@ -36,8 +37,9 @@ public class UserService {
         userEmail = user.getEmail();
 
 
-        String url = "http://10.0.2.2:8080/users/?email=";
-        url = url + userEmail;
+        String url = AppState.getComputerIPUrl();
+        String params = "users/?email=";
+        url = url + params + userEmail;
 
         JsonArrayRequest findUserGetRequest = new JsonArrayRequest(Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
             @Override

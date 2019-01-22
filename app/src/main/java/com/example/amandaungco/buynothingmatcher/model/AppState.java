@@ -17,6 +17,18 @@ public class AppState {
     private Match currentMatch;
     private ArrayList<Item> allDbItems;
 
+
+    private static final String emulatorUrl = "http://10.0.2.2:8080/";
+    private static final String computerIPUrl = "http://192.168.5.85:8080/";
+
+    public static String getEmulatorUrl() {
+        return emulatorUrl;
+    }
+
+    public static String getComputerIPUrl() {
+        return computerIPUrl;
+    }
+
     public static AppState getInstance() {
         return INSTANCE;
     }
