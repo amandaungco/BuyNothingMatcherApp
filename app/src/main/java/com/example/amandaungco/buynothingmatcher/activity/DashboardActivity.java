@@ -10,9 +10,9 @@ import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
-import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -21,30 +21,39 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.amandaungco.buynothingmatcher.R;
 import com.example.amandaungco.buynothingmatcher.model.AppState;
+import com.example.amandaungco.buynothingmatcher.model.Card;
 import com.example.amandaungco.buynothingmatcher.model.Item;
 import com.example.amandaungco.buynothingmatcher.model.User;
+import com.example.amandaungco.buynothingmatcher.model.arrayAdapter;
+import com.example.amandaungco.buynothingmatcher.model.Card;
 import com.example.amandaungco.buynothingmatcher.service.UserService;
 import com.firebase.ui.auth.AuthUI;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.gson.JsonObject;
 import com.lorentzos.flingswipe.SwipeFlingAdapterView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.List;
 
 public class DashboardActivity extends AppCompatActivity {
 
     EditText searchEditText;
 
     String query;
+    List<Card> rowItems;
+    ListView listview;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,15 +61,22 @@ public class DashboardActivity extends AppCompatActivity {
         setContentView(R.layout.activity_dashboard);
 
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-         UserService.getUser(user, this, new UserService.ApiGetUserCallback() {
-             @Override
-             public void onCallback (User user){
-                 AppState.INSTANCE.setCurrentUser(user);
-                 getUserItemsRequest();
-             }
-         });
+        UserService.getUser(user, this, new UserService.ApiGetUserCallback() {
+            @Override
+            public void onCallback(User user) {
+                AppState.INSTANCE.setCurrentUser(user);
+                getUserItemsRequest();
 
-         getAlltemsRequest();
+            }
+        });
+
+        rowItems = new ArrayList<>();
+        createStarterCardsforGallery();
+        while (AppState.INSTANCE.getUserOfferItems() !=null ){
+            createCardsforGallery();
+        }
+
+//         getAlltemsRequest();
 
         System.out.println(user);
         Toast.makeText(DashboardActivity.this, "USER" + user, Toast.LENGTH_SHORT).show();
@@ -77,30 +93,23 @@ public class DashboardActivity extends AppCompatActivity {
         });
 
 
+       arrayAdapter arrayAdapter = new arrayAdapter(this, R.layout.item, rowItems);
 
-        final ArrayList al = new ArrayList<String>();
-        al.add("php");
-        al.add("c");
-        al.add("python");
-        al.add("java");
-
-        final ArrayAdapter arrayAdapter = new ArrayAdapter(this, R.layout.item, R.id.name, al );
-
-        SwipeFlingAdapterView flingContainer = (SwipeFlingAdapterView) findViewById(R.id.swipeFrame);
+        SwipeFlingAdapterView flingContainer = findViewById(R.id.swipeFrame);
 
         flingContainer.setAdapter(arrayAdapter);
         flingContainer.setFlingListener(new SwipeFlingAdapterView.onFlingListener() {
             @Override
             public void removeFirstObjectInAdapter() {
                 Log.d("LIST", "removed object!");
-                al.remove(0);
-                arrayAdapter.notifyDataSetChanged();
+                rowItems.remove(0);
+//                arrayAdapter.notifyDataSetChanged();
             }
 
             @Override
             public void onLeftCardExit(Object dataObject) {
 
-//                cards obj = (cards) dataObject;
+//                Card obj = (Card) dataObject;
 //                String userId = obj.getUserId();
 //                usersDb.child(userId).child("connections").child("nope").child(currentUId).setValue(true);
                 Toast.makeText(DashboardActivity.this, "Left", Toast.LENGTH_SHORT).show();
@@ -132,7 +141,6 @@ public class DashboardActivity extends AppCompatActivity {
                 openIndividualItemforSwiping();
             }
         });
-
 
 
         BottomNavigationView bottomNavigationView = findViewById(R.id.navigationView);
@@ -180,18 +188,20 @@ public class DashboardActivity extends AppCompatActivity {
         Intent intent = new Intent(this, IndividualItemForSwipingActivity.class);
         startActivity(intent);
     }
+
     private void openSearchResultsActivity() {
         Intent intent = new Intent(this, SearchResultsActivity.class);
         intent.putExtra("query", query);
         startActivity(intent);
     }
+
     private void getUserItemsRequest() {
 
 
         RequestQueue getItemsRequestQueue = Volley.newRequestQueue(this);
 
 
-        String baseUrl = AppState.getComputerIPUrl();
+        String baseUrl = AppState.getEmulatorUrl();
         Long userID;
 
         userID = AppState.INSTANCE.getCurrentUser().getUserId();
@@ -215,15 +225,15 @@ public class DashboardActivity extends AppCompatActivity {
 
                         for (int i = 0; i < response.length(); i++) {
                             Object singleItem = response.get(i);
-                            if (singleItem instanceof Integer){
-                               continue;
+                            if (singleItem instanceof Integer) {
+                                continue;
                             }
                             JSONObject singleJSONItem = (JSONObject) singleItem;
                             items.add(Item.convertJSONtoItem(singleJSONItem));
                         }
-                        if ("offers".equals(itemType)){
+                        if ("offers".equals(itemType)) {
                             AppState.INSTANCE.setUserOfferItems(items);
-                        } else{
+                        } else {
                             AppState.INSTANCE.setUserRequestItems(items);
                         }
 //
@@ -243,49 +253,52 @@ public class DashboardActivity extends AppCompatActivity {
             });
             getItemsRequestQueue.add(itemDataGetRequest);
         }
+
     }
 
     private void getAlltemsRequest() {
 
 
-
         RequestQueue getItemsRequestQueue = Volley.newRequestQueue(this);
 
 
-        String baseUrl = AppState.getComputerIPUrl();
+        String baseUrl = AppState.getEmulatorUrl();
 //        Long userID;
 //
 //        userID = AppState.INSTANCE.getCurrentUser().getUserId();
 //        AppState.INSTANCE.getNewItem().setType(type);
 
         ArrayList<String> itemTypes = new ArrayList<>();
-        itemTypes.add("offers");
-        itemTypes.add("requests");
+        itemTypes.add("offers/");
+        itemTypes.add("requests/");
 
 
         for (int i = 0; i < itemTypes.size(); i++) {
             final String itemType = itemTypes.get(i);
             String requestURL = baseUrl + itemType;
 
-            JsonArrayRequest itemDataGetRequest = new JsonArrayRequest(Request.Method.GET, requestURL, null, new Response.Listener<JSONArray>() {
+            JsonObjectRequest itemDataGetRequest = new JsonObjectRequest(Request.Method.GET, requestURL, null, new Response.Listener<JSONObject>() {
                 @Override
-                public void onResponse(JSONArray response) {
+                public void onResponse(JSONObject response) {
+
 
                     try {
-                        ArrayList<Item> items = new ArrayList<>();
+                        JSONArray items;
+                        items = response.getJSONArray("content");
+                        ArrayList<Item> itemsfromDb = new ArrayList<>();
 
-                        for (int i = 0; i < response.length(); i++) {
-                            Object singleItem = response.get(i);
-                            if (singleItem instanceof Integer){
+                        for (int i = 0; i < items.length(); i++) {
+                            Object singleItem = items.get(i);
+                            if (singleItem instanceof Integer) {
                                 continue;
                             }
                             JSONObject singleJSONItem = (JSONObject) singleItem;
-                            items.add(Item.convertJSONtoItem(singleJSONItem));
+                            itemsfromDb.add(Item.convertJSONtoItem(singleJSONItem));
                         }
-                        if ("offers".equals(itemType)){
-                            AppState.INSTANCE.setAllOfferDBItems(items);
-                        } else{
-                            AppState.INSTANCE.setAllRequestDBItems(items);
+                        if ("offers".equals(itemType)) {
+                            AppState.INSTANCE.setAllOfferDBItems(itemsfromDb);
+                        } else {
+                            AppState.INSTANCE.setAllRequestDBItems(itemsfromDb);
                         }
 //
                     } catch (JSONException e) {
@@ -307,7 +320,33 @@ public class DashboardActivity extends AppCompatActivity {
 
     }
 
+    public void createCardsforGallery() {
+        ArrayList<Item> itemsForCards;
+        itemsForCards = AppState.INSTANCE.getUserOfferItems();
+        Item singleItemforCard;
 
+        for (int i = 0; i < itemsForCards.size(); i++) {
+            singleItemforCard = itemsForCards.get(i);
+            Card itemCard = new Card(singleItemforCard.getItemId(), singleItemforCard.getTitle());
+            rowItems.add(itemCard);
+        }
+    }
+
+    public void createStarterCardsforGallery(){
+        ArrayList <String> testvalues = new ArrayList<>();
+        testvalues.add("Test 1");
+        testvalues.add("test 2");
+        testvalues.add("test 3");
+        testvalues.add("test 4");
+        testvalues.add("test 5");
+        testvalues.add("test 6");
+
+        for (int i = 0; i < testvalues.size(); i++) {
+            Card itemCard = new Card(i, testvalues.get(i));
+            rowItems.add(itemCard);
+        }
+
+    }
 
 
 }

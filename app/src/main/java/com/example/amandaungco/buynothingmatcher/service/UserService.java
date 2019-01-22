@@ -37,7 +37,7 @@ public class UserService {
         userEmail = user.getEmail();
 
 
-        String url = AppState.getComputerIPUrl();
+        String url = AppState.getEmulatorUrl();
         String params = "users/?email=";
         url = url + params + userEmail;
 
@@ -57,7 +57,8 @@ public class UserService {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Log.e(TAG, error.getMessage());
+                error.printStackTrace();
+//                Log.e(TAG, error.getMessage());
             }
         });
 

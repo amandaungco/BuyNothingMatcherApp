@@ -32,7 +32,7 @@
                 android:scaleType="centerCrop"
                 />
             <TextView
-                android:id="@+id/name"
+                android:id="@+id/swipeItemTitle"
                 android:textSize="30sp"
                 android:paddingLeft="20sp"
                 android:textColor="@android:color/black"
