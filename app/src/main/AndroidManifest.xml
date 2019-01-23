@@ -14,17 +14,16 @@
         <activity android:name=".activity.IndividualMatchActivity"></activity>
         <activity android:name=".activity.MyAccountActivity" />
         <activity android:name=".activity.DashboardActivity">
-        </activity>
-        <activity android:name=".activity.MyItemsActivity" />
-        <activity android:name=".activity.AddItemActivity" />
-        <activity android:name=".activity.ShowIndividualUsersItemActivity" />
-        <activity android:name=".activity.FireBaseSignInActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".activity.MyItemsActivity" />
+        <activity android:name=".activity.AddItemActivity" />
+        <activity android:name=".activity.ShowIndividualUsersItemActivity" />
+        <activity android:name=".activity.FireBaseSignInActivity"/>
         <activity android:name=".activity.SearchResultsActivity" />
         <activity android:name=".activity.IndividualItemForSwipingActivity" />
     </application>

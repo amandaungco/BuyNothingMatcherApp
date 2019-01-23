@@ -8,10 +8,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MenuItem;
-import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -22,28 +20,22 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.Volley;
 import com.example.amandaungco.buynothingmatcher.R;
 import com.example.amandaungco.buynothingmatcher.model.AppState;
 import com.example.amandaungco.buynothingmatcher.model.Card;
 import com.example.amandaungco.buynothingmatcher.model.Item;
+import com.example.amandaungco.buynothingmatcher.model.RequestQueueSingleton;
 import com.example.amandaungco.buynothingmatcher.model.User;
 import com.example.amandaungco.buynothingmatcher.model.arrayAdapter;
-import com.example.amandaungco.buynothingmatcher.model.Card;
 import com.example.amandaungco.buynothingmatcher.service.UserService;
-import com.firebase.ui.auth.AuthUI;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.gson.JsonObject;
 import com.lorentzos.flingswipe.SwipeFlingAdapterView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -56,30 +48,38 @@ public class DashboardActivity extends AppCompatActivity {
     ListView listview;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dashboard);
 
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        UserService.getUser(user, this, new UserService.ApiGetUserCallback() {
-            @Override
-            public void onCallback(User user) {
-                AppState.INSTANCE.setCurrentUser(user);
-                getUserItemsRequest();
+        if (user != null) {
+            UserService.getUser(user, this, new UserService.ApiGetUserCallback() {
+                @Override
+                public void onCallback(User user) {
+                    AppState.INSTANCE.setCurrentUser(user);
+                    getUserItemsRequest();
+                    System.out.println(user);
+                    Toast.makeText(DashboardActivity.this, "USER" + user, Toast.LENGTH_SHORT).show();
 
-            }
-        });
+                }
+            });
+        } else {
+            openLoginPage();
+            return;
+        }
+
 
         rowItems = new ArrayList<>();
         createStarterCardsforGallery();
-        while (AppState.INSTANCE.getUserOfferItems() !=null ){
-            createCardsforGallery();
-        }
+//        createCardsforGallery();
+//        while (AppState.INSTANCE.getUserOfferItems() !=null ){
+//            createCardsforGallery();
+//        }
 
-//         getAlltemsRequest();
+         getAlltemsRequest();
 
-        System.out.println(user);
-        Toast.makeText(DashboardActivity.this, "USER" + user, Toast.LENGTH_SHORT).show();
+
 
         searchEditText = findViewById(R.id.searchBar);
         searchEditText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
@@ -93,7 +93,7 @@ public class DashboardActivity extends AppCompatActivity {
         });
 
 
-       arrayAdapter arrayAdapter = new arrayAdapter(this, R.layout.item, rowItems);
+        final arrayAdapter arrayAdapter = new arrayAdapter(this, R.layout.item, rowItems);
 
         SwipeFlingAdapterView flingContainer = findViewById(R.id.swipeFrame);
 
@@ -103,7 +103,7 @@ public class DashboardActivity extends AppCompatActivity {
             public void removeFirstObjectInAdapter() {
                 Log.d("LIST", "removed object!");
                 rowItems.remove(0);
-//                arrayAdapter.notifyDataSetChanged();
+                arrayAdapter.notifyDataSetChanged();
             }
 
             @Override
@@ -179,6 +179,11 @@ public class DashboardActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
+    private void openLoginPage() {
+        Intent intent = new Intent(this, FireBaseSignInActivity.class);
+        startActivity(intent);
+    }
+
     private void openMyAccountPage() {
         Intent intent = new Intent(this, MyAccountActivity.class);
         startActivity(intent);
@@ -198,10 +203,9 @@ public class DashboardActivity extends AppCompatActivity {
     private void getUserItemsRequest() {
 
 
-        RequestQueue getItemsRequestQueue = Volley.newRequestQueue(this);
+        RequestQueue buyNothingApiRequestQueue = RequestQueueSingleton.getInstance(this.getApplicationContext()).getRequestQueue();
 
-
-        String baseUrl = AppState.getEmulatorUrl();
+        String baseUrl = AppState.getApiURL();
         Long userID;
 
         userID = AppState.INSTANCE.getCurrentUser().getUserId();
@@ -251,7 +255,7 @@ public class DashboardActivity extends AppCompatActivity {
                     }
                 }
             });
-            getItemsRequestQueue.add(itemDataGetRequest);
+            buyNothingApiRequestQueue.add(itemDataGetRequest);
         }
 
     }
@@ -259,10 +263,9 @@ public class DashboardActivity extends AppCompatActivity {
     private void getAlltemsRequest() {
 
 
-        RequestQueue getItemsRequestQueue = Volley.newRequestQueue(this);
+        RequestQueue buyNothingApiRequestQueue = RequestQueueSingleton.getInstance(this.getApplicationContext()).getRequestQueue();
 
-
-        String baseUrl = AppState.getEmulatorUrl();
+        String baseUrl = AppState.getApiURL();
 //        Long userID;
 //
 //        userID = AppState.INSTANCE.getCurrentUser().getUserId();
@@ -297,8 +300,10 @@ public class DashboardActivity extends AppCompatActivity {
                         }
                         if ("offers".equals(itemType)) {
                             AppState.INSTANCE.setAllOfferDBItems(itemsfromDb);
+                            Toast.makeText(DashboardActivity.this, "ALl DB Offers Loaded to appState" + itemsfromDb.size(), Toast.LENGTH_SHORT).show();
                         } else {
                             AppState.INSTANCE.setAllRequestDBItems(itemsfromDb);
+                            Toast.makeText(DashboardActivity.this, "ALl DB Requests Loaded to appState" + itemsfromDb.size(), Toast.LENGTH_SHORT).show();
                         }
 //
                     } catch (JSONException e) {
@@ -315,7 +320,7 @@ public class DashboardActivity extends AppCompatActivity {
                     }
                 }
             });
-            getItemsRequestQueue.add(itemDataGetRequest);
+            buyNothingApiRequestQueue.add(itemDataGetRequest);
         }
 
     }
@@ -332,8 +337,8 @@ public class DashboardActivity extends AppCompatActivity {
         }
     }
 
-    public void createStarterCardsforGallery(){
-        ArrayList <String> testvalues = new ArrayList<>();
+    public void createStarterCardsforGallery() {
+        ArrayList<String> testvalues = new ArrayList<>();
         testvalues.add("Test 1");
         testvalues.add("test 2");
         testvalues.add("test 3");

@@ -1,8 +1,5 @@
 package com.example.amandaungco.buynothingmatcher.model;
 
-import com.google.firebase.auth.FirebaseUser;
-
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class AppState {
@@ -33,17 +30,20 @@ public class AppState {
     public void setAllOfferDBItems(ArrayList<Item> allOfferDBItems) {
         this.allOfferDBItems = allOfferDBItems;
     }
+    //emulatior URL: "http://10.0.2.2:8080/";
+    //computerIPUrl:"http://192.168.5.85:8080/";
+    //ada Ip: 172.24.25.133
 
-    private static final String emulatorUrl = "http://10.0.2.2:8080/";
-    private static final String computerIPUrl = "http://192.168.5.85:8080/";
+    private static final String apiURL = "http://172.24.25.133:8080/";
+//    private static final String computerIPUrl = "http://192.168.5.85:8080/";
 
-    public static String getEmulatorUrl() {
-        return emulatorUrl;
+    public static String getApiURL() {
+        return apiURL;
     }
-
-    public static String getComputerIPUrl() {
-        return computerIPUrl;
-    }
+//
+//    public static String getComputerIPUrl() {
+//        return computerIPUrl;
+//    }
 
 
     public Match getCurrentMatch() {

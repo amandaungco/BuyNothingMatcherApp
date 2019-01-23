@@ -30,10 +30,10 @@ public class arrayAdapter extends ArrayAdapter<Card> {
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.item, parent, false);
         }
 
-        TextView swipeItemTitile = (TextView) convertView.findViewById(R.id.swipeItemTitle);
-        ImageView image = (ImageView) convertView.findViewById(R.id.image);
+        TextView swipeItemTitile = convertView.findViewById(R.id.swipeItemTitle);
+        ImageView image =  convertView.findViewById(R.id.image);
 
-        swipeItemTitile.setText(card_item.getTitle());
+        swipeItemTitile.setText("Item: " + card_item.getRequestId() + " " + card_item.getTitle());
 //        switch (card_item.getProfileImageUrl()) {
 //            case "default":
 //                Glide.with(convertView.getContext()).load(R.mipmap.ic_launcher).into(image);
