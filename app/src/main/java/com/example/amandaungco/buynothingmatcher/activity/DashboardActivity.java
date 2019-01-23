@@ -70,7 +70,7 @@ public class DashboardActivity extends AppCompatActivity {
                 @Override
                 public void onCallback(User user) {
                     AppState.INSTANCE.setCurrentUser(user);
-                    getUserItemsRequest(buyNothingApiRequestQueue);
+                    getItemsRequest(buyNothingApiRequestQueue);
 
                 }
             });
@@ -225,14 +225,19 @@ public class DashboardActivity extends AppCompatActivity {
 //    }
 
 
-    private void getUserItemsRequest(RequestQueue requestQueue) {
+    private void getItemsRequest(RequestQueue requestQueue) {
 
         final CompletableFuture<ArrayList<Item>> userOfferItemsRequest = ApiCalls.getUserItemsCall(requestQueue, true);
         final CompletableFuture<ArrayList<Item>> userRequestItemsRequest = ApiCalls.getUserItemsCall(requestQueue, false);
 
+        final CompletableFuture<ArrayList<Item>> dbOfferItemsRequest = ApiCalls.getDBItemsCall(requestQueue, true);
+        final CompletableFuture<ArrayList<Item>> dbRequestItemsRequest = ApiCalls.getDBItemsCall(requestQueue, false);
+
         List<CompletableFuture<ArrayList<Item>>> apiCallFutures = new ArrayList<>();
         apiCallFutures.add(userOfferItemsRequest);
         apiCallFutures.add(userRequestItemsRequest);
+        apiCallFutures.add(dbOfferItemsRequest);
+        apiCallFutures.add(dbRequestItemsRequest);
 
         CompletableFuture.allOf(apiCallFutures.toArray(new CompletableFuture[apiCallFutures.size()])).thenApply(new Function<Void, Void>() {
             public Void apply(Void o) {
@@ -240,12 +245,16 @@ public class DashboardActivity extends AppCompatActivity {
                 // here we can safely call .get on the future!
 
                 try {
-                    ArrayList<Item> offerItems = userOfferItemsRequest.get();
-                    ArrayList<Item> requestItems = userRequestItemsRequest.get();
-                    AppState.INSTANCE.setUserOfferItems(offerItems);
-                    AppState.INSTANCE.setUserRequestItems(requestItems);
-                    createCardsforGallery(offerItems, true);
-                    createCardsforGallery(requestItems, false);
+                    ArrayList<Item> userOfferItems = userOfferItemsRequest.get();
+                    ArrayList<Item> userRequestItems = userRequestItemsRequest.get();
+                    ArrayList<Item> dbRequestItems = dbRequestItemsRequest.get();
+                    ArrayList<Item> dbOfferItems = dbOfferItemsRequest.get();
+                    AppState.INSTANCE.setUserOfferItems(userOfferItems);
+                    AppState.INSTANCE.setUserRequestItems(userRequestItems);
+                    AppState.INSTANCE.setAllOfferDBItems(dbOfferItems);
+                    AppState.INSTANCE.setAllRequestDBItems(dbRequestItems);
+                    createCardsforGallery(dbOfferItems, true);
+                    createCardsforGallery(dbRequestItems, false);
 
                 } catch (InterruptedException | ExecutionException e) {
                     e.printStackTrace();
@@ -321,70 +330,70 @@ public class DashboardActivity extends AppCompatActivity {
 //
 //    }
 
-    private void getAlltemsRequest() {
-
-
-        RequestQueue buyNothingApiRequestQueue = RequestQueueSingleton.getInstance(this.getApplicationContext()).getRequestQueue();
-
-        String baseUrl = AppState.getApiURL();
-//        Long userID;
+//    private void getAlltemsRequest() {
 //
-//        userID = AppState.INSTANCE.getCurrentUser().getUserId();
-//        AppState.INSTANCE.getNewItem().setType(type);
-
-        ArrayList<String> itemTypes = new ArrayList<>();
-        itemTypes.add("offers/");
-        itemTypes.add("requests/");
-
-
-        for (int i = 0; i < itemTypes.size(); i++) {
-            final String itemType = itemTypes.get(i);
-            String requestURL = baseUrl + itemType;
-
-            JsonObjectRequest itemDataGetRequest = new JsonObjectRequest(Request.Method.GET, requestURL, null, new Response.Listener<JSONObject>() {
-                @Override
-                public void onResponse(JSONObject response) {
-
-
-                    try {
-                        JSONArray items;
-                        items = response.getJSONArray("content");
-                        ArrayList<Item> itemsfromDb = new ArrayList<>();
-
-                        for (int i = 0; i < items.length(); i++) {
-                            Object singleItem = items.get(i);
-                            if (singleItem instanceof Integer) {
-                                continue;
-                            }
-                            JSONObject singleJSONItem = (JSONObject) singleItem;
-                            itemsfromDb.add(Item.convertJSONtoItem(singleJSONItem));
-                        }
-                        if ("offers/".equals(itemType)) {
-                            AppState.INSTANCE.setAllOfferDBItems(itemsfromDb);
-                            Toast.makeText(DashboardActivity.this, "OFFERS LOADED " + itemsfromDb.size(), Toast.LENGTH_SHORT).show();
-                        } else {
-                            AppState.INSTANCE.setAllRequestDBItems(itemsfromDb);
-                            Toast.makeText(DashboardActivity.this, "ALl DB Requests Loaded to appState " + itemsfromDb.size(), Toast.LENGTH_SHORT).show();
-                        }
 //
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                        Toast.makeText(getApplicationContext(), "Error:  " + e.getMessage(), Toast.LENGTH_SHORT).show();
-                    }
-                }
-            }, new Response.ErrorListener() {
-                @Override
-                public void onErrorResponse(VolleyError error) {
-                    if (error != null) {
-                        Toast.makeText(getApplicationContext(), "Error:  " + error.getMessage(), Toast.LENGTH_SHORT).show();
-                        error.printStackTrace();
-                    }
-                }
-            });
-            buyNothingApiRequestQueue.add(itemDataGetRequest);
-        }
+//        RequestQueue buyNothingApiRequestQueue = RequestQueueSingleton.getInstance(this.getApplicationContext()).getRequestQueue();
+//
+//        String baseUrl = AppState.getApiURL();
+////        Long userID;
+////
+////        userID = AppState.INSTANCE.getCurrentUser().getUserId();
+////        AppState.INSTANCE.getNewItem().setType(type);
+//
+//        ArrayList<String> itemTypes = new ArrayList<>();
+//        itemTypes.add("offers/");
+//        itemTypes.add("requests/");
+//
+//
+//        for (int i = 0; i < itemTypes.size(); i++) {
+//            final String itemType = itemTypes.get(i);
+//            String requestURL = baseUrl + itemType;
 
-    }
+//            JsonObjectRequest itemDataGetRequest = new JsonObjectRequest(Request.Method.GET, requestURL, null, new Response.Listener<JSONObject>() {
+//                @Override
+//                public void onResponse(JSONObject response) {
+
+
+//                    try {
+//                        JSONArray items;
+//                        items = response.getJSONArray("content");
+//                        ArrayList<Item> itemsfromDb = new ArrayList<>();
+//
+//                        for (int i = 0; i < items.length(); i++) {
+//                            Object singleItem = items.get(i);
+//                            if (singleItem instanceof Integer) {
+//                                continue;
+//                            }
+//                            JSONObject singleJSONItem = (JSONObject) singleItem;
+//                            itemsfromDb.add(Item.convertJSONtoItem(singleJSONItem));
+//                        }
+//                        if ("offers/".equals(itemType)) {
+//                            AppState.INSTANCE.setAllOfferDBItems(itemsfromDb);
+//                            Toast.makeText(DashboardActivity.this, "OFFERS LOADED " + itemsfromDb.size(), Toast.LENGTH_SHORT).show();
+//                        } else {
+//                            AppState.INSTANCE.setAllRequestDBItems(itemsfromDb);
+//                            Toast.makeText(DashboardActivity.this, "ALl DB Requests Loaded to appState " + itemsfromDb.size(), Toast.LENGTH_SHORT).show();
+//                        }
+////
+//                    } catch (JSONException e) {
+//                        e.printStackTrace();
+//                        Toast.makeText(getApplicationContext(), "Error:  " + e.getMessage(), Toast.LENGTH_SHORT).show();
+//                    }
+//                }
+//            }, new Response.ErrorListener() {
+//                @Override
+//                public void onErrorResponse(VolleyError error) {
+//                    if (error != null) {
+//                        Toast.makeText(getApplicationContext(), "Error:  " + error.getMessage(), Toast.LENGTH_SHORT).show();
+//                        error.printStackTrace();
+//                    }
+//                }
+//            });
+//            buyNothingApiRequestQueue.add(itemDataGetRequest);
+//        }
+//
+//    }
 
     public void createCardsforGallery(ArrayList<Item> itemsForCards, Boolean isOffer) {
         Item singleItemforCard;
