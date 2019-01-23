@@ -34,7 +34,8 @@
                 android:scaleType="centerCrop"
                 android:background="@color/colorPrimary"
                 />
-            <TextView
+            <com.example.amandaungco.buynothingmatcher.model.swipingTextView
+                xmlns:android="http://schemas.android.com/apk/res/android"
                 android:id="@+id/swipeItemTitle"
                 android:textSize="30sp"
                 android:paddingLeft="20sp"

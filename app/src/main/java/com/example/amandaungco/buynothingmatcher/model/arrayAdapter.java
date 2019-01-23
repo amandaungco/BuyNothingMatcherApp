@@ -30,10 +30,21 @@ public class arrayAdapter extends ArrayAdapter<Card> {
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.item, parent, false);
         }
 
-        TextView swipeItemTitile = convertView.findViewById(R.id.swipeItemTitle);
+        swipingTextView swipeItemTitile = convertView.findViewById(R.id.swipeItemTitle);
         ImageView image =  convertView.findViewById(R.id.image);
+        Boolean isOffer;
+        isOffer =  card_item.getOffer();
+        String type;
 
-        swipeItemTitile.setText("Item: " + card_item.getRequestId() + " " + card_item.getTitle());
+        if (isOffer){
+            type = "Offer";
+            swipeItemTitile.setOffer(true);
+        }else{
+            type = "Request";
+            swipeItemTitile.setOffer(false);
+        }
+
+        swipeItemTitile.setText("Type" + card_item.getRequestId() + ": " + card_item.getTitle());
 //        switch (card_item.getProfileImageUrl()) {
 //            case "default":
 //                Glide.with(convertView.getContext()).load(R.mipmap.ic_launcher).into(image);

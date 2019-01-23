@@ -5,6 +5,7 @@ import android.widget.Toast;
 
 import com.example.amandaungco.buynothingmatcher.activity.FireBaseSignInActivity;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -33,7 +34,6 @@ public class Item {
     public void setMatches(ArrayList matches) {
         this.matches = matches;
     }
-
 
 
     public String getDescription() {
@@ -102,20 +102,19 @@ public class Item {
     }
 
 
-
     public static JSONObject convertItemToJson(Item itemForJson) throws JSONException {
 
 //        try {
-            JSONObject itemDataBody = new JSONObject();
+        JSONObject itemDataBody = new JSONObject();
 
 
-            itemDataBody.put("title", itemForJson.getTitle());
-            itemDataBody.put("quantity", itemForJson.getQuantity());
-            itemDataBody.put("category", itemForJson.getCategory());
-            itemDataBody.put("status", itemForJson.getStatus());
-            itemDataBody.put("distance", itemForJson.getDistance());
-            itemDataBody.put("description", itemForJson.getDescription());
-            return itemDataBody;
+        itemDataBody.put("title", itemForJson.getTitle());
+        itemDataBody.put("quantity", itemForJson.getQuantity());
+        itemDataBody.put("category", itemForJson.getCategory());
+        itemDataBody.put("status", itemForJson.getStatus());
+        itemDataBody.put("distance", itemForJson.getDistance());
+        itemDataBody.put("description", itemForJson.getDescription());
+        return itemDataBody;
 //        }
 //        catch (JSONException e) {
 //            e.printStackTrace();
@@ -133,7 +132,13 @@ public class Item {
         newItem.setCategory(itemJSONData.getString("category"));
         newItem.setTitle(itemJSONData.getString("title"));
         newItem.setQuantity(itemJSONData.getInt("quantity"));
-        newItem.setMatches(Match.makeItemMatchesFromJSON(itemJSONData.getJSONArray("matches")));
+        Object matches;
+        matches = itemJSONData.get("matches");
+        if (matches instanceof JSONArray) {
+            newItem.setMatches(Match.makeItemMatchesFromJSON(itemJSONData.getJSONArray("matches")));
+        } else {
+            newItem.setMatches(null);
+        }
 
         return newItem;
 

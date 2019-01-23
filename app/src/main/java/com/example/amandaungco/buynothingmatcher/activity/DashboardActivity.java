@@ -8,9 +8,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MenuItem;
+import android.view.View;
 import android.view.inputmethod.EditorInfo;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -42,10 +45,12 @@ import java.util.List;
 public class DashboardActivity extends AppCompatActivity {
 
     EditText searchEditText;
-
     String query;
     List<Card> rowItems;
     ListView listview;
+    Switch requestOrOffer;
+    Boolean isOffer;
+    ArrayList<Item> itemsForCards;
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
@@ -58,9 +63,7 @@ public class DashboardActivity extends AppCompatActivity {
                 @Override
                 public void onCallback(User user) {
                     AppState.INSTANCE.setCurrentUser(user);
-                    getUserItemsRequest();
-                    System.out.println(user);
-                    Toast.makeText(DashboardActivity.this, "USER" + user, Toast.LENGTH_SHORT).show();
+                     makeAPICalls();
 
                 }
             });
@@ -69,16 +72,25 @@ public class DashboardActivity extends AppCompatActivity {
             return;
         }
 
+        requestOrOffer = findViewById(R.id.requestOrOffer);
+        isOffer = requestOrOffer.isChecked();
+        requestOrOffer.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            public void onCheckedChanged(CompoundButton buttonView, boolean isOffer) {
+
+                if (isOffer) {
+                    itemsForCards = AppState.INSTANCE.getAllOfferDBItems();
+
+                } else {
+                    itemsForCards = AppState.INSTANCE.getAllOfferDBItems();
+
+                }
+                createCardsforGallery(itemsForCards, isOffer);
+            }
+        });
+
 
         rowItems = new ArrayList<>();
         createStarterCardsforGallery();
-//        createCardsforGallery();
-//        while (AppState.INSTANCE.getUserOfferItems() !=null ){
-//            createCardsforGallery();
-//        }
-
-         getAlltemsRequest();
-
 
 
         searchEditText = findViewById(R.id.searchBar);
@@ -170,10 +182,7 @@ public class DashboardActivity extends AppCompatActivity {
 
     }
 
-    //create method for the gallery, load all items from database except items with user id figure out how to split by offer and request
-    //set image from first index in the arraylist from app state for specific type, use on swipe listener
-    //swipe right, create match and call the next one
-    //swipe left, call the next one
+
     private void openMyItemsPage() {
         Intent intent = new Intent(this, MyItemsActivity.class);
         startActivity(intent);
@@ -199,6 +208,12 @@ public class DashboardActivity extends AppCompatActivity {
         intent.putExtra("query", query);
         startActivity(intent);
     }
+
+    private void makeAPICalls(){
+        getAlltemsRequest();
+        getUserItemsRequest();
+    }
+
 
     private void getUserItemsRequest() {
 
@@ -298,12 +313,12 @@ public class DashboardActivity extends AppCompatActivity {
                             JSONObject singleJSONItem = (JSONObject) singleItem;
                             itemsfromDb.add(Item.convertJSONtoItem(singleJSONItem));
                         }
-                        if ("offers".equals(itemType)) {
+                        if ("offers/".equals(itemType)) {
                             AppState.INSTANCE.setAllOfferDBItems(itemsfromDb);
-                            Toast.makeText(DashboardActivity.this, "ALl DB Offers Loaded to appState" + itemsfromDb.size(), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(DashboardActivity.this, "OFFERS LOADED " + itemsfromDb.size(), Toast.LENGTH_SHORT).show();
                         } else {
                             AppState.INSTANCE.setAllRequestDBItems(itemsfromDb);
-                            Toast.makeText(DashboardActivity.this, "ALl DB Requests Loaded to appState" + itemsfromDb.size(), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(DashboardActivity.this, "ALl DB Requests Loaded to appState " + itemsfromDb.size(), Toast.LENGTH_SHORT).show();
                         }
 //
                     } catch (JSONException e) {
@@ -325,14 +340,12 @@ public class DashboardActivity extends AppCompatActivity {
 
     }
 
-    public void createCardsforGallery() {
-        ArrayList<Item> itemsForCards;
-        itemsForCards = AppState.INSTANCE.getUserOfferItems();
+    public void createCardsforGallery(ArrayList<Item> itemsForCards, Boolean isOffer) {
         Item singleItemforCard;
 
         for (int i = 0; i < itemsForCards.size(); i++) {
             singleItemforCard = itemsForCards.get(i);
-            Card itemCard = new Card(singleItemforCard.getItemId(), singleItemforCard.getTitle());
+            Card itemCard = new Card(singleItemforCard.getItemId(), singleItemforCard.getTitle(), isOffer);
             rowItems.add(itemCard);
         }
     }
@@ -347,7 +360,7 @@ public class DashboardActivity extends AppCompatActivity {
         testvalues.add("test 6");
 
         for (int i = 0; i < testvalues.size(); i++) {
-            Card itemCard = new Card(i, testvalues.get(i));
+            Card itemCard = new Card(i, testvalues.get(i), true);
             rowItems.add(itemCard);
         }
 
