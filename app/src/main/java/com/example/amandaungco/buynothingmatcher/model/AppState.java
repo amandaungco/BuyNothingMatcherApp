@@ -1,5 +1,7 @@
 package com.example.amandaungco.buynothingmatcher.model;
 
+import com.android.volley.RequestQueue;
+
 import java.util.ArrayList;
 
 public class AppState {
@@ -141,3 +143,5 @@ public class AppState {
         return null;
     }
 }
+
+

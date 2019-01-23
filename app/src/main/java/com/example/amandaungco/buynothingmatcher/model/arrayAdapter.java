@@ -44,7 +44,7 @@ public class arrayAdapter extends ArrayAdapter<Card> {
             swipeItemTitile.setOffer(false);
         }
 
-        swipeItemTitile.setText("Type" + card_item.getRequestId() + ": " + card_item.getTitle());
+        swipeItemTitile.setText(type + card_item.getRequestId() + ": " + card_item.getTitle());
 //        switch (card_item.getProfileImageUrl()) {
 //            case "default":
 //                Glide.with(convertView.getContext()).load(R.mipmap.ic_launcher).into(image);
