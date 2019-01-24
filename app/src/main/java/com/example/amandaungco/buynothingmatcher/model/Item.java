@@ -154,4 +154,16 @@ public class Item {
 
 
     }
+
+    public static Item convertCardoItem(Card itemCardData)  {
+        Item newItem = new Item();
+
+        newItem.setDescription(itemCardData.getDescription());
+        newItem.setCategory(itemCardData.getCategory());
+        newItem.setTitle(itemCardData.getTitle());
+        newItem.setQuantity(itemCardData.getQuantity());
+        newItem.setImageURL(itemCardData.getImageUrl());
+
+        return newItem;
+    }
 }

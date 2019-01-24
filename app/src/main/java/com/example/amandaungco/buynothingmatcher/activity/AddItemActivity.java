@@ -87,10 +87,7 @@ public class AddItemActivity extends AppCompatActivity {
         addItemButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 postNewItemRequest(createItem(), buyNothingApiRequestQueue);
-//                creat eItem();// create hashmap with data from form, have data sent to API
-                //with post request, pull up next activtiy and have the activity make the get
-                //request from the API to show new object
-//                openIndividualUserItemShowPage(type);
+
 
             }
 
@@ -98,10 +95,6 @@ public class AddItemActivity extends AppCompatActivity {
         });
     }
 
-//    @Override
-//    public void onPointerCaptureChanged(boolean hasCapture) {
-//
-//    }
 
     private Item createItem() {
 
@@ -113,7 +106,6 @@ public class AddItemActivity extends AppCompatActivity {
 
         Item newItem = new Item();
         newItem.setCategory(itemCategory);
-//        newItem.setDistance();
         newItem.setQuantity(Integer.parseInt(itemQuantity));
         newItem.setStatus("ACTIVE");// create slider for this
         newItem.setTitle(itemTitle);
@@ -126,13 +118,10 @@ public class AddItemActivity extends AppCompatActivity {
             newItem.setType("Request");
         }
 
-
         AppState.INSTANCE.setCurrentItem(newItem);
         return newItem;
 
-
     }
-
 
     private void postNewItemRequest(final Item item, RequestQueue requestQueue) {
 
@@ -141,7 +130,7 @@ public class AddItemActivity extends AppCompatActivity {
         List<CompletableFuture<Item>> apiCallFutures = new ArrayList<>();
         apiCallFutures.add(userPostItemRequest);
         final String type;
-        type = item.getType();
+        type = item.getType().toUpperCase();
 
 
         CompletableFuture.allOf(apiCallFutures.toArray(new CompletableFuture[apiCallFutures.size()])).thenApply(new Function<Void, Void>() {
@@ -150,7 +139,7 @@ public class AddItemActivity extends AppCompatActivity {
                 try {
                     Item userPostNewItem = userPostItemRequest.get();
                     AppState.INSTANCE.setCurrentItem(userPostNewItem);
-                    if (type == "offer"){
+                    if (type == "OFFER"){
                             ArrayList<Item> offers = AppState.INSTANCE.getUserOfferItems();
                             offers.add(AppState.INSTANCE.getCurrentItem());
                             AppState.INSTANCE.setUserOfferItems(offers);
@@ -169,81 +158,11 @@ public class AddItemActivity extends AppCompatActivity {
             }
         });
     }
-//    private void postNewItemRequest(Item item) {
-//
-//
-//        RequestQueue itemPostQueue = Volley.newRequestQueue(this);
-////break this into two methods, one to create json from firebase user -- firebasetoJSON
-//        try {
-//            String baseUrl = AppState.getApiURL() + "users/";
-//            Long userID;
-//            final String type;
-//            userID = AppState.INSTANCE.getCurrentUser().getUserId();
-//            type = item.getType().toLowerCase();
-//            AppState.INSTANCE.getCurrentItem().setType(type);
-//            String requestURL = baseUrl + userID + "/" + type + "s";
-//
-//            JSONObject itemRequestDataBody;
-//
-//            itemRequestDataBody = Item.convertItemToJson(item);
-////            itemRequestDataBody.put("type", type);
-//
-//            JsonObjectRequest itemDataPostRequest = new JsonObjectRequest(Request.Method.POST, requestURL, itemRequestDataBody, new Response.Listener<JSONObject>() {
-//                @Override
-//                public void onResponse(JSONObject response) {
-//
-//                    try {
-//                        AppState.INSTANCE.setCurrentItem(Item.convertJSONtoItem(response));
-//                        if (type == "offer"){
-//                            ArrayList<Item> offers = AppState.INSTANCE.getUserOfferItems();
-//                            offers.add(AppState.INSTANCE.getCurrentItem());
-//                            AppState.INSTANCE.setUserOfferItems(offers);
-//
-//                        } else {
-//                            ArrayList<Item> requests = AppState.INSTANCE.getUserRequestItems();
-//                            requests.add(AppState.INSTANCE.getCurrentItem());
-//                            AppState.INSTANCE.setUserRequestItems(requests);
-//                        }
-//                        openIndividualUserItemShowPage(type);
-////
-//                    } catch (JSONException e) {
-//                        e.printStackTrace();
-//                        Toast.makeText(getApplicationContext(), "Error:  " + e.getMessage(), Toast.LENGTH_SHORT).show();
-//
-//                    }
-//
-//
-//                }
-//            }, new Response.ErrorListener() {
-//                @Override
-//                public void onErrorResponse(VolleyError error) {
-//                    if (error !=null) {
-//                        Toast.makeText(getApplicationContext(), "Error:  " + error.getMessage(), Toast.LENGTH_SHORT).show();
-//                        error.printStackTrace();
-//                    }
-//                }
-//            });
-//            itemPostQueue.add(itemDataPostRequest);
-//        } catch (JSONException e) {
-//            e.printStackTrace();
-//        }
-//    }
-
-
-    //Maybe save to app state instead?
     private void openIndividualUserItemShowPage(String type) {
         Intent intent = new Intent(this, ShowIndividualUsersItemActivity.class);
         intent.putExtra("type", type);
-//        intent.putExtra("ItemCategory", newItem.getCategory());
-//        intent.putExtra("ItemType", newItem.getType());
-//        intent.putExtra("ItemDescription", newItem.getDescription());
-//        intent.putExtra("ItemQuantity", newItem.getQuantity());
         startActivity(intent);
     }
 
 }
-//
-//    private HashMap sendNewRequestToAPI(){
-//      create method to do post request
-//
-//    }
+

@@ -135,7 +135,8 @@ public class ApiCalls {
         userID = AppState.INSTANCE.getCurrentUser().getUserId();
         type = item.getType().toLowerCase();
         AppState.INSTANCE.getCurrentItem().setType(type);
-        String requestURL = baseUrl + userID + "/" + type + "s";
+        String requestURL;
+        requestURL= baseUrl + userID + "/" + type + "s";
         final CompletableFuture<Item> singleItemFromJSON = new CompletableFuture<>();
 
         try {

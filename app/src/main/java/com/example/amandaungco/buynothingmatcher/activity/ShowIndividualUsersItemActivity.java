@@ -7,9 +7,11 @@ import android.os.Bundle;
 import android.support.v7.widget.CardView;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.example.amandaungco.buynothingmatcher.R;
 import com.example.amandaungco.buynothingmatcher.model.AppState;
 import com.example.amandaungco.buynothingmatcher.model.Item;
@@ -35,6 +37,7 @@ public class ShowIndividualUsersItemActivity extends AppCompatActivity {
         String type = intent.getStringExtra("type");
         String description = currentItem.getDescription();
         ArrayList<Match> userItemMatches = AppState.INSTANCE.getCurrentItem().getMatches();
+        String imageUrl = currentItem.getImageURL();
         int quantity = currentItem.getQuantity();
 
         TextView itemTitleView;
@@ -42,6 +45,7 @@ public class ShowIndividualUsersItemActivity extends AppCompatActivity {
         TextView itemCategoryView;
         TextView itemDescriptionView;
         TextView matchesHeaderView;
+        ImageView itemImageView;
         FloatingActionButton dashboardButton;
 
         String itemHeader = type.toUpperCase() + " : " + title;
@@ -57,6 +61,11 @@ public class ShowIndividualUsersItemActivity extends AppCompatActivity {
                 openDashboardPage();
             }
         });
+
+        itemImageView = findViewById(R.id.IndividualUserItemImage);
+
+        Glide.with(this).load(imageUrl).into(itemImageView);
+
 
         itemTitleView = findViewById(R.id.itemTitle);
         itemTitleView.setText(itemHeader);

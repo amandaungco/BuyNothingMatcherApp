@@ -138,7 +138,15 @@ public class DashboardActivity extends AppCompatActivity {
             @Override
             public void onRightCardExit(Object itemCardDataObject) {
                 Card itemCardDataObjectCard = (Card) itemCardDataObject;
-                makeMatch(itemCardDataObjectCard);
+                Item cardItem = Item.convertCardoItem(itemCardDataObjectCard);
+                cardItem.setStatus("ACTIVE");
+                AppState.INSTANCE.setCurrentItem(cardItem);
+                if ((itemCardDataObjectCard.getOffer() == true)){
+                   cardItem.setType("REQUEST");
+                }else {
+                   cardItem.setType("OFFER");
+                }
+                makeComplementaryItemRequest(cardItem, buyNothingApiRequestQueue);
 //                cards obj = (cards) dataObject;
 //                String userId = obj.getUserId();
 //                usersDb.child(userId).child("connections").child("yeps").child(currentUId).setValue(true);
@@ -263,6 +271,41 @@ public class DashboardActivity extends AppCompatActivity {
                     AppState.INSTANCE.setAllRequestDBItems(dbRequestItems);
                     createCardsforGallery(dbOfferItems, true);
                     createCardsforGallery(dbRequestItems, false);
+
+                } catch (InterruptedException | ExecutionException e) {
+                    e.printStackTrace();
+                }
+                return null;
+            }
+        });
+    }
+
+    private void makeComplementaryItemRequest(final Item item, RequestQueue requestQueue) {
+
+        final CompletableFuture<Item> userPostItemRequest = ApiCalls.postNewItemRequest(item, requestQueue);
+
+        List<CompletableFuture<Item>> apiCallFutures = new ArrayList<>();
+        apiCallFutures.add(userPostItemRequest);
+        final String type;
+        type = item.getType().toUpperCase();
+
+
+        CompletableFuture.allOf(apiCallFutures.toArray(new CompletableFuture[apiCallFutures.size()])).thenApply(new Function<Void, Void>() {
+            public Void apply(Void o) {
+
+                try {
+                    Item userPostNewItem = userPostItemRequest.get();
+                    AppState.INSTANCE.setCurrentItem(userPostNewItem);
+                    if (type == "OFFER"){
+                        ArrayList<Item> offers = AppState.INSTANCE.getUserOfferItems();
+                        offers.add(AppState.INSTANCE.getCurrentItem());
+                        AppState.INSTANCE.setUserOfferItems(offers);
+
+                    } else {
+                        ArrayList<Item> requests = AppState.INSTANCE.getUserRequestItems();
+                        requests.add(AppState.INSTANCE.getCurrentItem());
+                        AppState.INSTANCE.setUserRequestItems(requests);
+                    }
 
                 } catch (InterruptedException | ExecutionException e) {
                     e.printStackTrace();
