@@ -25,6 +25,7 @@ import com.example.amandaungco.buynothingmatcher.model.Category;
 import com.example.amandaungco.buynothingmatcher.R;
 import com.example.amandaungco.buynothingmatcher.model.Item;
 import com.example.amandaungco.buynothingmatcher.model.User;
+import com.example.amandaungco.buynothingmatcher.service.ApiCalls;
 import com.google.firebase.auth.FirebaseUser;
 
 import org.json.JSONException;
@@ -126,63 +127,10 @@ public class AddItemActivity extends AppCompatActivity {
     }
 
     private void postNewItemRequest(Item item) {
+        ApiCalls.
+        openIndividualUserItemShowPage(type);
 
 
-        RequestQueue itemPostQueue = Volley.newRequestQueue(this);
-//break this into two methods, one to create json from firebase user -- firebasetoJSON
-        try {
-            String baseUrl = AppState.getApiURL();
-            Long userID;
-            final String type;
-            userID = AppState.INSTANCE.getCurrentUser().getUserId();
-            type = item.getType().toLowerCase();
-            AppState.INSTANCE.getCurrentItem().setType(type);
-            String requestURL = baseUrl + userID + "/" + type + "s";
-
-            JSONObject itemRequestDataBody;
-
-            itemRequestDataBody = Item.convertItemToJson(item);
-//            itemRequestDataBody.put("type", type);
-
-            JsonObjectRequest itemDataPostRequest = new JsonObjectRequest(Request.Method.POST, requestURL, itemRequestDataBody, new Response.Listener<JSONObject>() {
-                @Override
-                public void onResponse(JSONObject response) {
-
-                    try {
-                        AppState.INSTANCE.setCurrentItem(Item.convertJSONtoItem(response));
-                        if (type == "offer"){
-                            ArrayList<Item> offers = AppState.INSTANCE.getUserOfferItems();
-                            offers.add(AppState.INSTANCE.getCurrentItem());
-                            AppState.INSTANCE.setUserOfferItems(offers);
-
-                        } else {
-                            ArrayList<Item> requests = AppState.INSTANCE.getUserRequestItems();
-                            requests.add(AppState.INSTANCE.getCurrentItem());
-                            AppState.INSTANCE.setUserRequestItems(requests);
-                        }
-                        openIndividualUserItemShowPage(type);
-//
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                        Toast.makeText(getApplicationContext(), "Error:  " + e.getMessage(), Toast.LENGTH_SHORT).show();
-
-                    }
-
-
-                }
-            }, new Response.ErrorListener() {
-                @Override
-                public void onErrorResponse(VolleyError error) {
-                    if (error !=null) {
-                        Toast.makeText(getApplicationContext(), "Error:  " + error.getMessage(), Toast.LENGTH_SHORT).show();
-                        error.printStackTrace();
-                    }
-                }
-            });
-            itemPostQueue.add(itemDataPostRequest);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
     }
 
 

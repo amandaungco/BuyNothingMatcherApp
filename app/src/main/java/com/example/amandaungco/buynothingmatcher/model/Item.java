@@ -122,6 +122,7 @@ public class Item {
         itemDataBody.put("status", itemForJson.getStatus());
         itemDataBody.put("distance", itemForJson.getDistance());
         itemDataBody.put("description", itemForJson.getDescription());
+        itemDataBody.put("imageUrl", itemForJson.getImageURL());
         return itemDataBody;
 //        }
 //        catch (JSONException e) {
@@ -140,6 +141,7 @@ public class Item {
         newItem.setCategory(itemJSONData.getString("category"));
         newItem.setTitle(itemJSONData.getString("title"));
         newItem.setQuantity(itemJSONData.getInt("quantity"));
+        newItem.setImageURL(itemJSONData.getString("imageUrl"));
         Object matches;
         matches = itemJSONData.get("matches");
         if (matches instanceof JSONArray) {

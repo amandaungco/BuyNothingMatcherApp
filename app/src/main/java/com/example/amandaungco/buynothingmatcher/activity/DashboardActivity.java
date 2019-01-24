@@ -70,7 +70,7 @@ public class DashboardActivity extends AppCompatActivity {
                 @Override
                 public void onCallback(User user) {
                     AppState.INSTANCE.setCurrentUser(user);
-                    Toast.makeText(DashboardActivity.this, "Hi " + user.getName(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(DashboardActivity.this, "Hi " + user.getName() + "!", Toast.LENGTH_SHORT).show();
                     getItemsRequest(buyNothingApiRequestQueue);
                 }
             });
@@ -136,13 +136,15 @@ public class DashboardActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onRightCardExit(Object dataObject) {
-                //match match
+            public void onRightCardExit(Object itemCardDataObject) {
+                Card itemCardDataObjectCard = (Card) itemCardDataObject;
+                makeMatch(itemCardDataObjectCard);
 //                cards obj = (cards) dataObject;
 //                String userId = obj.getUserId();
 //                usersDb.child(userId).child("connections").child("yeps").child(currentUId).setValue(true);
 //                isConnectionMatch(userId);
-                Toast.makeText(DashboardActivity.this, "Right", Toast.LENGTH_SHORT).show();
+                //add complementary item with the same data to users items
+                Toast.makeText(DashboardActivity.this, "Match", Toast.LENGTH_SHORT).show();
             }
 
             @Override
@@ -158,9 +160,9 @@ public class DashboardActivity extends AppCompatActivity {
         // Optionally add an OnItemClickListener
         flingContainer.setOnItemClickListener(new SwipeFlingAdapterView.OnItemClickListener() {
             @Override
-            public void onItemClicked(int itemPosition, Object dataObject) {
-                //pass information to next activity
-                openIndividualItemforSwiping();
+            public void onItemClicked(int itemPosition, Object itemCardDataObject) {
+                Card itemCardDataObjectCard = (Card) itemCardDataObject;
+                openIndividualItemforSwiping(itemCardDataObjectCard);
             }
         });
 
@@ -208,8 +210,23 @@ public class DashboardActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    public void openIndividualItemforSwiping() {
+    public void openIndividualItemforSwiping(Card itemFromCard) {
         Intent intent = new Intent(this, IndividualItemForSwipingActivity.class);
+        intent.putExtra("ItemCategory", itemFromCard.getCategory());
+        intent.putExtra("ItemQuantity", itemFromCard.getQuantity());
+        intent.putExtra("ItemDescription", itemFromCard.getDescription());
+        intent.putExtra("ItemTitle", itemFromCard.getTitle());
+        intent.putExtra("ItemImageUrl", itemFromCard.getImageUrl());
+        String type;
+        if (itemFromCard.getOffer() == true){
+            type = "Offer";
+        }else{
+            type ="Request";
+        }
+        intent.putExtra("ItemType", type);
+
+//        intent.putExtra("ItemType", itemFromCard.getType());
+
         startActivity(intent);
     }
 
@@ -260,7 +277,7 @@ public class DashboardActivity extends AppCompatActivity {
 
         for (int i = 0; i < itemsForCards.size(); i++) {
             singleItemforCard = itemsForCards.get(i);
-            Card itemCard = new Card(singleItemforCard.getItemId(), singleItemforCard.getTitle(), isOffer);
+            Card itemCard = new Card(singleItemforCard.getItemId(), singleItemforCard.getTitle(), isOffer, singleItemforCard.getCategory(), singleItemforCard.getQuantity(), singleItemforCard.getDescription(), singleItemforCard.getImageURL());
             rowItems.add(itemCard);
         }
     }
@@ -277,9 +294,13 @@ public class DashboardActivity extends AppCompatActivity {
         //TODO create dummy start cards in app state
 
         for (int i = 0; i < testvalues.size(); i++) {
-            Card itemCard = new Card(i, testvalues.get(i), false, "https://static.scientificamerican.com/sciam/cache/file/D059BC4A-CCF3-4495-849ABBAFAED10456_source.jpg?w=590&h=800&526ED1E1-34FF-4472-B348B8B4769AB2A1" );
+            Card itemCard = new Card(i, testvalues.get(i), false, "toys", 2, "new puppy, need toys!", "https://static.scientificamerican.com/sciam/cache/file/D059BC4A-CCF3-4495-849ABBAFAED10456_source.jpg?w=590&h=800&526ED1E1-34FF-4472-B348B8B4769AB2A1" );
             rowItems.add(itemCard);
         }
+
+    }
+
+    public void makeMatch(Card objectCardData){
 
     }
 }

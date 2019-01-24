@@ -2,27 +2,59 @@ package com.example.amandaungco.buynothingmatcher.model;
 
 public class Card {
 
-    private int requestId;
+    private int itemId;
     private String title;
     private Boolean isOffer;
+    private String category;
+    private int quantity;
+    private String description;
 
-    private String profileImageUrl;
+    private String ImageUrl;
 
 
-    public Card (int requestId, String title, Boolean isOffer){
-        this.requestId = requestId;
+    public Card (int itemId, String title, Boolean isOffer, String category, int quantity, String description){
+        this.itemId = itemId;
         this.title = title;
         this.isOffer = isOffer;
-//
+        this.category = category;
+        this.quantity = quantity;
+        this.description=description;
     }
 
-    public Card (int requestId, String title, Boolean isOffer, String profileImageUrl){
-        this.requestId = requestId;
+    public Card (int itemId, String title, Boolean isOffer,String category, int quantity, String description, String ImageUrl){
+        this.itemId = itemId;
         this.title = title;
         this.isOffer = isOffer;
-        this.profileImageUrl = profileImageUrl;
+        this.category = category;
+        this.quantity = quantity;
+        this.description=description;
+        this.ImageUrl = ImageUrl;
     }
 
+
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
+    }
+
+    public int getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
 
     public Boolean getOffer() {
         return isOffer;
@@ -32,12 +64,12 @@ public class Card {
         isOffer = offer;
     }
 
-    public int getRequestId() {
-        return requestId;
+    public int getItemId() {
+        return itemId;
     }
 
-    public void setRequestId(int requestId) {
-        this.requestId = requestId;
+    public void setItemId(int itemId) {
+        this.itemId = itemId;
     }
 
     public String getTitle() {
@@ -48,10 +80,10 @@ public class Card {
         this.title = title;
     }
 
-    public String getProfileImageUrl(){
-        return profileImageUrl;
+    public String getImageUrl(){
+        return ImageUrl;
     }
-    public void setProfileImageUrl(String profileImageUrl){
-        this.profileImageUrl = profileImageUrl;
+    public void setImageUrl(String imageUrl){
+        this.ImageUrl = imageUrl;
     }
 }

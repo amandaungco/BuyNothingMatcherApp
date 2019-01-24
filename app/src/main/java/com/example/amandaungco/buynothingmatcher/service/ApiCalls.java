@@ -9,6 +9,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.example.amandaungco.buynothingmatcher.model.AppState;
 import com.example.amandaungco.buynothingmatcher.model.Item;
 import com.example.amandaungco.buynothingmatcher.model.RequestQueueSingleton;
@@ -124,5 +125,60 @@ public class ApiCalls {
         });
         buyNothingApiRequestQueue.add(itemDataGetRequest);
         return itemsFromJson;
+    }
+
+    public static CompletableFuture<Item> postNewItemRequest(Item item, RequestQueue buyNothingApiRequestQueue) {
+
+        String baseUrl = AppState.getApiURL() + "users/";
+        Long userID;
+        final String type;
+        userID = AppState.INSTANCE.getCurrentUser().getUserId();
+        type = item.getType().toLowerCase();
+        AppState.INSTANCE.getCurrentItem().setType(type);
+        String requestURL = baseUrl + userID + "/" + type + "s";
+
+        JSONObject itemRequestDataBody;
+
+
+
+        try {
+            itemRequestDataBody = Item.convertItemToJson(item);
+            JsonObjectRequest itemDataPostRequest = new JsonObjectRequest(Request.Method.POST, requestURL, itemRequestDataBody, new Response.Listener<JSONObject>() {
+                @Override
+                public void onResponse(JSONObject response) {
+
+                    try {
+                        AppState.INSTANCE.setCurrentItem(Item.convertJSONtoItem(response));
+                        if (type == "offer"){
+                            ArrayList<Item> offers = AppState.INSTANCE.getUserOfferItems();
+                            offers.add(AppState.INSTANCE.getCurrentItem());
+                            AppState.INSTANCE.setUserOfferItems(offers);
+
+                        } else {
+                            ArrayList<Item> requests = AppState.INSTANCE.getUserRequestItems();
+                            requests.add(AppState.INSTANCE.getCurrentItem());
+                            AppState.INSTANCE.setUserRequestItems(requests);
+                        }
+
+//
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+
+                    }
+
+
+                }
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    if (error !=null) {
+                        error.printStackTrace();
+                    }
+                }
+            });
+            buyNothingApiRequestQueue.add(itemDataPostRequest);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 }

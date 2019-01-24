@@ -6,14 +6,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.example.amandaungco.buynothingmatcher.R;
 
 import java.util.List;
-
-import static java.security.AccessController.getContext;
 
 public class arrayAdapter extends ArrayAdapter<Card> {
 
@@ -31,28 +28,30 @@ public class arrayAdapter extends ArrayAdapter<Card> {
         }
 
         swipingTextView swipeItemTitile = convertView.findViewById(R.id.swipeItemTitle);
-        ImageView image =  convertView.findViewById(R.id.swipingImage);
+        ImageView image = convertView.findViewById(R.id.swipingImage);
         Boolean isOffer;
-        isOffer =  card_item.getOffer();
+        isOffer = card_item.getOffer();
         String type;
 
-        if (isOffer){
+        if (isOffer) {
             type = "Offer";
             swipeItemTitile.setOffer(true);
-        }else{
+        } else {
             type = "Request";
             swipeItemTitile.setOffer(false);
         }
 
-        swipeItemTitile.setText(type + ": " + card_item.getTitle());
-        switch (card_item.getProfileImageUrl()) {
-            case "default":
-                Glide.with(convertView.getContext()).load(R.mipmap.ic_launcher).into(image);
-                break;
-            default:
+        swipeItemTitile.setText(type + " " + card_item.getItemId()+ " : " + card_item.getTitle());
+        if (card_item.getImageUrl() instanceof String) {
+            switch (card_item.getImageUrl()) {
+                case "default":
+                    Glide.with(convertView.getContext()).load(R.mipmap.ic_launcher).into(image);
+                    break;
+                default:
 //                Glide.clear(image);
-                Glide.with(convertView.getContext()).load(card_item.getProfileImageUrl()).into(image);
-                break;
+                    Glide.with(convertView.getContext()).load(card_item.getImageUrl()).into(image);
+                    break;
+            }
         }
 
 
