@@ -36,8 +36,9 @@ public class AppState {
     //computerIPUrl:"http://192.168.5.85:8080/";
     //ada Ip: 172.24.25.133
     //george: 192.168.0.13
+    // google cloud Ip: 35.230.21.104
 
-    private static final String apiURL = "http://172.24.25.133:8080/";
+    private static final String apiURL = "http://35.230.21.104:8080/";
 //    private static final String computerIPUrl = "http://192.168.5.85:8080/";
 
     public static String getApiURL() {

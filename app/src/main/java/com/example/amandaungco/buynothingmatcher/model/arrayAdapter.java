@@ -31,7 +31,7 @@ public class arrayAdapter extends ArrayAdapter<Card> {
         }
 
         swipingTextView swipeItemTitile = convertView.findViewById(R.id.swipeItemTitle);
-        ImageView image =  convertView.findViewById(R.id.image);
+        ImageView image =  convertView.findViewById(R.id.swipingImage);
         Boolean isOffer;
         isOffer =  card_item.getOffer();
         String type;
@@ -44,16 +44,16 @@ public class arrayAdapter extends ArrayAdapter<Card> {
             swipeItemTitile.setOffer(false);
         }
 
-        swipeItemTitile.setText(type + card_item.getRequestId() + ": " + card_item.getTitle());
-//        switch (card_item.getProfileImageUrl()) {
-//            case "default":
-//                Glide.with(convertView.getContext()).load(R.mipmap.ic_launcher).into(image);
-//                break;
-//            default:
+        swipeItemTitile.setText(type + ": " + card_item.getTitle());
+        switch (card_item.getProfileImageUrl()) {
+            case "default":
+                Glide.with(convertView.getContext()).load(R.mipmap.ic_launcher).into(image);
+                break;
+            default:
 //                Glide.clear(image);
-//                Glide.with(convertView.getContext()).load(card_item.getProfileImageUrl()).into(image);
-//                break;
-//        }
+                Glide.with(convertView.getContext()).load(card_item.getProfileImageUrl()).into(image);
+                break;
+        }
 
 
         return convertView;

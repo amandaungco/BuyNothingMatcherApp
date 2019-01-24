@@ -25,8 +25,16 @@ public class Item {
     private String type;
     private String description;
     private ArrayList matches;
+    private String imageURL;
 
+    public String getImageURL() {
+        return imageURL;
+    }
 
+    public void setImageURL(String imageURL) {
+        this.imageURL = imageURL;
+    }
+    
     public ArrayList getMatches() {
         return matches;
     }

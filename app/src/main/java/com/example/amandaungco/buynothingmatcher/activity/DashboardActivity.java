@@ -70,8 +70,8 @@ public class DashboardActivity extends AppCompatActivity {
                 @Override
                 public void onCallback(User user) {
                     AppState.INSTANCE.setCurrentUser(user);
+                    Toast.makeText(DashboardActivity.this, "Hi " + user.getName(), Toast.LENGTH_SHORT).show();
                     getItemsRequest(buyNothingApiRequestQueue);
-
                 }
             });
         } else {
@@ -219,12 +219,6 @@ public class DashboardActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-//    private void makeAPICalls(){
-//        getAlltemsRequest();
-//        getUserItemsRequest();
-//    }
-
-
     private void getItemsRequest(RequestQueue requestQueue) {
 
         final CompletableFuture<ArrayList<Item>> userOfferItemsRequest = ApiCalls.getUserItemsCall(requestQueue, true);
@@ -241,9 +235,6 @@ public class DashboardActivity extends AppCompatActivity {
 
         CompletableFuture.allOf(apiCallFutures.toArray(new CompletableFuture[apiCallFutures.size()])).thenApply(new Function<Void, Void>() {
             public Void apply(Void o) {
-                // now we know both the futures are completed
-                // here we can safely call .get on the future!
-
                 try {
                     ArrayList<Item> userOfferItems = userOfferItemsRequest.get();
                     ArrayList<Item> userRequestItems = userRequestItemsRequest.get();
@@ -262,138 +253,7 @@ public class DashboardActivity extends AppCompatActivity {
                 return null;
             }
         });
-
-
-
-
-
-
-
-
     }
-//    public CompletableFuture<ArrayList<Item>>
-//
-//        RequestQueue buyNothingApiRequestQueue = RequestQueueSingleton.getInstance(this.getApplicationContext()).getRequestQueue();
-//
-//        String baseUrl = AppState.getApiURL();
-//        Long userID;
-//
-//        userID = AppState.INSTANCE.getCurrentUser().getUserId();
-////        AppState.INSTANCE.getNewItem().setType(type);
-//
-//        ArrayList<String> itemTypes = new ArrayList<>();
-//        itemTypes.add("offers");
-//        itemTypes.add("requests");
-//
-//
-//        for (int i = 0; i < itemTypes.size(); i++) {
-//            final String itemType = itemTypes.get(i);
-//            String requestURL = baseUrl + "users/" + userID + "/" + itemType;
-//
-//            JsonArrayRequest itemDataGetRequest = new JsonArrayRequest(Request.Method.GET, requestURL, null, new Response.Listener<JSONArray>() {
-//                @Override
-//                public void onResponse(JSONArray response) {
-//
-//                    try {
-//                        ArrayList<Item> items = new ArrayList<>();
-//
-//                        for (int i = 0; i < response.length(); i++) {
-//                            Object singleItem = response.get(i);
-//                            if (singleItem instanceof Integer) {
-//                                continue;
-//                            }
-//                            JSONObject singleJSONItem = (JSONObject) singleItem;
-//                            items.add(Item.convertJSONtoItem(singleJSONItem));
-//                        }
-//                        if ("offers".equals(itemType)) {
-//                            AppState.INSTANCE.setUserOfferItems(items);
-//                        } else {
-//                            AppState.INSTANCE.setUserRequestItems(items);
-//                        }
-////
-//                    } catch (JSONException e) {
-//                        e.printStackTrace();
-//                        Toast.makeText(getApplicationContext(), "Error:  " + e.getMessage(), Toast.LENGTH_SHORT).show();
-//                    }
-//                }
-//            }, new Response.ErrorListener() {
-//                @Override
-//                public void onErrorResponse(VolleyError error) {
-//                    if (error != null) {
-//                        Toast.makeText(getApplicationContext(), "Error:  " + error.getMessage(), Toast.LENGTH_SHORT).show();
-//                        error.printStackTrace();
-//                    }
-//                }
-//            });
-//            buyNothingApiRequestQueue.add(itemDataGetRequest);
-//        }
-//
-//    }
-
-//    private void getAlltemsRequest() {
-//
-//
-//        RequestQueue buyNothingApiRequestQueue = RequestQueueSingleton.getInstance(this.getApplicationContext()).getRequestQueue();
-//
-//        String baseUrl = AppState.getApiURL();
-////        Long userID;
-////
-////        userID = AppState.INSTANCE.getCurrentUser().getUserId();
-////        AppState.INSTANCE.getNewItem().setType(type);
-//
-//        ArrayList<String> itemTypes = new ArrayList<>();
-//        itemTypes.add("offers/");
-//        itemTypes.add("requests/");
-//
-//
-//        for (int i = 0; i < itemTypes.size(); i++) {
-//            final String itemType = itemTypes.get(i);
-//            String requestURL = baseUrl + itemType;
-
-//            JsonObjectRequest itemDataGetRequest = new JsonObjectRequest(Request.Method.GET, requestURL, null, new Response.Listener<JSONObject>() {
-//                @Override
-//                public void onResponse(JSONObject response) {
-
-
-//                    try {
-//                        JSONArray items;
-//                        items = response.getJSONArray("content");
-//                        ArrayList<Item> itemsfromDb = new ArrayList<>();
-//
-//                        for (int i = 0; i < items.length(); i++) {
-//                            Object singleItem = items.get(i);
-//                            if (singleItem instanceof Integer) {
-//                                continue;
-//                            }
-//                            JSONObject singleJSONItem = (JSONObject) singleItem;
-//                            itemsfromDb.add(Item.convertJSONtoItem(singleJSONItem));
-//                        }
-//                        if ("offers/".equals(itemType)) {
-//                            AppState.INSTANCE.setAllOfferDBItems(itemsfromDb);
-//                            Toast.makeText(DashboardActivity.this, "OFFERS LOADED " + itemsfromDb.size(), Toast.LENGTH_SHORT).show();
-//                        } else {
-//                            AppState.INSTANCE.setAllRequestDBItems(itemsfromDb);
-//                            Toast.makeText(DashboardActivity.this, "ALl DB Requests Loaded to appState " + itemsfromDb.size(), Toast.LENGTH_SHORT).show();
-//                        }
-////
-//                    } catch (JSONException e) {
-//                        e.printStackTrace();
-//                        Toast.makeText(getApplicationContext(), "Error:  " + e.getMessage(), Toast.LENGTH_SHORT).show();
-//                    }
-//                }
-//            }, new Response.ErrorListener() {
-//                @Override
-//                public void onErrorResponse(VolleyError error) {
-//                    if (error != null) {
-//                        Toast.makeText(getApplicationContext(), "Error:  " + error.getMessage(), Toast.LENGTH_SHORT).show();
-//                        error.printStackTrace();
-//                    }
-//                }
-//            });
-//            buyNothingApiRequestQueue.add(itemDataGetRequest);
-//        }
-//
-//    }
 
     public void createCardsforGallery(ArrayList<Item> itemsForCards, Boolean isOffer) {
         Item singleItemforCard;
@@ -407,21 +267,21 @@ public class DashboardActivity extends AppCompatActivity {
 
     public void createStarterCardsforGallery() {
         ArrayList<String> testvalues = new ArrayList<>();
-        testvalues.add("Test 1");
+        testvalues.add("Puppy Toys");
 //        testvalues.add("test 2");
 //        testvalues.add("test 3");
 //        testvalues.add("test 4");
 //        testvalues.add("test 5");
 //        testvalues.add("test 6");
 
+        //TODO create dummy start cards in app state
+
         for (int i = 0; i < testvalues.size(); i++) {
-            Card itemCard = new Card(i, testvalues.get(i), true);
+            Card itemCard = new Card(i, testvalues.get(i), false, "https://static.scientificamerican.com/sciam/cache/file/D059BC4A-CCF3-4495-849ABBAFAED10456_source.jpg?w=590&h=800&526ED1E1-34FF-4472-B348B8B4769AB2A1" );
             rowItems.add(itemCard);
         }
 
     }
-
-
 }
 
 

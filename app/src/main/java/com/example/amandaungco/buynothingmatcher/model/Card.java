@@ -6,13 +6,21 @@ public class Card {
     private String title;
     private Boolean isOffer;
 
-//    private String profileImageUrl;
+    private String profileImageUrl;
+
 
     public Card (int requestId, String title, Boolean isOffer){
         this.requestId = requestId;
         this.title = title;
         this.isOffer = isOffer;
-//        this.profileImageUrl = profileImageUrl;
+//
+    }
+
+    public Card (int requestId, String title, Boolean isOffer, String profileImageUrl){
+        this.requestId = requestId;
+        this.title = title;
+        this.isOffer = isOffer;
+        this.profileImageUrl = profileImageUrl;
     }
 
 
@@ -38,5 +46,12 @@ public class Card {
 
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    public String getProfileImageUrl(){
+        return profileImageUrl;
+    }
+    public void setProfileImageUrl(String profileImageUrl){
+        this.profileImageUrl = profileImageUrl;
     }
 }

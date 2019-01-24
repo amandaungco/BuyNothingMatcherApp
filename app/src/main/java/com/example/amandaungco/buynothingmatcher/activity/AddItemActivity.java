@@ -131,7 +131,7 @@ public class AddItemActivity extends AppCompatActivity {
         RequestQueue itemPostQueue = Volley.newRequestQueue(this);
 //break this into two methods, one to create json from firebase user -- firebasetoJSON
         try {
-            String baseUrl = "http://10.0.2.2:8080/users/";
+            String baseUrl = AppState.getApiURL();
             Long userID;
             final String type;
             userID = AppState.INSTANCE.getCurrentUser().getUserId();

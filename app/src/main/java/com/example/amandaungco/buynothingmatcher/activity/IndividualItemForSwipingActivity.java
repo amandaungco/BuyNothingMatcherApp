@@ -34,7 +34,7 @@ public class IndividualItemForSwipingActivity extends AppCompatActivity {
         TextView itemQuantityView;
         TextView itemCategoryView;
         TextView itemDescriptionView;
-        TextView matchesHeaderView;
+
 
         String itemHeader = type + " : " + title;
         String itemQuantity = "Quantity: " + quantity;

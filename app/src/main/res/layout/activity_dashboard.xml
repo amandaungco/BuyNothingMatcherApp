@@ -74,7 +74,7 @@
         <com.lorentzos.flingswipe.SwipeFlingAdapterView
             android:id="@+id/swipeFrame"
             android:layout_width="368dp"
-            android:layout_height="308dp"
+            android:layout_height="350dp"
             android:layout_gravity="center"
             android:layout_marginTop="25dp"
             android:background="@android:color/white"

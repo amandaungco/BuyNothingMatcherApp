@@ -65,7 +65,7 @@ public class FireBaseSignInActivity extends AppCompatActivity {
         RequestQueue userPostQueue = Volley.newRequestQueue(this);
 //break this into two methods, one to create json from firebase user -- firebasetoJSON
         try {
-            String url = "http://10.0.2.2:8080/users";
+            String url = AppState.getApiURL() + "users/";
 
             JSONObject userDataBody = new JSONObject();
 
@@ -102,32 +102,6 @@ public class FireBaseSignInActivity extends AppCompatActivity {
         }
     }
 
-    //    public void addUserDatatoSharedPreferences(User currentUserData){
-//
-//        SharedPreferences userDataPreferences = this.getSharedPreferences(getString(R.string.app_file), Context.MODE_PRIVATE);
-//        SharedPreferences.Editor editor = userDataPreferences.edit();
-//        editor.putLong("userId", currentUserData.getUserId());
-//        editor.putString("userName", currentUserData.getName());
-//        editor.putString("userEmail", currentUserData.getEmail());
-//        editor.putString("userLocation", currentUserData.getLocation());
-//        editor.apply();
-//
-//    }
-//
-//    class OnSuccess implements Function<User, Object> {
-//
-//        @Override
-//        public Object apply(User input) {
-//            if (input == null) {
-//                FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-//                postNewUserRequest(user);
-//            } else {
-//                AppState.INSTANCE.setCurrentUser(input);
-//                openDashboardPage();
-//            }
-//            return null;
-//        }
-//    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -158,20 +132,6 @@ public class FireBaseSignInActivity extends AppCompatActivity {
             // ...
         }
     }
-
-
-//
-//    public void signOut() {
-//        // [START auth_fui_signout]
-//        AuthUI.getInstance()
-//                .signOut(this)
-//                .addOnCompleteListener(new OnCompleteListener<Void>() {
-//                    public void onComplete(@NonNull Task<Void> task) {
-//                        // ...
-//                    }
-//                });
-//    }
-
 
     private void openDashboardPage() {
         Intent intent = new Intent(this, DashboardActivity.class);
