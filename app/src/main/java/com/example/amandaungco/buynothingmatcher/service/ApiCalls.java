@@ -136,49 +136,40 @@ public class ApiCalls {
         type = item.getType().toLowerCase();
         AppState.INSTANCE.getCurrentItem().setType(type);
         String requestURL = baseUrl + userID + "/" + type + "s";
-
-        JSONObject itemRequestDataBody;
-
-
+        final CompletableFuture<Item> singleItemFromJSON = new CompletableFuture<>();
 
         try {
+            JSONObject itemRequestDataBody;
+
             itemRequestDataBody = Item.convertItemToJson(item);
-            JsonObjectRequest itemDataPostRequest = new JsonObjectRequest(Request.Method.POST, requestURL, itemRequestDataBody, new Response.Listener<JSONObject>() {
+
+            JsonObjectRequest itemDataGetRequest = new JsonObjectRequest(Request.Method.POST, requestURL, itemRequestDataBody, new Response.Listener<JSONObject>() {
                 @Override
                 public void onResponse(JSONObject response) {
-
+                    Item newItem = new Item();
                     try {
-                        AppState.INSTANCE.setCurrentItem(Item.convertJSONtoItem(response));
-                        if (type == "offer"){
-                            ArrayList<Item> offers = AppState.INSTANCE.getUserOfferItems();
-                            offers.add(AppState.INSTANCE.getCurrentItem());
-                            AppState.INSTANCE.setUserOfferItems(offers);
 
-                        } else {
-                            ArrayList<Item> requests = AppState.INSTANCE.getUserRequestItems();
-                            requests.add(AppState.INSTANCE.getCurrentItem());
-                            AppState.INSTANCE.setUserRequestItems(requests);
-                        }
+                        newItem = Item.convertJSONtoItem(response);
 
-//
                     } catch (JSONException e) {
                         e.printStackTrace();
-
                     }
-
-
+                    singleItemFromJSON.complete(newItem);
                 }
             }, new Response.ErrorListener() {
                 @Override
                 public void onErrorResponse(VolleyError error) {
-                    if (error !=null) {
+                    if (error != null) {
                         error.printStackTrace();
+                        singleItemFromJSON.complete(new Item());
                     }
                 }
             });
-            buyNothingApiRequestQueue.add(itemDataPostRequest);
+            buyNothingApiRequestQueue.add(itemDataGetRequest);
         } catch (JSONException e) {
             e.printStackTrace();
         }
+        return singleItemFromJSON;
     }
+
 }

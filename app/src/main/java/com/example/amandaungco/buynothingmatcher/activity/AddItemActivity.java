@@ -24,6 +24,7 @@ import com.example.amandaungco.buynothingmatcher.model.AppState;
 import com.example.amandaungco.buynothingmatcher.model.Category;
 import com.example.amandaungco.buynothingmatcher.R;
 import com.example.amandaungco.buynothingmatcher.model.Item;
+import com.example.amandaungco.buynothingmatcher.model.RequestQueueSingleton;
 import com.example.amandaungco.buynothingmatcher.model.User;
 import com.example.amandaungco.buynothingmatcher.service.ApiCalls;
 import com.google.firebase.auth.FirebaseUser;
@@ -33,6 +34,10 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
+import java.util.function.Function;
 
 public class AddItemActivity extends AppCompatActivity {
 
@@ -46,12 +51,14 @@ public class AddItemActivity extends AppCompatActivity {
     Switch requestOrOffer;
 
 
+
     private static final String[] numbers = {"1", "2", "3", "4", "5", "6", "7", "8", "9", "10"};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_item);
+        final RequestQueue buyNothingApiRequestQueue = RequestQueueSingleton.getInstance(this.getApplicationContext()).getRequestQueue();
 
         categorySpinner = findViewById(R.id.ItemCategory);
         quantitySpinner = findViewById(R.id.ItemQuantity);
@@ -79,7 +86,7 @@ public class AddItemActivity extends AppCompatActivity {
 
         addItemButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                postNewItemRequest(createItem());
+                postNewItemRequest(createItem(), buyNothingApiRequestQueue);
 //                creat eItem();// create hashmap with data from form, have data sent to API
                 //with post request, pull up next activtiy and have the activity make the get
                 //request from the API to show new object
@@ -126,12 +133,101 @@ public class AddItemActivity extends AppCompatActivity {
 
     }
 
-    private void postNewItemRequest(Item item) {
-        ApiCalls.
-        openIndividualUserItemShowPage(type);
+
+    private void postNewItemRequest(final Item item, RequestQueue requestQueue) {
+
+        final CompletableFuture<Item> userPostItemRequest = ApiCalls.postNewItemRequest(item, requestQueue);
+
+        List<CompletableFuture<Item>> apiCallFutures = new ArrayList<>();
+        apiCallFutures.add(userPostItemRequest);
+        final String type;
+        type = item.getType();
 
 
+        CompletableFuture.allOf(apiCallFutures.toArray(new CompletableFuture[apiCallFutures.size()])).thenApply(new Function<Void, Void>() {
+            public Void apply(Void o) {
+
+                try {
+                    Item userPostNewItem = userPostItemRequest.get();
+                    AppState.INSTANCE.setCurrentItem(userPostNewItem);
+                    if (type == "offer"){
+                            ArrayList<Item> offers = AppState.INSTANCE.getUserOfferItems();
+                            offers.add(AppState.INSTANCE.getCurrentItem());
+                            AppState.INSTANCE.setUserOfferItems(offers);
+
+                        } else {
+                            ArrayList<Item> requests = AppState.INSTANCE.getUserRequestItems();
+                            requests.add(AppState.INSTANCE.getCurrentItem());
+                            AppState.INSTANCE.setUserRequestItems(requests);
+                        }
+                        openIndividualUserItemShowPage(type);
+
+                } catch (InterruptedException | ExecutionException e) {
+                    e.printStackTrace();
+                }
+                return null;
+            }
+        });
     }
+//    private void postNewItemRequest(Item item) {
+//
+//
+//        RequestQueue itemPostQueue = Volley.newRequestQueue(this);
+////break this into two methods, one to create json from firebase user -- firebasetoJSON
+//        try {
+//            String baseUrl = AppState.getApiURL() + "users/";
+//            Long userID;
+//            final String type;
+//            userID = AppState.INSTANCE.getCurrentUser().getUserId();
+//            type = item.getType().toLowerCase();
+//            AppState.INSTANCE.getCurrentItem().setType(type);
+//            String requestURL = baseUrl + userID + "/" + type + "s";
+//
+//            JSONObject itemRequestDataBody;
+//
+//            itemRequestDataBody = Item.convertItemToJson(item);
+////            itemRequestDataBody.put("type", type);
+//
+//            JsonObjectRequest itemDataPostRequest = new JsonObjectRequest(Request.Method.POST, requestURL, itemRequestDataBody, new Response.Listener<JSONObject>() {
+//                @Override
+//                public void onResponse(JSONObject response) {
+//
+//                    try {
+//                        AppState.INSTANCE.setCurrentItem(Item.convertJSONtoItem(response));
+//                        if (type == "offer"){
+//                            ArrayList<Item> offers = AppState.INSTANCE.getUserOfferItems();
+//                            offers.add(AppState.INSTANCE.getCurrentItem());
+//                            AppState.INSTANCE.setUserOfferItems(offers);
+//
+//                        } else {
+//                            ArrayList<Item> requests = AppState.INSTANCE.getUserRequestItems();
+//                            requests.add(AppState.INSTANCE.getCurrentItem());
+//                            AppState.INSTANCE.setUserRequestItems(requests);
+//                        }
+//                        openIndividualUserItemShowPage(type);
+////
+//                    } catch (JSONException e) {
+//                        e.printStackTrace();
+//                        Toast.makeText(getApplicationContext(), "Error:  " + e.getMessage(), Toast.LENGTH_SHORT).show();
+//
+//                    }
+//
+//
+//                }
+//            }, new Response.ErrorListener() {
+//                @Override
+//                public void onErrorResponse(VolleyError error) {
+//                    if (error !=null) {
+//                        Toast.makeText(getApplicationContext(), "Error:  " + error.getMessage(), Toast.LENGTH_SHORT).show();
+//                        error.printStackTrace();
+//                    }
+//                }
+//            });
+//            itemPostQueue.add(itemDataPostRequest);
+//        } catch (JSONException e) {
+//            e.printStackTrace();
+//        }
+//    }
 
 
     //Maybe save to app state instead?
