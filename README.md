@@ -17,5 +17,5 @@ To download and edit this project:
 
 ## Credits
 
- *Swipecards base by https://github.com/Diolor/Swipecards
- *Image Assistance by https://github.com/bumptech/glide
+ * Swipecards base by https://github.com/Diolor/Swipecards
+ * Image Assistance by https://github.com/bumptech/glide
