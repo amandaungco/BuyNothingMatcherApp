@@ -11,11 +11,11 @@ This is a capstone project for [Ada Developers Academy](https://www.adadeveloper
 
 ## Features
 
-##Installation
+## Installation
 
 To download and edit this project: 
 
 ## Credits
 
-*Swipecards base by https://github.com/Diolor/Swipecards
-*Image Assistance by https://github.com/bumptech/glide
+ *Swipecards base by https://github.com/Diolor/Swipecards
+ *Image Assistance by https://github.com/bumptech/glide
