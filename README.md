@@ -19,8 +19,9 @@ FrontEnd: Android Mobile App and Firebase Authentication.
 
 ## Features
 The main features Buy Nothing Matcher App offers in addition to what users can find on their neighorhood Buy Nothing Facebook Groups: 
- 1 . Users can add item offers or requests to their profiles that will get added to the database. Upon entry, if there is a corresponding match in the DB, the item's profile will be automatically populated with their appropriate matches. Users can view matches and decide if they want to pursue the exchange. 
- 2. Swiping - On the apps home page, users can toggle between viewing requests and offers. A gesture to swipe right, automatically matches the user with either the offered or requested item, and a swipe left signals disinterest and neither party will be notified. Items advance on their own as assisted by the Swipecards/Glide library.
+1. Users can add item offers or requests to their profiles that will get added to the database. Upon entry, if there is a corresponding match in the DB, the item's profile will be automatically populated with their appropriate matches. Users can view matches and decide if they want to pursue the exchange. 
+
+2. Swiping - On the apps home page, users can toggle between viewing requests and offers. A gesture to swipe right, automatically matches the user with either the offered or requested item, and a swipe left signals disinterest and neither party will be notified. Items advance on their own as assisted by the Swipecards/Glide library.
 
 
 ## Installation
@@ -34,9 +35,9 @@ git clone https://github.com/amandaungco/BuyNothingMatcherApp.git
 3. Open Android Studio and select Import Project, then choose the folder into which you cloned this repo.
 Connect an Android phone running Android Nougat (APK 23) or higher to your computer. (You can also use an emulator to run the app on a virtual device).
 
-4.Click the green Run button in the menu bar and select the device you plugged in to build the project and install the app on your phone. The app should open automatically.
+4. Click the green Run button in the menu bar and select the device you plugged in to build the project and install the app on your phone. The app should open automatically.
 
-5.In order to get full functionality the backend API will need to also be cloned and running, please see [Buy Nothing API](https://github.com/amandaungco/capstoneBuyNothingAPI).
+5. In order to get full functionality the backend API will need to also be cloned and running, please see [Buy Nothing API](https://github.com/amandaungco/capstoneBuyNothingAPI).
 
 ## Credits
 
