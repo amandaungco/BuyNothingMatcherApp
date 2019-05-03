@@ -12,9 +12,13 @@ This is a capstone project for [Ada Developers Academy](https://www.adadeveloper
 
 
 ## Tech Stack
+Backend: [Buy Nothing API](https://github.com/amandaungco/capstoneBuyNothingAPI) built with Java/Spring Boot, Postgres Database, hosted on a Google Cloud Virtual Machine.
+
+FrontEnd: Android Mobile App and Firebase Authentication.
 
 
 ## Features
+Similar to the Buy Nothing Movement on facebook, users can offer and request various items. In this mobile app, users' items get added to a database and their corresponding matches will automatically get added to their items' profile.
 
 ## Installation
 
