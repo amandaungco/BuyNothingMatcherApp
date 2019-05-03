@@ -27,7 +27,16 @@ The main features Buy Nothing Matcher App offers in addition to what users can f
 
 To download and edit this project: 
 1. [Download Android Studio](https://developer.android.com/studio/)
-2. 
+2. Clone this repository:
+```
+git clone https://github.com/amandaungco/BuyNothingMatcherApp.git
+```
+3. Open Android Studio and select Import Project, then choose the folder into which you cloned this repo.
+Connect an Android phone running Android Nougat (APK 23) or higher to your computer. (You can also use an emulator to run the app on a virtual device).
+
+4.Click the green Run button in the menu bar and select the device you plugged in to build the project and install the app on your phone. The app should open automatically.
+
+5.In order to get full functionality the backend API will need to also be cloned and running, please see [Buy Nothing API](https://github.com/amandaungco/capstoneBuyNothingAPI).
 
 ## Credits
 
