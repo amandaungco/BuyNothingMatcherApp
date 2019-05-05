@@ -10,6 +10,8 @@ This is a capstone project for [Ada Developers Academy](https://www.adadeveloper
 
 ## Demo
 
+![](CapstoneSwiping.gif)
+
 
 ## Tech Stack
 Backend: [Buy Nothing API](https://github.com/amandaungco/capstoneBuyNothingAPI) built with Java/Spring Boot, Postgres Database, hosted on a Google Cloud Virtual Machine.
