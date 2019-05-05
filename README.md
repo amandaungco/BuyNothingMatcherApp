@@ -11,7 +11,9 @@ This is a capstone project for [Ada Developers Academy](https://www.adadeveloper
 ## Demo
 
 ![](CapstoneSwiping.gif)
+
 ![](addItems.gif)
+
 ![](Match.gif)
 
 
