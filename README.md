@@ -26,7 +26,7 @@ FrontEnd: Android Mobile App and Firebase Authentication.
 
 
 ## Features
-The main features Buy Nothing Matcher App offers in addition to what users can find on their neighorhood Buy Nothing Facebook Groups: 
+The main features Buy Nothing Matcher App offers, in addition to what users can find on their neighorhood Buy Nothing Facebook Groups:
 1. Users can add item offers or requests to their profiles that will get added to the database. Upon entry, if there is a corresponding match in the DB, the item's profile will be automatically populated with their appropriate matches. Users can view matches and decide if they want to pursue the exchange. 
 
 2. Swiping - On the apps home page, users can toggle between viewing requests and offers. A gesture to swipe right, automatically matches the user with either the offered or requested item, and a swipe left signals disinterest and neither party will be notified. Items advance on their own as assisted by the Swipecards/Glide library.
